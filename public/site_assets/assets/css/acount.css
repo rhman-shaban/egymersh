@@ -1,0 +1,30 @@
+.circle-img {
+    border-radius: 50%;
+    width: 150px;
+}
+
+.main-profile-img {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  border-style: solid;
+  border-color: #FFFFFF;
+  box-shadow: 0 0 8px 3px #B8B8B8;
+  position: relative;
+}
+
+.wrap {
+  position: relative;
+}
+
+.button-profile {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid grey;
+  top: 0;
+  left: 113px;
+  background: white;
+  color: blue;
+}
