@@ -7,6 +7,8 @@ use App\Models\Order;
 use App\Models\OrderStatus;
 use Illuminate\Http\Request;
 use App\Models\order_seller;
+use App\Models\product_order;
+use App\Models\SellerProduct;
 
 
 class OrderController extends Controller
@@ -36,11 +38,20 @@ class OrderController extends Controller
     {
         $order_status = OrderStatus::all();
         $order->load(['user'  , 'address' , 'items' , 'items.product'  , 'status' , 'comments' , 'comments.admin']);
+        
         return view('dashboard.orders.show' , compact('order', 'order_status') );
+        
     }
 
 
     public function update_status(Request $request , Order $order)
+    {
+        $order->order_status_id = $request->order_status_id;
+        $order->save();
+        return back()->with('success'  , 'Order Status changed successfully' );         
+    }
+    
+    public function update_status_order(Request $request , Order $order)
     {
         $order->order_status_id = $request->order_status_id;
         $order->save();
@@ -71,6 +82,9 @@ class OrderController extends Controller
     {
 
         $orders=order_seller::find($id);
+      
+        
+        
         return view('dashboard.orders.showmanual', compact('orders'));
           
     }

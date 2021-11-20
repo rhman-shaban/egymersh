@@ -18,7 +18,7 @@
               <table class="table align-middle table-nowrap mb-0">
                 <thead class="table-light">
                   <tr>
-                    <th class="align-middle" scope="col">Order ID</th>
+                    <th class="align-middle" scope="col">ID</th>
                     <th class="align-middle" scope="col">Customer Name</th>
                     <th class="align-middle" scope="col">Date</th>
                     <th class="align-middle" scope="col">Status</th>
@@ -29,7 +29,7 @@
                 <tbody>
                   @foreach($orders as $order)
                   <tr>
-                    <td><a href="{{route('manual.order.show' ,$order -> id )}}" class="fw-bold">{{$order->id}}</a> </td>
+                    <td><a href="{{route('manual.order.show' ,$order -> id )}}" class="fw-bold">M{{$order->id}}</a> </td>
                     <td>{{$order->name}}</td>
                     <td>
                     {{ date('d-m-Y', strtotime($order['created_at'])); }}

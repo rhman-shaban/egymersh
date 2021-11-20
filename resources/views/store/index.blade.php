@@ -73,21 +73,21 @@
                 </div>
             </div>
         </div> 
-        <div class="col-lg-5">
+        <div class="col-lg-6">
             <div class="card card-body mb-4">
             <h4 class="mb-3 card-title">Latest News 🎉</h4>
-            @foreach($posts as $title)
+            @foreach($news as $title)
             <h5>{{$title->title}}</h5>
-            <p>{{ Str::limit(strip_tags($title->body), 20) }}<a href="{{ route('show-news',$title->id) }}">Learn More</a></p>
+            <p>{{ Str::limit(strip_tags($title->body), 30) }}<a href="{{ route('show-news',$title->id) }}">Learn More</a></p>
             @endforeach
             </div>
         </div>
-        <div class="col-lg-5">
+        <div class="col-lg-6">
             <div class="card card-body mb-4">
                 <h4 class="mb-1 card-title">Tips to grow 💸</h4>
-                @foreach($news as $title)
+                @foreach($posts as $title)
                 <h5>{{$title->title}}</h5>
-                <p>{{ Str::limit(strip_tags($title->body), 20) }} <a href="{{ route('show-news',$title->id) }}">Learn more!</a></p>
+                <p>{{ Str::limit(strip_tags($title->body), 30) }} <a href="{{ route('show-news',$title->id) }}">Learn more!</a></p>
                 @endforeach
             </div>
         </div>

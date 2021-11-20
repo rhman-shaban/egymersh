@@ -141,12 +141,14 @@ Route::group(
         Route::post('requset-update', [walletcontroller::class , 'update'])->name('requset.update');
         Route::get('replay/{id}', [email::class , 'index'])->name('replay');
         Route::post('send', [email::class , 'sendEmail'])->name('send-email');
-
+        
         Route::get('whats-new', [newscontroller::class , 'index'])->name('news');
         Route::post('store-news', [newscontroller::class , 'store'])->name('store-news'); 
         Route::get('order-manual', [OrderController::class , 'manual_order'])->name('manual.order');
         Route::get('show_order-manual/{id}', [OrderController::class , 'show_manual_order'])->name('manual.order.show');
+        Route::post('store-status', [OrderController::class , 'update_status_order'])->name('update.status');
        
+
     });//endof route group
 
 
@@ -226,6 +228,7 @@ Route::group(
         Route::post('store_wallet'  , [walletcontroller::class , 'create'])->name('store.wallet');
         route::post('get_price' ,[OrderSellerController::class,'get_shipping_price'])->name('get.price');
         Route::get('shownews/{id}', [WelcomController::class , 'show'])->name('show-news');
+        Route::post('store_product', [OrderSellerController::class , 'add_product'])->name('store_product');
     });//route guarp
 
 

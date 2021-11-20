@@ -11,15 +11,10 @@
         </div>
         <div class="col-lg-6">
             <div class="card mb-4">
-                 <!-- Button trigger modal -->
-    
+                 <!-- Button trigger modal -->     
 
-
-            <hr>     
-
-            <form method="POST" id="addProduct" action="{{route('store.order')}}" >
+            <form method="POST" id="addProduct" action="{{route('store_product')}}" >
                 @csrf
-                <input type="hidden" id="order_id" name="order_id"  value="" >
                 <div class="card-body" id="add_order" >
                 	<div class="mb-4">
                 		<h3>Products information</h3> <br>
@@ -80,10 +75,83 @@
 		                    </div>
                          
 	                    </div>
-                    </div>
-                    <hr>
-                    <a  class="test btn btn-primary addProduct disabled" onclick="post_ajax('#' , 'update'  )">+</a>
+                    </div>                    
+                    <a  class="test btn btn-primary addProduct" onclick="post_ajax('#addProduct' , 'update'  )">+</a>
                 </form>                
+                <hr>
+                <div class="card-body">
+                    <form method="POST" id="addOrderSeller" action="{{route('store.order')}}">
+                    @csrf
+                    <div class="card-body">                   
+                        <div class="mb-4">
+                            <h3>Client information</h3> <br>
+                            <label class="form-label">Name</label>
+                            <input type="text" id="name" name="name" placeholder="Enter client name" class="form-control">
+                            <span id="msg_validate_name" class="invalid-input  msg_validate"></span>
+                        </div>
+                        <div class="row">
+
+                            <div class="mb-4 col-6">
+                                <label class="form-label">Phone</label>
+                                <input type="phone" id="phone" name="phone" placeholder="Enter client phone number" class="form-control">
+                                <span id="msg_validate_phone" class="invalid-input  msg_validate"></span>
+                            </div>
+
+                            <div class="mb-4 col-6">
+                                <label class="form-label">Government</label>
+                                <select class="form-select" name="government"  id="government">
+                                    <option value="">Select government</option>
+                                    @foreach( $governorates as $governorate)
+                                        <option value="{{$governorate->id}}">{{$governorate->name_en}}</option>
+                                    @endforeach
+                                </select>
+                                <span id="msg_validate_government" class="invalid-input  msg_validate"></span>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="mb-4 col-6">
+                                <label class="form-label">Shipping Companies</label>
+                                <select class="form-select" name="shipping_company"  id="shipping_company">
+                                    <option value="">Select Company</option>
+                                    @foreach( $companies_shipping as $company )
+                                        <option value="{{$company->id}}">{{$company->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="mb-4 col-6">
+                                <label class="form-label">Shipping price</label><br/>
+                                <label class="form-control" id="shipping_price" ></label>
+                            </div>
+                        </div>
+                        <div class="mb-0">
+                            <label class="form-label">Address</label>
+                            <input type="text" id="address" name="address" placeholder="Enter client shipping address" class="form-control">
+                            <span id="msg_validate_address" class="invalid-input  msg_validate"></span>
+                        </div>
+                    </div>
+                    <p> 
+                    <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                    Additional Information
+                    </a>
+                        
+                    </p>
+                    <div class="collapse" id="collapseExample">
+                        <div class="card card-body">
+                                <label class="form-label">Notes<span class="text-success">"Optional"</span></label>
+                            <textarea placeholder="Additional notes about the order" id="notees" name="notees" class="form-control"></textarea>
+                            <span id="msg_validate_notees" class="invalid-input  msg_validate"></span>
+
+                            <label class="form-label">Page link<span class="text-success">"Optional"</span></label>
+                        <input type="text" id="link" name="link" placeholder="Enter your Facebook page link" class="form-control">
+                        <span id="msg_validate_link" class="invalid-input  msg_validate"></span>
+                        </div>
+                    </div>           
+                
+                    <a  class="test btn btn-primary addOrder " onclick="add_order('#addOrderSeller' )">Add Order </a>
+                </form>
+                </div>           
+            
             </div>
             
         </div> <!-- card end// -->
@@ -116,91 +184,7 @@
                 </tr>
             </div>
             <div class="card mb-4">
-            	<div class="card-body">
-                <form method="POST" id="addOrderSeller" action="{{route('store.order')}}">
-                @csrf
-            	<div class="card-body">                   
-            		<div class="mb-4">
-                        <h3>Client information</h3> <br>
-                        <label class="form-label">Name</label>
-                        <input type="text" id="name" name="name" placeholder="Enter client name" class="form-control">
-                        <span id="msg_validate_name" class="invalid-input  msg_validate"></span>
-                    </div>
-                    <div class="row">
-
-	                    <div class="mb-4 col-6">
-	                        <label class="form-label">Phone</label>
-	                        <input type="phone" id="phone" name="phone" placeholder="Enter client phone number" class="form-control">
-                            <span id="msg_validate_phone" class="invalid-input  msg_validate"></span>
-                        </div>
-
-	                    <div class="mb-4 col-6">
-	                        <label class="form-label">Government</label>
-	                        <select class="form-select" name="government"  id="government">
-                                <option value="">Select government</option>
-                                @foreach( $governorates as $governorate)
-                                    <option value="{{$governorate->id}}">{{$governorate->name_en}}</option>
-                                @endforeach
-                            </select>
-	                        <span id="msg_validate_government" class="invalid-input  msg_validate"></span>
-	                    </div>
-
-                    </div>
-                    <div class="row">
-                        <div class="mb-4 col-6">
-                            <label class="form-label">Shipping Companies</label>
-                            <select class="form-select" name="shipping_company"  id="shipping_company">
-                                <option value="">Select Company</option>
-                                @foreach( $companies_shipping as $company )
-                                    <option value="{{$company->id}}">{{$company->name}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="mb-4 col-6">
-                            <label class="form-label">Shipping price</label><br/>
-                            <label class="form-control" id="shipping_price" ></label>
-                        </div>
-                    </div>
-                    <div class="mb-0">
-                        <label class="form-label">Address</label>
-                        <input type="text" id="address" name="address" placeholder="Enter client shipping address" class="form-control">
-                        <span id="msg_validate_address" class="invalid-input  msg_validate"></span>
-                    </div>
-            	</div>
-                <p> 
-                <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-                Additional Information
-                </a>
-                    
-                </p>
-                <div class="collapse" id="collapseExample">
-                    <div class="card card-body">
-                            <label class="form-label">Notes<span class="text-success">"Optional"</span></label>
-                        <textarea placeholder="Additional notes about the order" id="notees" name="notees" class="form-control"></textarea>
-                        <span id="msg_validate_notees" class="invalid-input  msg_validate"></span>
-
-                        <label class="form-label">Page link<span class="text-success">"Optional"</span></label>
-                    <input type="text" id="link" name="link" placeholder="Enter your Facebook page link" class="form-control">
-                    <span id="msg_validate_link" class="invalid-input  msg_validate"></span>
-                    </div>
-                </div>           
-              
-               <!-- <div class="card-body">
-                	<div class="mb-4 col-12">
-                		<h5>Additional Information</h5>
-                        <label class="form-label">Page link<span class="text-success">"Optional"</span></label>
-                        <input type="text" id="link" name="link" placeholder="Enter your Facebook page link" class="form-control">
-                        <span id="msg_validate_link" class="invalid-input  msg_validate"></span>
-                    </div>
-
-                    <div class="mb-4 col-12">
-                        <label class="form-label">Notes<span class="text-success">"Optional"</span></label>
-                        <textarea placeholder="Additional notes about the order" id="notees" name="notees" class="form-control"></textarea>
-                        <span id="msg_validate_notees" class="invalid-input  msg_validate"></span>
-                    </div>
-                </div>-->
-                <a  class="test btn btn-primary addOrder " onclick="add_order('#addOrderSeller' )">Add Order </a>
-            </form>
+            	
                     <article class="itemlist" id="add-item-product-order">
                         
                     </article> <!-- itemlist  .// -->
@@ -296,10 +280,6 @@
 
             if ( result.status == 'true' ){
                 alert( result.status);
-               $("#addOrderSeller :input").prop("disabled", true);
-               $("#addProduct :input").prop("disabled", false);               
-               $(".addProduct").removeClass( "disabled" );
-               $(".addOrder").addClass( "disabled" );               
                $("#order_id").val( result.orderId );
                $("#txt-msg").html(  result.msg );
                $('#msgSuccessul').modal('show');
@@ -340,10 +320,10 @@
                 success: function(data) {
 
                 	$('#product').empty('');
-
+                    $('#product').append('<option value="">Select product</option>');
 				    $.each(data.products, function(index, product) {
 
-                		$('#product').append('<option value="">Select product</option><option value="'+product.id+'" data-id="'+product.id+'">'+product.title+'</option>');
+                		$('#product').append('<option value="'+product.id+'" data-id="'+product.id+'">'+product.title+'</option>');
                         
                     });
                    

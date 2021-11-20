@@ -13,10 +13,10 @@ class product_order extends Model
 
 
     public function order_seller(){
-        return $this->belongsTo(OrderItem::class);
+        return $this->belongsTo(order_seller::class,'order_id');
     }
 
     public function SellerProduct(){
-        return $this->belongsTo(SellerProduct::class);
+        return $this->belongsTo(SellerProduct::class,'product_id');
     }
 }

@@ -14,7 +14,7 @@ class order_seller extends Model
 
 
     public function product_order(){
-        return $this->hasMany(product_order::class);
+        return $this->hasMany(product_order::class,'order_id');
     }
 }
 

@@ -23,10 +23,9 @@ class OrderSellerController extends Controller
     public function index()
     {
 
-        session()->put('products', '');
-
         $governorates = Governorate::select('id' , 'name_en')->where('active' , 1)->get();
         $companies_shipping = ShippingCompany::select('id' , 'name')->where('active' , 1)->get();
+        
 
         return view('store.order' , compact('governorates' ,'companies_shipping'));
     }
@@ -120,7 +119,7 @@ class OrderSellerController extends Controller
 
         /*$data_product= product_order::create([
             
-            'color' => $request-> color,
+            'color' => $request->color,
             'size' => $request->size,
             'order_id' => $request->quantity,
             'order_id'=>$request->order_id,
@@ -133,9 +132,36 @@ class OrderSellerController extends Controller
         
 
     }
+
+    public function add_product( Request $request)
+    {
+        $this->validate($request, [
+            'product'    => 'required',
+            'store'      => 'required',
+            'color'      => 'required',
+            'size'       => 'required',
+            'price'      => 'required',
+            'quantity'   => 'required',           
+        ]); 
+       
+
+        $product[$request->product] = [
+                'product_id'=> $request->product,
+                'color'     => $request->color,
+                'size'      => $request->size,
+                'price'     => $request->price,
+                'quantity'  => $request->quantity
+        ];
+        $products = session('products');
+        $products = $product;
+        session()->put('products',$product );
+        
+        return json_encode( session('products') );
+    }
+
     public function manual_order()
     {
-        $order=Order::get(); 
+        $order=Order::get();  
 
     }
 

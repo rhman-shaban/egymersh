@@ -327,7 +327,7 @@ foreach( $sumProfit as $profitMonth ){
                 <tbody>
                 @foreach($sales as $sale)
                   <tr>
-                    <td><a href="#" class="fw-bold">{{$sale['id']}}</a> </td>
+                    <td><a href="#" class="fw-bold">S{{$sale['id']}}</a> </td>
                     <td>{{$sale['title']}}</td>
                     <td>
                       {{ date('d-m-Y', strtotime($sale['created_at'])); }}
@@ -395,7 +395,7 @@ foreach( $sumProfit as $profitMonth ){
                 <tbody>
                   @foreach($orders as $order)
                   <tr>
-                    <td><a href="#" class="fw-bold">{{$order->id}}</a> </td>
+                    <td><a href="#" class="fw-bold">M{{$order->id}}</a> </td>
                     <td>{{$order->name}}</td>
                     <td>
                     {{ date('d-m-Y', strtotime($order['created_at'])); }}

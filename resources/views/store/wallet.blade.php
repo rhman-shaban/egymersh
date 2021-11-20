@@ -130,6 +130,7 @@
                     <!-- final product name 'by the seller' -->
                     <th class="align-middle" scope="col">Payment Way</th>
                     <th class="align-middle" scope="col">Payment Status</th>
+                    <th class="align-middle" scope="col">Notes</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -143,6 +144,9 @@
                     
                     <td>
                       <span class="badge badge-pill badge-soft-success">{{$wallet->status_en}}</span>
+                    </td>
+                    <td>
+                    {{$wallet->message}}
                     </td>
                     
                   </tr>

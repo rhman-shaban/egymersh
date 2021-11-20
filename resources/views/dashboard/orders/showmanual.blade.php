@@ -16,19 +16,21 @@ $lang = LaravelLocalization::getCurrentLocale();
             <div class="row align-items-center">
                 <div class="col-lg-6 col-md-6 mb-lg-0 mb-15">
                     <span>
-                        <i class="material-icons md-calendar_today"></i> <b>  </b>
+                        <i class="material-icons md-calendar_today"></i> <b>{{ $orders->created_at->diffForHumans() }} - {{ $orders->created_at->toDayDateTimeString() }}  </b>
                     </span> <br>
-                    <small class="text-muted">Order ID:</small>
-                    <span class="badge badge-pill" style='background-color' ></span>
+                    <small class="text-muted">Order ID: {{ $orders->id }}</small>
+                    <span class="badge badge-pill" style='background-color' >{{ $orders->status }}</span>
                 </div>
                 <div class="col-lg-6 col-md-6 ms-auto text-md-end">
-                    
+                <form action="{{ route('update.status' , ['order' => $orders->id ] ) }}" method='POST'>
                         @csrf
                         @method('PATCH')
-                        <select name='order_status_id' class="form-select d-inline-block mb-lg-0 mb-15 mw-200">
-                            
-                            <option> jnjnln</option>
-                            <option> nklnl</option>
+                        <select name='order_status_id' class="form-select d-inline-block mb-lg-0 mb-15 mw-200">   
+                            <option>Poccessing </option>
+                            <option>Preparing </option>
+                            <option>shipped </option>
+                            <option>delivred </option>
+                            <option>cancelled </option>
                         </select>
                         <button class="btn btn-primary" type='submit'>Save</button>
                     </form>
@@ -45,9 +47,8 @@ $lang = LaravelLocalization::getCurrentLocale();
                         <div class="text">
                             <h6 class="mb-1">Customer</h6>
                             <p class="mb-1">
-                                 <br>  <br> 
+                                 {{$orders->name}}<br>{{$orders->phone}}  <br> 
                             </p>
-                            <a href="">View profile</a>
                         </div>
                     </article>
                 </div> <!-- col// -->
@@ -59,7 +60,7 @@ $lang = LaravelLocalization::getCurrentLocale();
                         <div class="text">
                             <h6 class="mb-1">Order info</h6>
                             <p class="mb-1">
-                                
+                            Notes : {{ $orders->notes }} 
                             </p>
                         </div>
                     </article>
@@ -72,10 +73,9 @@ $lang = LaravelLocalization::getCurrentLocale();
                         <div class="text">
                             <h6 class="mb-1">Deliver to Address</h6>
                             <p class="mb-1">
-                             
+                             {{$orders->government}}<br>{{$orders->address}}
 
                          </p>
-                         <a href="">View profile</a>
                      </div>
                  </article>
              </div> <!-- col// -->
@@ -96,6 +96,10 @@ $lang = LaravelLocalization::getCurrentLocale();
                     </td>
                     <table class="table" id="print-order-list">
                         <thead>
+                        @php
+                            $total = 0;
+                            @endphp
+                            
                             <tr>
                                 <th width="40%">Product</th>
                                 <th width="20%">Unit Price</th>
@@ -110,33 +114,39 @@ $lang = LaravelLocalization::getCurrentLocale();
 
                           
                             <tr>
+                            @foreach ($orders->product_order as $item)
                                 <td>
                                     <a class="itemside" href="#">
                                         <div class="left">
-                                            <img src="" class="order-image-download" width="70" height="70" alt="Item">
+                                            <img src="{{ $item->SellerProduct->image }}" class="order-image-download" width="70" height="70" alt="Item">
                                         </div>
                                     </a>
                                 </td>
-                                <td></td>
-                                <td></td>
+                              
+                                <td>{{ $item->price }}</td>
+                                
+                                
+                                <td>{{ $item->quantity }}</td>
+                                
                                 <td>
                                  <div class="col-lg-2 col-sm-2 col-4 col-status"> 
                                             <span class="btn btn-sm p-3 color-front b-radius"
-                                             data-id="" style="background-color"></span>
+                                             data-id="" style="background-color: {{ $item->color }};"></span>
                                          </div> 
                                    
                                 </td>
                                 <td>
-                                   
+                                {{ $item->size }}
                                 </td>
                                 <td class="text-end"> 
-   
+                                {{ number_format($item->price * $item->quantity) }}
                                 </td>
                                 <td>
                                     <a href="" download="" class="btn btn-xs"> <i class="fa fa-download"></i></a>
                                     <a href="" download="" class="btn btn-xs"> <i class="fa fa-download"></i></a>
                                 </td>
                             </tr>
+                            @endforeach
                             
 
 
@@ -218,3 +228,30 @@ $lang = LaravelLocalization::getCurrentLocale();
 
 
 @section('scripts')
+<script type="text/javascript">
+        $(document).ready(function() {
+
+            $(document).on('click','.btn-print', function (e) {
+                e.preventDefault();
+
+                $('#print-order-list').printThis();
+
+            });
+
+            $(document).on('click','#all-download', function (e) {
+                e.preventDefault();
+                
+                $('.order-image-download').each(function(index) {
+            
+                    $('#all-download').attr('download',$(this).attr('src'));
+
+                    $('#all-download').click();
+
+                });//end of download all image
+
+            });//end of click download 
+
+        });//end fo document redy function
+    </script>
+
+@endsection
