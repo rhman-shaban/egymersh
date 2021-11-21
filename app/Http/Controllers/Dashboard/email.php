@@ -19,7 +19,10 @@ class email extends Controller
     public function sendEmail(Request $request) {
         $toEmail    =   $request->email;
         $data       =   array(
-            "message"    =>   $request->message
+            "message"    =>   $request->message,
+            "subject"       => $request->subject,
+
+            
         );
 
         // pass dynamic message to mail class

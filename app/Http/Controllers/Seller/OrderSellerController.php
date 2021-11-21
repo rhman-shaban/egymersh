@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Seller;
 use App\Models\Order_seller;
+use App\Models\SellerProduct;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\SellerProduct;
 use App\Models\ProductColor;
+use App\Models\product_order;
 use App\Models\SellerProductColor;
 use App\Models\ProductSize;
 use App\Models\Store;
@@ -24,7 +25,7 @@ class OrderSellerController extends Controller
     {
 
         $governorates = Governorate::select('id' , 'name_en')->where('active' , 1)->get();
-        $companies_shipping = ShippingCompany::select('id' , 'name')->where('active' , 1)->get();
+        $companies_shipping = ShippingCompany::select('id' , 'name')->where('main' , 1)->get();
         
 
         return view('store.order' , compact('governorates' ,'companies_shipping'));
@@ -90,15 +91,48 @@ class OrderSellerController extends Controller
         ]); 
 
         $seller_id= Auth::guard('seller')->user()->id;
+        $price_shipping = ShippingCompanyPrice::where([
+            'shipping_company_id'     => $request->shipping_company,
+            'governorate_id'          => $request->government,
+    ])->pluck('price')->first();
         $order = Order_seller::create([
             'name' => $request->name,
             'phone' => $request->phone,
             'government' => $request->government,
             'address' => $request->address,
             'seller_id' => $seller_id,
+            'shipping' => $price_shipping,
+            
 
         ]);
+        $price=
 
+        $order_id=$order->id;
+        $total=0 ;
+        foreach (session('products') as $keyParent  => $valueParent ){
+            foreach ($valueParent as $keyChild  => $valueChild){
+                $product = product_order::create([
+                    'color' => $valueChild['color'],
+                    'size' => $valueChild['size'],
+                    'quantity' => $valueChild['quantity'],
+                    'price' => $valueChild['price'],
+                    'order_id'=>$order_id ,
+                    'product_id'=>$keyParent,
+                ]);
+                $total=$price+$valueChild['quantity'] *$valueChild['price'] ;    
+             }       
+        }
+        $add_total = Order_seller::findOrFail($order_id);
+        $add_total->update([
+            'total_price'=>$total ,
+        ]);
+        session()->put('products', [ ]);
+
+        
+    
+
+
+       
         if( $order ){
             return response()->json([
                 'status' => 'true',
@@ -108,24 +142,6 @@ class OrderSellerController extends Controller
         }
 
 
-
-         /*'product'      => 'required',
-        'store'      => 'required',
-        'color'      => 'required',
-        'size'      => 'required',
-        'price'      => 'required',
-        'quantity'      => 'required',
-        ]);*/
-
-        /*$data_product= product_order::create([
-            
-            'color' => $request->color,
-            'size' => $request->size,
-            'order_id' => $request->quantity,
-            'order_id'=>$request->order_id,
-
-         
-        ]);*/
         
         
       
@@ -144,26 +160,45 @@ class OrderSellerController extends Controller
             'quantity'   => 'required',           
         ]); 
        
+        $products  = session()->get('products', []); //session('products');
 
-        $product[$request->product] = [
-                'product_id'=> $request->product,
-                'color'     => $request->color,
-                'size'      => $request->size,
-                'price'     => $request->price,
-                'quantity'  => $request->quantity
-        ];
-        $products = session('products');
-        $products = $product;
-        session()->put('products',$product );
+        $pfoductInfo = SellerProduct::where('id' , $request->product)->select('title','selling_price','image','price')->first();
+        $profit = $pfoductInfo->selling_price + ( $request->price - $pfoductInfo->price );
         
-        return json_encode( session('products') );
-    }
+        $requestProduct = [
+            'color'     => $request->color,
+            'productName'=> $pfoductInfo->title,
+            'productId'  => $request->product,
+            'size'      => $request->size,
+            'price'     => $request->price,
+            'quantity'  => $request->quantity,
+            'Profit'    => $profit,
+        ];
+        $products[$request->product][] = $requestProduct;
+        
+          
+        session()->put('products', $products);
+        
 
-    public function manual_order()
+        return response()->json([
+            'data' => $requestProduct,
+            'keyChild'    =>  count(session('products')[$request->product])-1,
+        ]);
+
+    }
+    public function delete_product( Request $request )
     {
-        $order=Order::get();  
+        $products = session('products');
+        unset($products[$request->parentId][$request->childKey]);
 
+        session()->put('products', $products);
+        
+        return response()->json([
+            'status' => true,
+        ]);
     }
+
+    
 
 
 }

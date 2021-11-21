@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use App\Models\order_seller;
 use App\Models\product_order;
 use App\Models\SellerProduct;
+use App\Models\comment_manual;
+use Illuminate\Support\Facades\Auth;
 
 
 class OrderController extends Controller
@@ -73,8 +75,8 @@ class OrderController extends Controller
     public function manual_order()
 
     {
-        $orders=order_seller::get();
-        return view('dashboard.orders.ordermanual', compact('orders'));
+        
+        return view('dashboard.orders.ordermanual');
           
     }
     public function show_manual_order($id)
@@ -89,7 +91,42 @@ class OrderController extends Controller
           
     }
     
+    
+    public function delete_order($id)
+    {
+        $doctor = order_seller::findOrFail($id)->delete();
+        return back()->with('success'  , 'Order Deleted successfully' );   
+    }
+    
+    public function update_orders(Request $request, $id)
+    {
+        $order = order_seller::findOrFail($id);
+        $order->update([
 
+            'status' => $request-> status,
+        ]);
+        return back()->with('success'  , 'Order Deleted successfully' );   
+    }
+    public function comment_manual(Request $request ,$id)
+    {
+        $this->validate($request , [
+            'comment' => "required" , 
+        ]);
+        $comment = new comment_manual;
+        $comment->comment = $request->comment;
+        $comment->order_id = $id;
+        $comment->admin_id = Auth::guard('admin')->id();
+        $comment->save();
+        return back()->with('success'  , 'Comment added successfully' );
+    }
+    public function delete_comment($id)
+    {
+        $comment = comment_manual::findOrFail($id)->delete();
+        return back()->with('success'  , 'Order Deleted successfully' );   
+    }
+
+        
+    
     
 
 }

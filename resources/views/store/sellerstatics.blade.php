@@ -276,38 +276,8 @@ foreach( $sumProfit as $profitMonth ){
           <h4 class="card-title">Latest Sales</h4>
           <!-- sales made by customers on the site (not related to manual orders!) -->
           <div class="row align-items-center">
-            <div class="col-md-3 col-12 me-auto mb-md-0 mb-3">
-              <div class="custom_select">
-                <select class="form-select select-nice">
-                  <option selected>All Categories</option>
-                  <!-- fetch them from admin dashboard -->
-                  <option>Women's Clothing</option>
-                  <option>Men's Clothing</option>
-                  <option>Cellphones</option>
-                  <option>Computer & Office</option>
-                  <option>Consumer Electronics</option>
-                  <option>Jewelry & Accessories</option>
-                  <option>Home & Garden</option>
-                  <option>Luggage & Bags</option>
-                  <option>Shoes</option>
-                  <option>Mother & Kids</option>
-                </select>
-              </div>
-            </div>
-            <div class="col-md-2 col-6">
-              <input type="date" value="02.05.2021" class="form-control">
-            </div>
-            <div class="col-md-2 col-6">
-              <div class="custom_select">
-                <select class="form-select select-nice">
-                  <option selected>Status</option>
-                  <option>All</option>
-                  <option>Paid</option>
-                  <option>Chargeback</option>
-                  <option>Refund</option>
-                </select>
-              </div>
-            </div>
+
+
           </div>
         </header>
         <div class="card-body">
@@ -356,27 +326,7 @@ foreach( $sumProfit as $profitMonth ){
         <header class="card-header">
           <h4 class="card-title">Your Manual Orders</h4>
           <!-- sales made by seller -->
-          <div class="row align-items-center flex-end">
-            <div class="col-md-2 col-6">
-              <input type="date" value="02.05.2021" class="form-control">
-            </div>
-            <div class="col-md-2 col-6">
-              <div class="custom_select">
-                <select class="form-select select-nice">
-                  <option selected>Status</option>
-                  <option>All</option>
-                  <option>Received</option>
-                  <option>Confirmed</option>
-                  <option>Rejected</option>
-                  <option>Preparing</option>
-                  <option>Shipping</option>
-                  <option>Delivered</option>
-                  <option>Chargeback</option>
-                  <option>Refund</option>
-                </select>
-              </div>
-            </div>
-          </div>
+
         </header>
         <div class="card-body">
           <div class="table-responsive">
@@ -390,6 +340,8 @@ foreach( $sumProfit as $profitMonth ){
                     <th class="align-middle" scope="col">Status</th>
                     <th class="align-middle" scope="col">Total</th>
                     <th class="align-middle" scope="col">Profit</th>
+                    <th class="align-middle" scope="col">Shoe</th>
+                    <th class="align-middle" scope="col">Delete</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -404,12 +356,28 @@ foreach( $sumProfit as $profitMonth ){
                       <span class="badge badge-pill badge-soft-success">{{$order->status}}</span>
                     </td>
                     <td>
-                      {{$order->total_price}}
+                     {{$order->total_price}}
+                    </td>
+                    <td> 
+                    {{$order->profit}} L.E
                     </td>
                     <td>
-                      50 L.E
+                   
                     </td>
+                    @if($order->status=='pending'){
+                    <td>
+                   
+                    <form action="{{ route('delete.order', $order->id ) }}" style="display:inline;" method="POST"  >
+                                @method('delete')
+                                        @csrf
+                            <button class="btn btn-xs btn-danger delete"> <i class="fas fa-trash-alt"></i> </button>
+                    </td>	
+                    }
+                    @endif
+                 
+
                   </tr>
+
                   @endforeach
                 </tbody>
               </table>
@@ -417,7 +385,11 @@ foreach( $sumProfit as $profitMonth ){
           </div> <!-- table-responsive end// -->
         </div>
       </div>
-      <!-- end of manual orders table -->
+
+     
+
+      
+        <!-- end of manual orders table -->
 
       <!-- [View more] should have (Customer Name - address - phone
        // products details
@@ -503,6 +475,8 @@ with Cancel options -->
   @section('scripts')
   <!--script src="{{asset('store_assets/assets/js/custom-chart.js')}}" type="text/javascript"></script-->
   <script>
+        var myModal = document.getElementById('myModal')
+    var myInput = document.getElementById('myInput')
 
     /*Start profit chart*/
   if ($('#profit-chart-seller').length) {
@@ -513,7 +487,7 @@ with Cancel options -->
 
       // The data for our dataset
       data: {
-        labels: [<?php echo $month ; ?>] ,
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
         datasets: [{
           label: 'Profit L.E',
           tension: 0.3,

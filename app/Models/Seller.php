@@ -53,6 +53,9 @@ class Seller extends Authenticatable
     public function sellerProduct()
     {
         return $this->hasMany(SellerProduct::class, 'seller_id');
+    }
+    public function order_seller(){
+        return $this->hasMany(sellers::class,'seller_id');
     }//end of store
 
     public function reply()

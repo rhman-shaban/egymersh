@@ -80,7 +80,16 @@ class walletcontroller extends Controller
         return view('dashboard.request' ,compact('wallets'));
     }
     public function update(Request $request){
-        dd($request->all());
+        $id=$request->id ;
+        $wallet = wallet::findOrFail($id);
+        $wallet->update([
+            'message' => $request-> message,
+            'status_en' => $request-> status,
+        ]);
+        return back()->with('success'  , 'changes added' );  
+           
+      
+          
         
     }
     

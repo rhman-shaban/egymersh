@@ -18,8 +18,16 @@
             
         </div>
         <div class="mb-3">
-            <label for="exampleInputPassword1" class="form-label">Message</label>
-            <input type="message" class="form-control" name="message" id="exampleInputPassword1">
+            <label for="exampleInputEmail1" class="form-label">subject</label>
+            <input type="subject" name="subject" value="" class="form-control" id="" aria-describedby="">
+            
+        </div>  
+        <div class="mb-4">
+            <label for="message" class="form-label"> Add yor message </label>
+            <textarea name="body" id="input"  class="form-control @error('body') is-invalid @enderror" rows="3" required="required"> </textarea>
+            @error('body')
+                <p class="text-danger"> {{ $message }} </p>
+            @enderror
         </div>
         <button type="submit" class="btn btn-primary">Send</button>
     </form>

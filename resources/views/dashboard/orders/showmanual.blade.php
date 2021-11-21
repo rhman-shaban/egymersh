@@ -22,10 +22,9 @@ $lang = LaravelLocalization::getCurrentLocale();
                     <span class="badge badge-pill" style='background-color' >{{ $orders->status }}</span>
                 </div>
                 <div class="col-lg-6 col-md-6 ms-auto text-md-end">
-                <form action="{{ route('update.status' , ['order' => $orders->id ] ) }}" method='POST'>
+                <form action="{{ route('update.orders' , $orders->id ) }}" method='POST'>
                         @csrf
-                        @method('PATCH')
-                        <select name='order_status_id' class="form-select d-inline-block mb-lg-0 mb-15 mw-200">   
+                        <select name='status' class="form-select d-inline-block mb-lg-0 mb-15 mw-200">   
                             <option>Poccessing </option>
                             <option>Preparing </option>
                             <option>shipped </option>
@@ -155,21 +154,21 @@ $lang = LaravelLocalization::getCurrentLocale();
                                     <article class="float-end">
                                         <dl class="dlist">
                                             <dt>Subtotal:</dt>
-                                            <dd> </dd>
+                                            <dd> {{$orders->total_price}}</dd>
                                         </dl>
                                         <dl class="dlist">
                                             <dt>Shipping cost:</dt>
-                                            <dd>00.00</dd>
+                                            <dd>{{$orders->shipping}}</dd>
                                         </dl>
                                         <dl class="dlist">
                                             <dt>Grand total:</dt>
-                                            <dd> <b class="h5">$983.00</b> </dd>
+                                            <dd> <b class="h5">{{number_format($orders->total_price+$orders->shipping)}}</b> </dd>
                                         </dl>
                                         <dl class="dlist">
                                             <dt class="text-muted">Payment Status:</dt>
                                             <dd>
                                                 <span class="badge rounded-pill 
-                                                "> 
+                                                ">cash 
                                                 </span>
                                             </dd>
                                         </dl>
@@ -186,33 +185,39 @@ $lang = LaravelLocalization::getCurrentLocale();
                     <h6 class="mb-15">Comments on Order</h6>
                     <p>
                         <ul>
-                          
+                            @foreach ($orders->comments as $comment)
                             <li>
                                 <div>
                                     <ul >   
-                                        <li style="display:inline" >  <a href=""> </a> </li>
-                                        <li style="display:inline" >  </li>
+                                        <li style="display:inline" >  <a href=""> {{ optional($comment->admin)->name }} </a> </li>
+                                        <li style="display:inline" > {{ $comment->created_at->diffForHumans() }}  </li>
                                         <li style="display:inline" > 
-                                            <form style="display:inline;float: right;"
-                                                
+                                            <form style="display:inline;float: right;" action="{{ route('manual_comments.destroy' , $comment->id ) }}" method="POST">
+                                                @csrf
+                                                @method('DELETE')
                                                 <button class="btn btn-danger btn-xs delete"> <i class='fas fa-trash-alt' ></i> </button>  
                                             </form>
                                         </li>
                                     </ul>
                                 </div>
-                                <span class='lead' >  </span>
+                                <span class='lead' > {{ $comment->comment }}  </span>
                             </li>
                             <hr>
-                            
+                            @endforeach
                         </ul>
                     </p>
                 </div>
                 <div class="h-25 pt-4">
-                        
+                    <form action="{{ route('stoe.comment' , $orders->id ) }}" method='POST' >
+                        @csrf
                         <div class="mb-3">
                             <label>Notes</label>
-                            <textarea class="form-control  " name="comment" id="notes" placeholder="Type some note"></textarea>
-                           
+                            <textarea class="form-control @error('comment') is-invalid @enderror " name="comment" id="notes" placeholder="Type some note"></textarea>
+                            @error('comment')
+
+                            <span class='text-danger' > {{ $message }} </span>
+
+                            @enderror
                         </div>
                         <button class="btn btn-primary">Add Comment</button>
                     </form>

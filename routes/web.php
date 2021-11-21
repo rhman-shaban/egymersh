@@ -2,7 +2,6 @@
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Route;
-
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\AdminController;
 use App\Http\Controllers\Dashboard\CategoryController;
@@ -146,9 +145,12 @@ Route::group(
         Route::post('store-news', [newscontroller::class , 'store'])->name('store-news'); 
         Route::get('order-manual', [OrderController::class , 'manual_order'])->name('manual.order');
         Route::get('show_order-manual/{id}', [OrderController::class , 'show_manual_order'])->name('manual.order.show');
-        Route::post('store-status', [OrderController::class , 'update_status_order'])->name('update.status');
-       
+        Route::delete('destroy-m-order/{id}', [OrderController::class , 'delete_order'])->name('delete_order');
 
+        Route::post('store-status', [OrderController::class , 'update_status_order'])->name('update.status');
+        Route::post('update/order/{id}', [OrderController::class , 'update_orders'])->name('update.orders');
+        Route::post('store/comment/{id}', [OrderController::class , 'comment_manual'])->name('stoe.comment');
+        Route::delete('delete/comment/{id}', [OrderController::class , 'delete_comment'])->name('manual_comments.destroy');
     });//endof route group
 
 
@@ -229,6 +231,8 @@ Route::group(
         route::post('get_price' ,[OrderSellerController::class,'get_shipping_price'])->name('get.price');
         Route::get('shownews/{id}', [WelcomController::class , 'show'])->name('show-news');
         Route::post('store_product', [OrderSellerController::class , 'add_product'])->name('store_product');
+        Route::delete('delete/product', [OrderSellerController::class , 'delete_product'])->name('delete_product');
+        Route::delete('delete/order{{id}', [staticssellerController::class , 'delete_order'])->name('delete.order');
     });//route guarp
 
 

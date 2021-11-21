@@ -30,7 +30,9 @@ class staticssellerController extends Controller
         //end
         //order manual 
         $orders=order_seller::where('seller_id' ,$seller_id)->get();
-        $sumProfit =SellerProduct::select(DB::raw('sum(selling_price) as "profit"'),DB::raw('MONTH(created_at) month'))->groupby('month')->get();
+        $sumProfit =order_seller::select(DB::raw('sum(profit) as "profit"')
+        ,DB::raw('MONTH(created_at) month'))->groupby('month')->get();
+        
 
         $order    =Order::where('order_status_id','4')->pluck('id')->toarray();
         $product = OrderItem::wherein('order_id', $order)->pluck('seller_products_id')->toarray();
@@ -39,15 +41,27 @@ class staticssellerController extends Controller
         $product_order = product_order::wherein('order_id',$order_seller)->pluck('product_id')->toarray();
         $profit_seller =SellerProduct::wherein('id',$product_order)->pluck('selling_price')->sum();
         $price=wallet::where('status_en','confirmed')->sum('price');
-        $balnce=$details + $profit_seller; 
-        $profit=$balnce -$price;
+        $profit=$details + $profit_seller; 
+        
         $manual_order=$orders->count('id');
         $numperofsale=$sales->count('id');
         $all_product=SellerProduct::where('seller_id' ,$seller_id)->count('id'); 
+
+        
       
                 
         return view('store.sellerstatics' ,compact(
             'profit','sales','status','manual_order','orders','numperofsale','sumProfit','all_product'
         ));
+
+
+
+  
+    }
+    public function delete_order($id)
+    {
+        $order = order_seller::findOrFail($id)->delete();
+        return back()->with('success'  , 'Order Deleted successfully' ); 
+        
     }
 }

@@ -76,7 +76,7 @@
                          
 	                    </div>
                     </div>                    
-                    <a  class="test btn btn-primary addProduct" onclick="post_ajax('#addProduct' , 'update'  )">+</a>
+                    <a  class="test btn btn-primary addProduct" onclick="add_product('#addProduct' )">+</a>
                 </form>                
                 <hr>
                 <div class="card-body">
@@ -121,7 +121,7 @@
                             </div>
                             <div class="mb-4 col-6">
                                 <label class="form-label">Shipping price</label><br/>
-                                <label class="form-control" id="shipping_price" ></label>
+                                <label class="form-control"   id="shipping_price" ></label>
                             </div>
                         </div>
                         <div class="mb-0">
@@ -157,66 +157,79 @@
         </div> <!-- card end// -->
         </div>
         <div class="col-lg-6">
-            <div class="card mb-4">
-                <div class="card-body">
+            <div class="card mb-4" style="position:fixed;">
+                    <article class="itemlist" id="add-item-product-order">
+                    <table class="table" id="print-order-list">
+                        <thead>
+                            <tr>
+                                <th >Product</th>
+                                <th >Unit Price</th>
+                                <th >Quantity</th>
+                                <th >color</th>
+                                <th >size</th>                               
+                                <th>Total</th>
+                                <th>profit</th>
+                                <th>T profit</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="tb_products" >
+                            @if( session('products') )
+                                @foreach (session('products') as $keyParent  => $valueParent )
+                                    @foreach ($valueParent as $keyChild  => $valueChild)
+                                    <tr id="{{$keyParent}}-{{$keyChild}}">
+                                        
+                                        <td >
+                                            {{$valueChild['productName']}}
+                                        </td>
+                                        <td>{{$valueChild['price']}}</td>
+                                        <td>{{$valueChild['quantity']}}</td>
+                                        <td>
+                                            <span class="btn btn-sm p-3  b-radius"
+                                                style="background-color:{{$valueChild['color']}}">
+                                            </span>                                    
+                                        </td>
+                                        <td>{{$valueChild['size']}}</td>
+                                        <td class="totalPrice" > {{$valueChild['price'] * $valueChild['quantity']}}</td>
+                                        <td>{{$valueChild['Profit']}}</td>
+                                        <td class="totalProfit" >{{$valueChild['Profit'] * $valueChild['quantity'] }}</td>
+                                        <td>
+                                            <button parenKey="{{$keyParent}}" childKey = "{{$keyChild}}" title="Delete Product" class="btn btn-danger btn-xs delete-product"> <i class='fas fa-trash-alt' ></i> </button>  
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                @endforeach
+                            @endif
+                        </tbody>
+                    </table>
+            <div class="">
+                <!-- itemlist  .// -->
                 <tr>
                     <td colspan="4">
                         <article class="my-4">
                             {{-- float-end class --}}
                             <dl class="dlist">
                                 <dt>Products price :</dt>
-                                <dd>$973.35</dd>
+                                <dd id="totalPrice" >$973.35</dd>
                             </dl>
                             <dl class="dlist">
                                 <dt>Shipping:</dt>
-                                <dd>$10.00</dd>
+                                <dd id="shippingCost" > </dd>
                             </dl>
                             <dl class="dlist">
                                 <dt class="text-success">Total profit:</dt>
-                                <dd class="text-success">$983.00</dd>
+                                <dd id="totalProfit" class="text-success">$983.00</dd>
                             </dl>
                             <dl class="dlist">
-                                <dt>Total price:</dt>
-                                <dd>$983.00</dd>
+                                <dt>Total cost:</dt>
+                                <dd id="totalCost" > </dd>
                             </dl>
                         </article>
                     </td>
                 </tr>
-            </div>
-            <div class="card mb-4">
-            	
-                    <article class="itemlist" id="add-item-product-order">
-                        
-                    </article> <!-- itemlist  .// -->
-                    <tr>
-	                    <td colspan="4">
-	                        <article class="my-4">
-	                        	{{-- float-end class --}}
-	                            <dl class="dlist">
-	                                <dt>Products price :</dt>
-	                                <dd>$973.35</dd>
-	                            </dl>
-	                            <dl class="dlist">
-	                                <dt>Shipping:</dt>
-	                                <dd>$10.00</dd>
-	                            </dl>
-	                            <dl class="dlist">
-	                                <dt class="text-success">Total profit:</dt>
-	                                <dd class="text-success">$983.00</dd>
-	                            </dl>
-		                        <dl class="dlist">
-	                                <dt>Total price:</dt>
-	                                <dd>$983.00</dd>
-	                            </dl>
-	                        </article>
-	                    </td>
-	                </tr>
-
-                    <button class="btn btn-md rounded font-sm hover-up"type="supmit">Send Order ♥️</button>
-
                 </div>
             </div> <!-- card end// -->
-            
+            </article>
         </div>
     </div>
    
@@ -240,11 +253,49 @@
 <script src="{{asset('store_assets/assets/js/customJs.js')}}" type="text/javascript"></script>
 </script>$('.collapse').collapse()</script>
 <script type="text/javascript">
+    var _token = "{{csrf_token()}}";
     var shipping_price ="";
+    var indexChildKey = 0;
+    var shipping = 0;
+    function total_profit_price( shipping ){
+        var totalPrice =0 ;
+        var totalProfit = 0;
+
+        $('.totalPrice').each(function(){
+            totalPrice += parseFloat($(this).html());
+        });
+
+        $('.totalProfit').each(function(){
+            totalProfit += parseFloat($(this).html());
+        });
+
+        $("#totalPrice").html(totalPrice);
+        $("#totalProfit").html(totalProfit);
+        $("#totalCost").html(parseFloat(totalPrice) + parseFloat(shipping) );
+        
+    }
+    
+    $( "#tb_products" ).delegate( ".delete-product", "click", function() {
+        var parentId = $(this).attr( 'parenKey');
+        var childKey = $(this).attr( 'childKey');
+
+        $.ajax({
+            type: "delete",
+            url: '{{route("delete_product")}}',
+            data: {'_token':_token,'parentId':parentId ,'childKey':childKey},
+            dataType: 'json',
+            success : function( response ) {
+                if (response.status === true) {
+                    $( "#"+parentId+'-'+childKey ).remove();
+                    total_profit_price( shipping);
+                }
+            }
+        });
+    });
+
     $("#shipping_company").change(function(){
         
         var government = $("#government").val();
-        var _token = "{{csrf_token()}}";
         if( government == ""){
             alert("Please select government");
             $(this).val("");
@@ -259,8 +310,12 @@
                 dataType: 'json',
                 success : function( response ) {
                     if (response.status === true) {
+                        $("#shippingCost").text(response.price);
                         $("#shipping_price").text(response.price);
                         shipping_price = response.price
+
+                        shipping = response.price;
+                        total_profit_price( shipping );
                     }
                 }
             });
@@ -275,6 +330,37 @@
     });
     var ordeId='';
     
+
+    function add_product( formId ){
+        post_ajax( formId , 'update'  ).done(function(data) {
+
+            var result = data.data
+            $("#tb_products").append(
+                '<tr id="'+result.productId+'-'+data.keyChild+'">'+                                        
+                    '<td>'+ result.productName +'</td>'+
+                    '<td>'+result.price+'</td>'+
+                    '<td>'+result.quantity+'</td>'+
+                    '<td>'+
+                        '<span class="btn btn-sm p-3  b-radius"'+
+                            'style="background-color:'+result.color+'">'+
+                        '</span>'+                                   
+                    '</td>'+
+                    '<td>'+result.size+'</td>'+
+                    '<td class="totalPrice" >'+parseInt(result.price) * parseInt(result.quantity)+'</td>'+
+                    '<td>'+result.Profit+'</td>'+
+                    '<td class="totalProfit">'+parseInt(result.Profit) * parseInt(result.quantity)+'</td>'+
+                    '<td>'+
+                        '<button parenKey="'+result.productId+'" childKey = "'+data.keyChild+'" title="Delete Product" class="btn btn-danger btn-xs delete-product"> <i class="fas fa-trash-alt" ></i> </button> '+ 
+                    '</td>'+
+                '</tr>'
+            );
+            total_profit_price( shipping);
+
+        }).fail(function() {
+
+        });
+    }
+
     function add_order( formId ){
         post_ajax( formId , 'update'  ).done(function(result) {
 
@@ -283,6 +369,8 @@
                $("#order_id").val( result.orderId );
                $("#txt-msg").html(  result.msg );
                $('#msgSuccessul').modal('show');
+
+               
             }
 
         }).fail(function() {
@@ -485,6 +573,6 @@
                 
     });//end of document redy 
 
-
+    total_profit_price( shipping);
 </script>
 @endsection
