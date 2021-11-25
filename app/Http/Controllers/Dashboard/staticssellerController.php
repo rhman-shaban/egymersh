@@ -29,19 +29,22 @@ class staticssellerController extends Controller
         $status=OrderStatus::wherein('id',$orderid)->get();
         //end
         //order manual 
-        $orders=order_seller::where('seller_id' ,$seller_id)->get();
-        $sumProfit =order_seller::select(DB::raw('sum(profit) as "profit"')
-        ,DB::raw('MONTH(created_at) month'))->groupby('month')->get();
-        
+        $orders=order_seller::where('seller_id' ,$seller_id)->orderBy('id', 'DESC')->get();
+        $sumProfit =order_seller::where('seller_id' ,$seller_id)->where('status' ,'delivred')->select(DB::raw('sum(profit) as "profit"')
+        ,DB::raw('MONTH(created_at) month'))->groupby('month')->get();        
+
 
         $order    =Order::where('order_status_id','4')->pluck('id')->toarray();
-        $product = OrderItem::wherein('order_id', $order)->pluck('seller_products_id')->toarray();
-        $details = SellerProduct::wherein('id',$product)->where('seller_id' ,$seller_id)->pluck('selling_price')->sum();
-        $order_seller    =order_seller::where('status','delivred')->pluck('id')->toarray();
-        $product_order = product_order::wherein('order_id',$order_seller)->pluck('product_id')->toarray();
-        $profit_seller =SellerProduct::wherein('id',$product_order)->pluck('selling_price')->sum();
+        $product = OrderItem::wherein('order_id', $order)->get();
+        $details=0;
+        foreach($product as $i){
+            if($i->product->seller_id==$seller_id)
+            $details =($i->product->selling_price+  $details) *$i->quantity;
+        }
+        
+        $order_seller    =order_seller::where('status','delivred')->sum('profit');
         $price=wallet::where('status_en','confirmed')->sum('price');
-        $profit=$details + $profit_seller; 
+        $profit=$details + $order_seller; 
         
         $manual_order=$orders->count('id');
         $numperofsale=$sales->count('id');
@@ -56,12 +59,21 @@ class staticssellerController extends Controller
 
 
 
-  
+        
     }
     public function delete_order($id)
     {
-        $order = order_seller::findOrFail($id)->delete();
-        return back()->with('success'  , 'Order Deleted successfully' ); 
+        
+        $doctor = order_seller::findOrFail($id)->delete();
+        return back()->with('success'  , 'Order Deleted successfully' );
+        
+    }
+    public function show($id)
+    {
+        $orders=order_seller::find($id);
+        return view('store.showorder', compact('orders'));
+        
+        
         
     }
 }

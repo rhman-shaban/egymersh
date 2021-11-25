@@ -22,18 +22,21 @@ class WelcomController extends Controller
     
     public function index()
     {
-
+ 
         if (Auth::guard('seller')->user()->seller == '1') {
             $seller_id=Auth::guard('seller')->user()->id;
-        $order    =Order::where('order_status_id','4')->pluck('id')->toarray();
-        $product = OrderItem::wherein('order_id', $order)->pluck('seller_products_id')->toarray();
-        $details = SellerProduct::wherein('id',$product)->where('seller_id' ,$seller_id)->pluck('selling_price')->sum();
-        $order_seller    =order_seller::where('status','delivred')->pluck('id')->toarray();
-        $product_order = product_order::wherein('order_id',$order_seller)->pluck('product_id')->toarray();
-        $profit_seller =SellerProduct::wherein('id',$product_order)->pluck('selling_price')->sum();
-        $price=wallet::where('status_en','confirmed')->sum('price');
-        $balnce=$details + $profit_seller;
-        $manual_order=order_seller::where('seller_id' ,$seller_id)->count('id');
+            $order    =Order::where('order_status_id','4')->pluck('id')->toarray();
+            $product = OrderItem::wherein('order_id', $order)->get();
+            $details=0;
+            foreach($product as $i){
+                if($i->product->seller_id==$seller_id){    
+                $details =($i->product->selling_price+  $details) *$i->quantity;
+                
+            }}
+            $order_seller    =order_seller::where('status','delivred')->sum('profit');
+            $price=wallet::where('status_en','confirmed')->sum('price');
+            $balnce=$details + $order_seller;
+            $manual_order=order_seller::where('seller_id' ,$seller_id)->count('id');
 
         $all_product=SellerProduct::where('seller_id' ,$seller_id)->count('id');
         $all_stores=Store::where('seller_id' ,$seller_id)->count('id');

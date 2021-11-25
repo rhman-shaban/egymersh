@@ -17,16 +17,18 @@ class email extends Controller
         return view('dashboard.replay',compact('email'));
     }
     public function sendEmail(Request $request) {
+       
         $toEmail    =   $request->email;
-        $data       =   array(
-            "message"    =>   $request->message,
-            "subject"       => $request->subject,
+        $mymail= new MyTestMail(
+            $request->input('subject'),
+            $request->input('content')
 
-            
         );
+    
+        
 
         // pass dynamic message to mail class
-        Mail::to($toEmail)->send(new MyTestMail($data));
+        Mail::to($toEmail)->send($mymail);
 
         if(Mail::failures() != 0) {
             return back()->with("success", "E-mail sent successfully!");

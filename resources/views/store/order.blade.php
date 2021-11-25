@@ -107,23 +107,10 @@
                                 </select>
                                 <span id="msg_validate_government" class="invalid-input  msg_validate"></span>
                             </div>
+                           
 
                         </div>
-                        <div class="row">
-                            <div class="mb-4 col-6">
-                                <label class="form-label">Shipping Companies</label>
-                                <select class="form-select" name="shipping_company"  id="shipping_company">
-                                    <option value="">Select Company</option>
-                                    @foreach( $companies_shipping as $company )
-                                        <option value="{{$company->id}}">{{$company->name}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="mb-4 col-6">
-                                <label class="form-label">Shipping price</label><br/>
-                                <label class="form-control"   id="shipping_price" ></label>
-                            </div>
-                        </div>
+                  
                         <div class="mb-0">
                             <label class="form-label">Address</label>
                             <input type="text" id="address" name="address" placeholder="Enter client shipping address" class="form-control">
@@ -293,20 +280,23 @@
         });
     });
 
-    $("#shipping_company").change(function(){
-        
+ 
+
+    $("#government").change(function(){
+       // $("#shipping_company").val('');
+       // $("#shipping_price").text('');
+
+       // shipping_price = '';
+              
         var government = $("#government").val();
-        if( government == ""){
-            alert("Please select government");
-            $(this).val("");
-        }
-        else{
-            var company_id = $(this).val();
+        
+        
+            var government = $(this).val();
 
             $.ajax({
                 type: "POST",
                 url: '{{route("get.price")}}',
-                data: {'_token':_token,'government':government ,'company_id':company_id},
+                data: {'_token':_token,'government':government},
                 dataType: 'json',
                 success : function( response ) {
                     if (response.status === true) {
@@ -319,14 +309,7 @@
                     }
                 }
             });
-        }
-
-    });
-
-    $("#government").change(function(){
-        $("#shipping_company").val('');
-        $("#shipping_price").text('');
-        shipping_price = '';
+        
     });
     var ordeId='';
     
@@ -365,10 +348,11 @@
         post_ajax( formId , 'update'  ).done(function(result) {
 
             if ( result.status == 'true' ){
-                alert( result.status);
+                
                $("#order_id").val( result.orderId );
                $("#txt-msg").html(  result.msg );
                $('#msgSuccessul').modal('show');
+               location.reload();
 
                
             }

@@ -19,38 +19,63 @@ class walletcontroller extends Controller
     public function index()
     {
         $seller_id=Auth::guard('seller')->user()->id;
+
         $order    =Order::where('order_status_id','4')->pluck('id')->toarray();
-        $product = OrderItem::wherein('order_id', $order)->pluck('seller_products_id')->toarray();
-        $details = SellerProduct::wherein('id',$product)->where('seller_id' ,$seller_id)->pluck('selling_price')->sum();
-        $order_seller    =order_seller::where('status','delivred')->pluck('id')->toarray();
-        $product_order = product_order::wherein('order_id',$order_seller)->pluck('product_id')->toarray();
-        $profit_seller =SellerProduct::wherein('id',$product_order)->pluck('selling_price')->sum();
+        $product = OrderItem::wherein('order_id', $order)->get();
+        $details=0;
+        foreach($product as $i){
+            if($i->product->seller_id==$seller_id){    
+            $details =($i->product->selling_price+  $details) *$i->quantity;
+            
+        }}
+        
+
+        
+       
+        $order_seller    =order_seller::where('status','delivred')->sum('profit');
         $price=wallet::where('status_en','confirmed')->sum('price');
-        $balnce=$details + $profit_seller; 
-        $profit=$balnce -$price;
+        $profit=$details + $order_seller; 
+        $total=$profit -$price;
+        
 
 //get price is done confirmed
 
        ///// exepted   !=
-        $order_expected    =Order::wherein('order_status_id',  [1,2,3])->pluck('id')->toarray();
-        $product_expected = OrderItem::wherein('order_id', $order_expected)->pluck('seller_products_id')->toarray();
-        $details_expected = SellerProduct::wherein('id',$product_expected)->where('seller_id' ,$seller_id)->pluck('selling_price')->sum();
-        $array=array("Poccessing", "Preparing", "shipped");
-        $order_seller_expected    =order_seller::wherein('status', $array)->pluck('id')->toarray();
-        $product_order_expected = product_order::wherein('order_id',$order_seller_expected)->pluck('product_id')->toarray();
-        $profit_seller_expected =SellerProduct::wherein('id',$product_order_expected)->pluck('selling_price')->sum();
-        $balnce_expected=$details_expected + $profit_seller_expected;
+        $order_expected    =Order::where('order_status_id',  3)->pluck('id')->toarray();
+        $product_expected = OrderItem::wherein('order_id', $order_expected)->get();
+        $details_expected=0;
+        foreach($product_expected as $profit){
+            if($profit->product->seller_id==$seller_id) {   
+            $details_expected =($profit->product->selling_price+  $details_expected) *$profit->quantity;
+        }}
+
+        
+        //dd($details_expected);
+        
+
+        
+        
+        
+        $order_seller_expected    =order_seller::where('status', 'shipped')->where('seller_id' ,$seller_id)->sum('profit');
+        $balnce_expected= $details_expected + $order_seller_expected;
+        
+
+        $pinding   =order_seller::where('status', 'shipped')->where('seller_id' ,$seller_id)->count('id');
+
+    
+
 
 
         ///pending order
-        $pending=count($order_expected) +count($order_seller_expected);
+        
         
 
         ////request datat
         $wallets=wallet::where('seller_id',$seller_id)->get();
         //d
+       // $wallets_ex=wallet::where('seller_id',$seller_id)->where()->get();
 
-        return view('store.wallet' ,compact('profit','balnce_expected','pending','wallets'));
+        return view('store.wallet' ,compact('profit','balnce_expected','wallets','pinding','total'));
     }
     public function create(Request $request){
         $seller_id=Auth::guard('seller')->user()->id;

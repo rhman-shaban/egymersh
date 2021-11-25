@@ -1,11 +1,23 @@
 <?php
 $month='';
 //$data='';
-
 foreach( $sumProfit as $profitMonth ){
-  $month .= "'".date("F", mktime(0, 0, 0, $profitMonth->month, 1))."',";
-  $data[] = $profitMonth->profit;
+  //$month .= "'".date("F", mktime(0, 0, 0, $profitMonth->month, 1))."',";
+  $data[$profitMonth->month] = $profitMonth->profit; 
+}
 
+function valueMonths( $array )
+{
+  $result="";
+  for($i = 1; $i <= 12; $i++){
+     if( isset($array [$i]) ){
+      $result .= $array [$i] .",";
+     }else{
+      $result .= 0 .",";
+     }
+  }
+
+  return $result;
 }
 
 ?>
@@ -106,7 +118,7 @@ foreach( $sumProfit as $profitMonth ){
       <div class="row card flex-row">
         <div class="col-lg-12">
           <article class="card-body">
-            <h4 class="card-title chart">Profit Over Time</h4>
+            <h4 class="card-title chart">Manual Orders Profit</h4>
             <canvas id="profit-chart-seller" height="100"></canvas>
           </article>
         </div>
@@ -290,6 +302,7 @@ foreach( $sumProfit as $profitMonth ){
                     <th class="align-middle" scope="col">Product</th>
                     <!-- final product name 'by the seller' -->
                     <th class="align-middle" scope="col">Date</th>
+                   
                     <th class="align-middle" scope="col">Payment Status</th>
                     <th class="align-middle" scope="col">Profit</th>
                   </tr>
@@ -302,6 +315,7 @@ foreach( $sumProfit as $profitMonth ){
                     <td>
                       {{ date('d-m-Y', strtotime($sale['created_at'])); }}
                     </td>
+                    
                     @foreach($status as $state)
                     <td>
                       <span class="badge badge-pill badge-soft-success">{{$state->name_en}}</span>
@@ -325,8 +339,6 @@ foreach( $sumProfit as $profitMonth ){
       <div class="card mb-4">
         <header class="card-header">
           <h4 class="card-title">Your Manual Orders</h4>
-          <!-- sales made by seller -->
-
         </header>
         <div class="card-body">
           <div class="table-responsive">
@@ -362,9 +374,10 @@ foreach( $sumProfit as $profitMonth ){
                     {{$order->profit}} L.E
                     </td>
                     <td>
-                   
+                    <a href="{{ route('show-order'  , $order->id ) }}" class="btn btn-xs"> <i class="far fa-eye"></i> </a>
+
                     </td>
-                    @if($order->status=='pending'){
+                    @if($order->status=='pending')
                     <td>
                    
                     <form action="{{ route('delete.order', $order->id ) }}" style="display:inline;" method="POST"  >
@@ -372,7 +385,8 @@ foreach( $sumProfit as $profitMonth ){
                                         @csrf
                             <button class="btn btn-xs btn-danger delete"> <i class="fas fa-trash-alt"></i> </button>
                     </td>	
-                    }
+</form>
+                    
                     @endif
                  
 
@@ -460,13 +474,7 @@ with Cancel options -->
       padding: 0 5px;
     }
   </style>
-  <!--script src="{{asset('store_assets/assets/js/vendors/jquery-3.6.0.min.js')}}"></script>
-  <script src="{{asset('store_assets/assets/js/vendors/bootstrap.bundle.min.js')}}"></script>
-  <script src="{{asset('store_assets/assets/js/vendors/select2.min.js')}}"></script>
-  <script src="{{asset('store_assets/assets/js/vendors/perfect-scrollbar.js')}}"></script>
-  <script src="{{asset('store_assets/assets/js/vendors/jquery.fullscreen.min.js')}}"></script>
-  <script src="{{asset('store_assets/assets/js/vendors/chart.js')}}"></script>
-  <script src="{{asset('store_assets/assets/js/main.js')}}" type="text/javascript"></script-->
+
 
   @endsection
 
@@ -487,20 +495,20 @@ with Cancel options -->
 
       // The data for our dataset
       data: {
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        labels:['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
         datasets: [{
           label: 'Profit L.E',
           tension: 0.3,
           fill: true,
           backgroundColor: 'rgb(70, 220, 44, 0.2)',
           borderColor: 'rgb(70, 220, 44)',
-          data: [{{ implode(',' , $data) }}]
+          data: [{{ valueMonths( $data )}}]
         }]
       },
       options: {
         plugins: {
           legend: {
-            labels: {
+            labels:{
               usePointStyle: true,
             },
           }

@@ -89,26 +89,13 @@
                 </div>
                 <div class="d-flex align-items-center">
                   <div class="stat-value-sub">
-                    <span>250</span>
+                    <span><?php echo App\Models\SellerProduct::where('product_id',$Product->id)->with('product')->count('id')?></span>
                   </div>
                   <span>Product</span>
                 </div>
               </div>
-              @endforeach
+              @endforeach 
 
-              <div class="d-flex align-items-center justify-content-between mb-2">
-                <div class="d-flex align-items-center">
-                  <div class="stat-name">
-                    <h5>Product Two</h5>
-                  </div>
-                </div>
-                <div class="d-flex align-items-center">
-                  <div class="stat-value-sub">
-                    <span>150</span>
-                  </div>
-                  <span>Product</span>
-                </div>
-              </div>
             </div>
           </article>
         </div>
@@ -499,7 +486,8 @@
 
                 <div class="d-flex align-items-center">
                   <div class="stat-value-main">
-                    <span>{{$all_balance}}</span>
+                    
+                    <span>{{$total_revenue}}</span>
                   </div>
                   <span>L.E</span>
                 </div>
@@ -515,7 +503,7 @@
                 </div>
                 <div class="d-flex align-items-center">
                   <div class="stat-value-sub">
-                    <span>{{$balnce_all}}</span>
+                  <span>{{$base_revenue}}</span>
                   </div>
                   <span>L.E</span>
                 </div>

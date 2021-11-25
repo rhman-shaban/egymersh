@@ -15,6 +15,7 @@ use App\Models\Governorate;
 use App\Models\ShippingCompany;
 use App\Models\ShippingCompanyPrice;
 use Session;
+use Redirect;
 
 
 use Illuminate\Support\Facades\Auth;
@@ -25,18 +26,21 @@ class OrderSellerController extends Controller
     {
 
         $governorates = Governorate::select('id' , 'name_en')->where('active' , 1)->get();
-        $companies_shipping = ShippingCompany::select('id' , 'name')->where('main' , 1)->get();
+        
         
 
-        return view('store.order' , compact('governorates' ,'companies_shipping'));
+        return view('store.order' , compact('governorates'));
     }
     //end of index
     public function get_shipping_price( Request $request){
         
+        
         $price = ShippingCompanyPrice::where([
-                'shipping_company_id'     => $request->company_id,
+                'shipping_company_id'     => 9,
                 'governorate_id'          => $request->government,
         ])->pluck('price')->first();
+
+        
         
         if( $price )
             return response()->json([
@@ -92,23 +96,27 @@ class OrderSellerController extends Controller
 
         $seller_id= Auth::guard('seller')->user()->id;
         $price_shipping = ShippingCompanyPrice::where([
-            'shipping_company_id'     => $request->shipping_company,
+            'shipping_company_id'     => 9,
             'governorate_id'          => $request->government,
     ])->pluck('price')->first();
+    $shipping=Governorate::where('id',$request->government)->pluck('name_en')->first();
         $order = Order_seller::create([
             'name' => $request->name,
             'phone' => $request->phone,
-            'government' => $request->government,
+            'government' => $shipping,
             'address' => $request->address,
             'seller_id' => $seller_id,
             'shipping' => $price_shipping,
+            'notes' => $request->notes,
+            'link' => $request->link  ,
             
 
         ]);
-        $price=
+        
 
         $order_id=$order->id;
         $total=0 ;
+        $profitorder=0 ;
         foreach (session('products') as $keyParent  => $valueParent ){
             foreach ($valueParent as $keyChild  => $valueChild){
                 $product = product_order::create([
@@ -119,34 +127,37 @@ class OrderSellerController extends Controller
                     'order_id'=>$order_id ,
                     'product_id'=>$keyParent,
                 ]);
-                $total=$price+$valueChild['quantity'] *$valueChild['price'] ;    
+                $total=($valueChild['quantity']  *  $valueChild['price']) +$total ; 
+                $profitorder= ($valueChild['quantity']  *  $valueChild['Profit']) +$profitorder ;   
              }       
         }
         $add_total = Order_seller::findOrFail($order_id);
         $add_total->update([
             'total_price'=>$total ,
+            'profit' =>$profitorder ,
         ]);
-        session()->put('products', [ ]);
-
         
-    
-
-
-       
+        session()->put('products', []);
+        
         if( $order ){
             return response()->json([
                 'status' => 'true',
                 'msg'    => 'Added Successfully',
                 'orderId'=> $order->id
+                
+                
+                
             ]);
+            
         }
-
-
+        
+        return redirect('static'); 
+        
+           
         
         
-      
         
-
+        
     }
 
     public function add_product( Request $request)

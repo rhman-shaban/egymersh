@@ -165,12 +165,11 @@ $lang = LaravelLocalization::getCurrentLocale();
                                             <dd> <b class="h5">{{number_format($orders->total_price+$orders->shipping)}}</b> </dd>
                                         </dl>
                                         <dl class="dlist">
-                                            <dt class="text-muted">Payment Status:</dt>
-                                            <dd>
-                                                <span class="badge rounded-pill 
-                                                ">cash 
-                                                </span>
-                                            </dd>
+                                            
+                                            <dt>Shipping cost:</dt> 
+                                               <dd> {{$orders->status}} </dd>
+                                                
+                                            </dt>
                                         </dl>
                                     </article>
                                 </td>
@@ -207,7 +206,7 @@ $lang = LaravelLocalization::getCurrentLocale();
                         </ul>
                     </p>
                 </div>
-                <div class="h-25 pt-4">
+                <div class="mb-0">
                     <form action="{{ route('stoe.comment' , $orders->id ) }}" method='POST' >
                         @csrf
                         <div class="mb-3">
@@ -220,6 +219,22 @@ $lang = LaravelLocalization::getCurrentLocale();
                             @enderror
                         </div>
                         <button class="btn btn-primary">Add Comment</button>
+                    </form>
+                </div>
+                
+                <div class="mb-0">
+                    <form action="{{ route('store.message' , $orders->id ) }}" method='POST' >
+                        @csrf
+                        <div class="mb-3">
+                            <label>message</label>
+                            <textarea class="form-control @error('comment') is-invalid @enderror " name="message" id="notes" placeholder="Type some message"></textarea>
+                            @error('comment')
+
+                            <span class='text-danger' > {{ $message }} </span>
+
+                            @enderror
+                        </div>
+                        <button class="btn btn-primary">Add message</button>
                     </form>
                 </div>
             </div> <!-- col// -->

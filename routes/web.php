@@ -151,7 +151,10 @@ Route::group(
         Route::post('update/order/{id}', [OrderController::class , 'update_orders'])->name('update.orders');
         Route::post('store/comment/{id}', [OrderController::class , 'comment_manual'])->name('stoe.comment');
         Route::delete('delete/comment/{id}', [OrderController::class , 'delete_comment'])->name('manual_comments.destroy');
-    });//endof route group
+        Route::post('store/message/{id}', [OrderController::class , 'message'])->name('store.message');
+
+    });
+    //endof route group
 
 
 ########################################################################################################################
@@ -232,7 +235,9 @@ Route::group(
         Route::get('shownews/{id}', [WelcomController::class , 'show'])->name('show-news');
         Route::post('store_product', [OrderSellerController::class , 'add_product'])->name('store_product');
         Route::delete('delete/product', [OrderSellerController::class , 'delete_product'])->name('delete_product');
-        Route::delete('delete/order{{id}', [staticssellerController::class , 'delete_order'])->name('delete.order');
+        Route::delete('delete/{id}', [staticssellerController::class , 'delete_order'])->name('delete.order');
+        Route::get('showorder/{id}', [staticssellerController::class , 'show'])->name('show-order');
+
     });//route guarp
 
 

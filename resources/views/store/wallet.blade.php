@@ -73,13 +73,13 @@
         <button id="show" class="btn btn-md rounded font-sm hover-up">Show form</button>
     </div>
     <div class="row">
-        <div class="col-lg-4">
+        <div class="col-lg-3">
             <div class="card card-body mb-4">
                 <article class="icontext">
                     <span class="icon icon-sm rounded-circle bg-primary-light"><i class="text-primary material-icons md-monetization_on"></i></span>
                     <div class="text">
-                        <h6 class="mb-1 card-title">Current balance</h6>
-                        <span>{{$profit}}</span>
+                        <h6 class="mb-1 card-title">Current Balance</h6>
+                        <span>{{$total}}</span>
                         <span class="text-sm">
                             current balance , which could be withdrwalled
                         </span>
@@ -87,7 +87,9 @@
                 </article>
             </div>
         </div>
-        <div class="col-lg-4">
+
+
+        <div class="col-lg-3">
             <div class="card card-body mb-4">
                 <article class="icontext">
                     <span class="icon icon-sm rounded-circle bg-primary-light"><i class="text-primary material-icons md-monetization_on"></i></span>
@@ -101,20 +103,33 @@
                 </article>
             </div>
         </div>
-
-        <div class="col-lg-4">
+        <div class="col-lg-3">
             <div class="card card-body mb-4">
                 <article class="icontext">
                     <span class="icon icon-sm rounded-circle bg-primary-light"><i class="text-primary material-icons md-monetization_on"></i></span>
                     <div class="text">
                         <h6 class="mb-1 card-title">Pindding order</h6>
-                        <span>1</span>
+                        <span>{{$pinding}}</span>
                         <span class="text-sm">
                             the pidding order
                         </span>
                     </div>
                 </article>
             </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="card card-body mb-4">
+                <article class="icontext">
+                    <span class="icon icon-sm rounded-circle bg-primary-light"><i class="text-primary material-icons md-monetization_on"></i></span>
+                    <div class="text">
+                        <h6 class="mb-1 card-title">Pending sales</h6>
+                        <span>22</span>
+                        <span class="text-sm">
+                            current balance , which could be withdrwalled
+                        </span>
+                    </div>
+                </article>
+            </div> 
         </div>
         <div class="card mb-4">
 

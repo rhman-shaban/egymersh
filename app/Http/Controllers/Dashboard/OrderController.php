@@ -105,7 +105,7 @@ class OrderController extends Controller
 
             'status' => $request-> status,
         ]);
-        return back()->with('success'  , 'Order Deleted successfully' );   
+        return back()->with('success'  , 'Change status successfully' );   
     }
     public function comment_manual(Request $request ,$id)
     {
@@ -123,6 +123,15 @@ class OrderController extends Controller
     {
         $comment = comment_manual::findOrFail($id)->delete();
         return back()->with('success'  , 'Order Deleted successfully' );   
+    }
+    public function message(Request $request ,$id)
+    {
+        $order = order_seller::findOrFail($id);
+        $order->update([
+
+            'message' => $request-> message,
+        ]);
+        return back()->with('success'  , 'Add Message successfully' );
     }
 
         

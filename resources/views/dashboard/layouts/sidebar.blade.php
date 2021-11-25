@@ -77,27 +77,17 @@
 
         @endphp
         <ul class="menu-aside">
+        
             <li class="menu-item">
                 <a class="menu-link" href="{{ route('statistics') }}"> <i class="icon material-icons md-home"></i>
                     <span class="text">Statistics</span>
                 </a>
             </li>
 
-            <li class="menu-item {{ $about }}">
-                <a class="menu-link" href="{{ route('news') }}"> <i class="icon material-icons md-home"></i>
-                    <span class="text">News</span>
-                </a>
-            </li>
+           
             <li class="menu-item {{ $about }}">
                 <a class="menu-link" href="{{ route('about.edit') }}"> <i class="icon material-icons md-home"></i>
                     <span class="text">About Us</span>
-                </a>
-            </li>
-        
-
-            <li class="menu-item">
-                <a class="menu-link" href="{{ route('messages.index') }}"> <i class="icon material-icons md-home"></i>
-                    <span class="text">Messages</span>
                 </a>
             </li>
             <li class="menu-item">
@@ -105,8 +95,6 @@
                     <span class="text">Reuests Sellers</span>
                 </a>
             </li>
-
-
             <li class="menu-item has-submenu {{ $admins }}">
                 <a class="menu-link" href="{{ route('admins.index') }}"> 
                     <i class=" icon material-icons md-supervised_user_circle">  </i>
@@ -117,23 +105,6 @@
                     <a href="{{ route('admins.create') }}">Add New Admin</a>
                 </div>
             </li>
-
-            <li class="menu-item has-submenu {{ $orders }} ">
-                <a class="menu-link" href="{{ route('orders.index') }}"> 
-                    <i class=" icon material-icons md-supervised_user_circle">  </i>
-                    <span class="text">Orders</span>
-                </a>
-                <div class="submenu">
-                    <a href="{{ route('orders.index') }}">Orders</a>
-                    {{-- <a href="{{ route('orders.sellers') }}">Sellers Orders</a> --}}
-                    <a href="{{ route('manual.order') }}">Order Manual</a>
-                    <a href="{{ route('governorates.index') }}">Governorates</a>
-                    <a href="{{ route('governorates.create') }}">Add new Governorate</a>
-                    <a href="{{ route('shipping_companies.index') }}">Shipping Companies</a>
-                    <a href="{{ route('shipping_companies.create') }}">Add new Company</a>
-                </div>
-            </li>
-
             <li class="menu-item has-submenu ">
                 <a class="menu-link" href="page-sellers-cards.html"> <i class="icon material-icons md-store"></i>
                     <span class="text">Sellers</span>
@@ -214,12 +185,40 @@
                     <a href="{{ route('pages.create') }}">Add New Page</a>
                 </div>
             </li>
+           
+            <li class="menu-item">
+                <a class="menu-link" href="{{ route('messages.index') }}"> <i class="icon material-icons md-home"></i>
+                    <span class="text">Messages</span>
+                </a>
+            </li>
+            <li class="menu-item {{ $about }}">
+                <a class="menu-link" href="{{ route('news') }}"> <i class="icon material-icons md-home"></i>
+                    <span class="text">News</span>
+                </a>
+            </li>
+            <li class="menu-item has-submenu {{ $orders }} ">
+                <a class="menu-link" href="{{ route('orders.index') }}"> 
+                    <i class=" icon material-icons md-supervised_user_circle">  </i>
+                    <span class="text">Orders</span>
+                </a>
+                <div class="submenu">
+                    <a href="{{ route('orders.index') }}">Orders</a>
+                    {{-- <a href="{{ route('orders.sellers') }}">Sellers Orders</a> --}}
+                    <a href="{{ route('manual.order') }}">Order Manual</a>
+                    <a href="{{ route('governorates.index') }}">Governorates</a>
+                    <a href="{{ route('governorates.create') }}">Add new Governorate</a>
+                    <a href="{{ route('shipping_companies.index') }}">Shipping Companies</a>
+                    <a href="{{ route('shipping_companies.create') }}">Add new Company</a>
+                </div>
+            </li>
+            
 
             <li class="menu-item {{ $users }}">
                 <a class="menu-link" href="{{ route('users.index') }}"> <i class="icon material-icons md-home"></i>
                     <span class="text">Customers</span>
                 </a>
             </li>
+            
 
 
 
@@ -252,6 +251,8 @@
                         <span class="text">Settings</span>
                     </a>
                 </li>
+                
+                
                 --}}
 
 
@@ -276,6 +277,7 @@
                         @csrf
                     </form>
                 </li>
+
             </ul>
             <br>
             <br>
