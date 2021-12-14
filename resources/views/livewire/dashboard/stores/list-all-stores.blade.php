@@ -30,13 +30,13 @@
          <div class="col-xl-2 col-lg-3 col-md-4 col-6">
             <figure class="card border-1">
                 <div class="card-header bg-white text-center">
-                   <a href="{{ url('Dashboard/stores/'.$store->id) }}">
-                        <img height="76" src="{{ Storage::disk('public')->url('stores/'.$store->logo) }}" class="img-fluid" alt="Logo">
+                   <a href="{{ url('Dashboard/stores/'.$store->id) }}" target="_blank">
+                        <img height="76" src="{{ $store->logo_path }}" class="img-fluid rounded-circle" alt="Store Logo">
                    </a>
                 </div>
                 <figcaption class="card-body text-center">
-                    <h6 class="card-title m-0"> {{ $store->name }} </h6>
-                    <a href="#"> {{ $store->product->count() }} items </a>
+                    <a href="{{ url('Dashboard/stores/'.$store->id) }}" target="_blank">  <h6 class="card-title m-0"> {{ $store->name }} </h6></a>
+                    <a href="{{ url('Dashboard/stores/'.$store->id) }}" target="_blank"> {{ $store->product->count() }} items </a>
                 </figcaption>
             </figure>
         </div> <!-- col.// -->

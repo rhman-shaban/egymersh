@@ -24,19 +24,19 @@ class walletcontroller extends Controller
         $product = OrderItem::wherein('order_id', $order)->get();
         $details=0;
         foreach($product as $i){
-            if($i->product->seller_id==$seller_id){    
+            if($i->product->seller_id==$seller_id){
             $details =($i->product->selling_price+  $details) *$i->quantity;
-            
-        }}
-        
 
-        
-       
-        $order_seller    =order_seller::where('status','delivred')->sum('profit');
+        }}
+
+ 
+
+
+        $order_seller    =order_seller::where('status','Delivered')->sum('profit');
         $price=wallet::where('status_en','confirmed')->sum('price');
-        $profit=$details + $order_seller; 
+        $profit=$details + $order_seller;
         $total=$profit -$price;
-        
+
 
 //get price is done confirmed
 
@@ -45,30 +45,30 @@ class walletcontroller extends Controller
         $product_expected = OrderItem::wherein('order_id', $order_expected)->get();
         $details_expected=0;
         foreach($product_expected as $profit){
-            if($profit->product->seller_id==$seller_id) {   
+            if($profit->product->seller_id==$seller_id) {
             $details_expected =($profit->product->selling_price+  $details_expected) *$profit->quantity;
         }}
 
-        
+
         //dd($details_expected);
-        
 
-        
-        
-        
-        $order_seller_expected    =order_seller::where('status', 'shipped')->where('seller_id' ,$seller_id)->sum('profit');
+
+
+
+
+        $order_seller_expected    =order_seller::where('status', 'Shipped')->where('seller_id' ,$seller_id)->sum('profit');
         $balnce_expected= $details_expected + $order_seller_expected;
-        
+ 
 
-        $pinding   =order_seller::where('status', 'shipped')->where('seller_id' ,$seller_id)->count('id');
+        $pinding   =order_seller::where('status', 'Shipped')->where('seller_id' ,$seller_id)->count('id');
 
-    
+
 
 
 
         ///pending order
-        
-        
+
+
 
         ////request datat
         $wallets=wallet::where('seller_id',$seller_id)->get();
@@ -78,12 +78,25 @@ class walletcontroller extends Controller
         return view('store.wallet' ,compact('profit','balnce_expected','wallets','pinding','total'));
     }
     public function create(Request $request){
+        $order_seller    =order_seller::where('status','Delivered')->sum('profit');
+        $order    =Order::where('order_status_id','4')->pluck('id')->toarray();
+        $product = OrderItem::wherein('order_id', $order)->get();
+        $details=0;
+        foreach($product as $i){
+            if($i->product->seller_id==$seller_id){
+            $details =($i->product->selling_price+  $details) *$i->quantity;
+
+        }}
+        $price=wallet::where('status_en','confirmed')->sum('price');
+        $profit=$details + $order_seller;
+        $total=$profit -$price;
         $seller_id=Auth::guard('seller')->user()->id;
+        //dd($total);
         $this->validate($request, [
-            'price' => 'required',
+            'price' => 'required|max:'.$total,
             'phone' => 'required',
             'payway' => 'required',
-        
+
          ]);
 
         //  Store data in database
@@ -93,7 +106,7 @@ class walletcontroller extends Controller
             'phone' => $request->phone,
             'seller_id'=>$seller_id
             ]);
-        
+
         return back()->with('success', 'you are send request and we will confirm your request soon');
 
 
@@ -111,15 +124,13 @@ class walletcontroller extends Controller
             'message' => $request-> message,
             'status_en' => $request-> status,
         ]);
-        return back()->with('success'  , 'changes added' );  
-           
-      
-          
-        
+        return back()->with('success'  , 'changes added' );
+
+
+
+
     }
-    
+
 
 
 }
-
-

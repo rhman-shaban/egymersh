@@ -2,8 +2,20 @@
 
 return [
 
+  'Best Selling'        => 'الأكثر مبيعاً',
+  'View More'        => 'عرض المزيد',
+  'New'         => 'جديد!',
+  'New Arrival'        => 'الأحدث وصولاً',
+  'Featured Stores'        => 'متاجر مميزة',
+
+  'Now Loading'         => 'جـاري التحميـل',
+
+  'Products'            => 'المنتجات:',
+
+
+
     //navbar
-    'redline'     => 'ردلاين',
+    'redline'     => 'الخط الساخط',
     'home'        => 'الرئيسية',
     'go_card'     => 'الذهاب الي السلة',
     'buy_now'     => 'شراء الان',
@@ -13,7 +25,7 @@ return [
     'totle_price' => 'المجموع',
     'category'    => 'الاقسام ',
     'all_category'=> 'كل الاقسام',
-    'all'         => '  كل',
+    'all'         => 'كل',
     'language'    => 'اللغة',
     'contact_us'  => 'تواصل معنا',
     'send'        => 'ارسال',
@@ -48,7 +60,7 @@ return [
     'enter_email' => 'ادخل الاميل',
     'enter_passs' => 'ادخل كلمه المرور',
     'update'      => 'تعديل',
-    
+
     //section category
     'category'    => 'الاقسام',
     'categoriy'   => 'قسم',
@@ -71,7 +83,7 @@ return [
     'sucss_coupon'=> 'الكود صحيح',
     'old_total'   => 'المجموع قبل الخصم',
     'new_total'   => 'المجموع بعد الخصم',
-    
+
     //Our Services
     'our'               => 'عن',
     'services'          => 'خدماتنا',
@@ -90,7 +102,7 @@ return [
     'last_name'    => 'الاسم الثاني',
     'title'        => 'العنوان',
     'body'         => 'الموضع',
-    
+
     //Connect
     'contct'       => 'اتصل',
     'cus'          => 'بنا',
@@ -108,5 +120,5 @@ return [
 
     //payment
     'purchase'     => 'المشتريات',
-  
+
 ];

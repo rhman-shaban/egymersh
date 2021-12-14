@@ -1,13 +1,14 @@
 <?php
 $month='';
-//$data='';
+$data='';
 foreach( $sumProfit as $profitMonth ){
   //$month .= "'".date("F", mktime(0, 0, 0, $profitMonth->month, 1))."',";
-  $data[$profitMonth->month] = $profitMonth->profit; 
+  $data[$profitMonth->month] = $profitMonth->profit;
 }
 
 function valueMonths( $array )
 {
+
   $result="";
   for($i = 1; $i <= 12; $i++){
      if( isset($array [$i]) ){
@@ -23,102 +24,123 @@ function valueMonths( $array )
 ?>
 @extends('store.layouts.master')
 
+@section('page_title')
+@lang('title.Statistics')
+@endsection
+
 @section('page_content')
 
     <!-- Start main section -->
     <section class="content-main">
     <div class="content-header">
         <div>
-            <h2 class="content-title card-title">statistics</h2>
-            
-        </div>
-        <div>
-
+            <h2 class="content-title card-title">@lang('seller.Statistics')</h2>
         </div>
     </div>
 
-      <!-- start small cards -->
-      <div class="row">
-        <div class="col-lg-3">
-          <div class="card card-body mb-4">
-            <article class="icontext">
-              <span class="icon icon-sm rounded-circle bg-primary-light"><i class="text-primary material-icons md-monetization_on"></i></span>
-              <div class="text">
-                <h5 class="mb-1 card-title">Profit</h5>
-                <div class="d-flex align-items-center">
-                  <div class="stat-value-sub">
-                    <span>{{$profit}}</span>
+      <!-- start main section  -->
+      <div class="card">
+       <div class="card-body row flex-row-reverse justify-content-center align-items-center" style="background-color: rgba(8, 129, 120, 0.2)">
+
+         <!-- image section  -->
+         <div class="col-lg-5 d-flex justify-content-center">
+           <img src="{{ asset('store_assets\assets\imgs\seller-dashboard/stats-4.png')}}" alt="Tip To Grow" class="img-responsive ">
+         </div>
+
+         <!-- small cards section  -->
+
+        <div class="col-lg-7 ">
+        <!-- first two cards -->
+        <div class="row d-flex align-items-center">
+             <div class="col-lg-6">
+                <div class="card card-body mb-4">
+                <article class="icontext">
+                  <span class="icon icon-sm rounded-circle bg-success-light"><i class="text-success fad fa-dollar-sign"></i></span>
+                  <div class="text">
+                    <h5 class="mb-1 card-title">@lang('seller.Profit')</h5>
+                    <div class="d-flex align-items-center">
+                      <div class="stat-value-sub">
+                        <span>{{$profit}}</span>
+                      </div>
+                      <span class="mx-2">@lang('seller.price sympol') </span>
+                    </div>
+                    <span class="text-sm">
+                      @lang('seller.All time profit')</span>
                   </div>
-                  <span>L.E</span>
-                </div>
-                <span class="text-sm">
-                  All time profit </span>
+                </article>
               </div>
-            </article>
-          </div>
+            </div>
+
+             <div class="col-lg-6">
+                <div class="card card-body mb-4">
+                  <article class="icontext">
+                    <span class="icon icon-sm rounded-circle bg-primary-light"><i class="text-primary fas fa-truck"></i></span>
+                    <div class="text">
+                      <h5 class="mb-1 card-title">@lang('seller.Manual Orders')</h5>
+                      <div class="d-flex align-items-center">
+                        <div class="stat-value-sub">
+                          <span>{{$manual_order}}</span>
+                        </div>
+                      </div>
+                      <span class="text-sm">
+                        @lang('seller.orders msg')</span>
+                      </div>
+                    </article>
+                  </div>
+               </div>
         </div>
 
-        <div class="col-lg-3">
-          <div class="card card-body mb-4">
-            <article class="icontext">
-              <span class="icon icon-sm rounded-circle bg-success-light"><i class="text-success material-icons md-local_shipping"></i></span>
-              <div class="text">
-                <h5 class="mb-1 card-title">Manual Orders</h5>
-                <div class="d-flex align-items-center">
-                  <div class="stat-value-sub">
-                    <span>{{$manual_order}}</span>
+       <!-- second one -->
+         <div class="row d-flex align-items-center">
+
+          <div class="col-lg-6">
+            <div class="card card-body mb-4">
+              <article class="icontext">
+                <span class="icon icon-sm rounded-circle bg-primary-light"><i class="text-primary fas fa-shopping-basket"></i></span>
+                <div class="text">
+                  <h5 class="mb-1 card-title">@lang('seller.Sales')</h5>
+                  <div class="d-flex align-items-center">
+                    <div class="stat-value-sub">
+                      <span>{{$numperofsale}}</span>
+                    </div>
                   </div>
+                  <span class="text-sm">
+                    @lang('seller.All time sales')</span>
                 </div>
-                <span class="text-sm">
-                  All time orders </span>
-              </div>
-            </article>
+              </article>
+            </div>
           </div>
+
+          <div class="col-lg-6">
+            <div class="card card-body mb-4">
+              <article class="icontext">
+                <span class="icon icon-sm rounded-circle bg-warning-light"><i class="text-warning fas fa-tshirt"></i></span>
+                <div class="text">
+                  <h5 class="mb-1 card-title">@lang('seller.Products')</h5>
+                  <div class="d-flex align-items-center">
+                    <div class="stat-value-sub">
+                      <span>{{$all_product}}</span>
+                    </div>
+                  </div>
+                  <span class="text-sm">
+                    @lang('seller.Total Products Created')</span>
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
         </div>
 
-        <div class="col-lg-3">
-          <div class="card card-body mb-4">
-            <article class="icontext">
-              <span class="icon icon-sm rounded-circle bg-success-light"><i class="text-success material-icons md-local_shipping"></i></span>
-              <div class="text">
-                <h5 class="mb-1 card-title">Sales</h5>
-                <div class="d-flex align-items-center">
-                  <div class="stat-value-sub">
-                    <span>{{$numperofsale}}</span>
-                  </div>
-                </div>
-                <span class="text-sm">
-                  All time sales </span>
-              </div>
-            </article>
-          </div>
-        </div>
+      </div>
 
-        <div class="col-lg-3">
-          <div class="card card-body mb-4">
-            <article class="icontext">
-              <span class="icon icon-sm rounded-circle bg-warning-light"><i class="text-warning material-icons md-qr_code"></i></span>
-              <div class="text">
-                <h5 class="mb-1 card-title">Products</h5>
-                <div class="d-flex align-items-center">
-                  <div class="stat-value-sub">
-                    <span>{{$all_product}}</span>
-                  </div>
-                </div>
-                <span class="text-sm">
-                  Total Product Created </span>
-              </div>
-            </article>
-          </div>
-        </div>
       </div>
       <!-- end small cards -->
 
       <!-- start of revenue chart -->
-      <div class="row card flex-row">
+      <div class="card flex-row">
         <div class="col-lg-12">
           <article class="card-body">
-            <h4 class="card-title chart">Manual Orders Profit</h4>
+            <h4 class="card-title chart">@lang('seller.Manual Orders Profit')</h4>
             <canvas id="profit-chart-seller" height="100"></canvas>
           </article>
         </div>
@@ -207,7 +229,7 @@ function valueMonths( $array )
         </article>
       </div> -->
       <!-- start of products chart -->
-     
+
       <!-- end of products row -->
 
       <!-- orders row -->
@@ -279,13 +301,13 @@ function valueMonths( $array )
           </article>
         </div> -->
       <!-- start of orders chart -->
-     
+
       <!-- end of orders row -->
 
       <!-- start of recent sales table -->
       <div class="card mb-4">
         <header class="card-header">
-          <h4 class="card-title">Latest Sales</h4>
+          <h4 class="card-title">@lang('seller.Latest Sales')</h4>
           <!-- sales made by customers on the site (not related to manual orders!) -->
           <div class="row align-items-center">
 
@@ -298,13 +320,13 @@ function valueMonths( $array )
               <table class="table align-middle table-nowrap mb-0">
                 <thead class="table-light">
                   <tr>
-                    <th class="align-middle" scope="col">Sale ID</th>
-                    <th class="align-middle" scope="col">Product</th>
+                    <th class="align-middle" scope="col">@lang('seller.Sale ID')</th>
+                    <th class="align-middle" scope="col">@lang('seller.Product')</th>
                     <!-- final product name 'by the seller' -->
-                    <th class="align-middle" scope="col">Date</th>
-                   
-                    <th class="align-middle" scope="col">Payment Status</th>
-                    <th class="align-middle" scope="col">Profit</th>
+                    <th class="align-middle" scope="col">@lang('seller.Date')</th>
+
+                    <th class="align-middle" scope="col">@lang('seller.Payment Status')</th>
+                    <th class="align-middle" scope="col">@lang('seller.Profit')</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -315,14 +337,14 @@ function valueMonths( $array )
                     <td>
                       {{ date('d-m-Y', strtotime($sale['created_at'])); }}
                     </td>
-                    
+
                     @foreach($status as $state)
                     <td>
                       <span class="badge badge-pill badge-soft-success">{{$state->name_en}}</span>
                     </td>
                     @endforeach
                     <td>
-                  {{$sale['selling_price']}} .LE
+                  {{$sale['selling_price']}} @lang('seller.price sympol')
                     </td>
                   </tr>
                 @endforeach
@@ -338,7 +360,7 @@ function valueMonths( $array )
       <!-- start of manual orders table -->
       <div class="card mb-4">
         <header class="card-header">
-          <h4 class="card-title">Your Manual Orders</h4>
+          <h4 class="card-title">@lang('seller.Your Manual Orders')</h4>
         </header>
         <div class="card-body">
           <div class="table-responsive">
@@ -346,14 +368,14 @@ function valueMonths( $array )
               <table class="table align-middle table-nowrap mb-0">
                 <thead class="table-light">
                   <tr>
-                    <th class="align-middle" scope="col">Order ID</th>
-                    <th class="align-middle" scope="col">Customer Name</th>
-                    <th class="align-middle" scope="col">Date</th>
-                    <th class="align-middle" scope="col">Status</th>
-                    <th class="align-middle" scope="col">Total</th>
-                    <th class="align-middle" scope="col">Profit</th>
-                    <th class="align-middle" scope="col">Shoe</th>
-                    <th class="align-middle" scope="col">Delete</th>
+                    <th class="align-middle" scope="col">@lang('seller.Order ID')</th>
+                    <th class="align-middle" scope="col">@lang('seller.Client Name')</th>
+                    <th class="align-middle" scope="col">@lang('seller.Date')</th>
+                    <th class="align-middle" scope="col">@lang('seller.Status')</th>
+                    <th class="align-middle" scope="col">@lang('seller.Total')</th>
+                    <th class="align-middle" scope="col">@lang('seller.Profit')</th>
+                    <th class="align-middle" scope="col">@lang('seller.View')</th>
+                    <th class="align-middle" scope="col" style="color:#088178">@lang('seller.Delete')</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -370,8 +392,8 @@ function valueMonths( $array )
                     <td>
                      {{$order->total_price}}
                     </td>
-                    <td> 
-                    {{$order->profit}} L.E
+                    <td>
+                    {{$order->profit}} @lang('seller.price sympol')
                     </td>
                     <td>
                     <a href="{{ route('show-order'  , $order->id ) }}" class="btn btn-xs"> <i class="far fa-eye"></i> </a>
@@ -379,16 +401,16 @@ function valueMonths( $array )
                     </td>
                     @if($order->status=='pending')
                     <td>
-                   
+
                     <form action="{{ route('delete.order', $order->id ) }}" style="display:inline;" method="POST"  >
                                 @method('delete')
                                         @csrf
                             <button class="btn btn-xs btn-danger delete"> <i class="fas fa-trash-alt"></i> </button>
-                    </td>	
+                    </td>
 </form>
-                    
+
                     @endif
-                 
+
 
                   </tr>
 
@@ -400,9 +422,9 @@ function valueMonths( $array )
         </div>
       </div>
 
-     
 
-      
+
+
         <!-- end of manual orders table -->
 
       <!-- [View more] should have (Customer Name - address - phone
@@ -479,7 +501,7 @@ with Cancel options -->
   @endsection
 
 
-  
+
   @section('scripts')
   <!--script src="{{asset('store_assets/assets/js/custom-chart.js')}}" type="text/javascript"></script-->
   <script>
@@ -519,6 +541,3 @@ with Cancel options -->
 
     </script>
   @stop
-  
-
-

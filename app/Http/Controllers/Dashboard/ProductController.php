@@ -12,6 +12,7 @@ use App\Models\ProductColor;
 use App\Models\ProductSize;
 use App\Models\SellerProduct;
 use App\Models\Size;
+
 use Storage;
 use Auth;
 class ProductController extends Controller
@@ -23,7 +24,11 @@ class ProductController extends Controller
      */
     public function index()
     {
+        if (Auth::guard('admin')->user()->role == 0){
         return view('dashboard.products.index');
+    }else{
+        return view('error');
+    }
     }
 
 
@@ -35,9 +40,14 @@ class ProductController extends Controller
      */
     public function create()
     {
+        if (Auth::guard('admin')->user()->role == 0){
+       
         $categories = Category::all();
         $sizes = Size::all();
         return view('dashboard.products.create' , compact('categories' , 'sizes'));
+    }else{
+        return view('error');
+    }
     }
 
     /**
@@ -57,16 +67,16 @@ class ProductController extends Controller
         // dd($product);
 
         for ($i = 0; $i <count($request->colors) ; $i++) {
-            $front_image = $request->file('front_images')[$i]->store( 'products' , 's3');
+            $front_image = $request->file('front_images')[$i]->store( 'products' , 'public');
             $front_image = basename($front_image);
 
-            $back_image = $request->file('back_images')[$i]->store( 'products' , 's3');
-            $back_image = basename($back_image);
+            // $back_image = $request->file('back_images')[$i]->store( 'products' , 's3');
+            // $back_image = basename($back_image);
 
             $product_color = new ProductColor([
                 'product_id' => $product->id, 
                 'color' => $request->colors[$i],
-                'back_image' => $back_image, 
+                // 'back_image' => $back_image, 
                 'front_image' => $front_image, 
             ]);
             $product_color->save();

@@ -39,10 +39,8 @@ class OrderController extends Controller
     public function show(Order $order)
     {
         $order_status = OrderStatus::all();
-        $order->load(['user'  , 'address' , 'items' , 'items.product'  , 'status' , 'comments' , 'comments.admin']);
-        
+
         return view('dashboard.orders.show' , compact('order', 'order_status') );
-        
     }
 
 
@@ -72,24 +70,22 @@ class OrderController extends Controller
         $order->delete();
         return back()->with('success'  , 'Order Deleted successfully' );   
     }
-    public function manual_order()
 
+
+    public function manual_order()
     {
-        
         return view('dashboard.orders.ordermanual');
           
-    }
+    }//end of manual_order
+
+
     public function show_manual_order($id)
-
     {
-
-        $orders=order_seller::find($id);
-      
-        
+        $orders = order_seller::find($id);
         
         return view('dashboard.orders.showmanual', compact('orders'));
-          
-    }
+
+    }//end of show_manual_order
     
     
     public function delete_order($id)

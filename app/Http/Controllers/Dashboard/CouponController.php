@@ -6,24 +6,35 @@ use App\Http\Controllers\Controller;
 use App\Models\Coupon;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CouponController extends Controller
 {
 
     public function index()
     {
+        if (Auth::guard('admin')->user()->role == 0){
+        
         $coupons = Coupon::all();
 
         return view('dashboard.promotions.coupons.index',compact('coupons'));
+    }else{
+        return view('error');
+    }
 
     }//end of index
 
 
     public function create()
     {
+        if (Auth::guard('admin')->user()->role == 0){
+        
         $categorys = Category::all();
 
         return view('dashboard.promotions.coupons.create',compact('categorys'));
+    }else{
+        return view('error');
+    }
     }
 
     

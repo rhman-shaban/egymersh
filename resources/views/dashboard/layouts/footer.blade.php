@@ -1,13 +1,11 @@
         <footer class="main-footer font-xs">
             <div class="row pb-30 pt-15">
                 <div class="col-sm-6">
-                    <script>
-                    document.write(new Date().getFullYear())
-                    </script> Developed By <a href="http://ahmedsamidev.com/"> Ahmed Sami  </a>
+                     <a href="#"> Admin Dashboard</a>
                 </div>
                 <div class="col-sm-6">
                     <div class="text-sm-end">
-                        All rights reserved
+                      EgyMerch ROCKS!
                     </div>
                 </div>
             </div>

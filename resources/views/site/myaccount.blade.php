@@ -1,5 +1,9 @@
 @extends('site.layouts.master')
 
+@section('page_title')
+@lang('title.My Account')
+@endsection
+
 @section('page_content')
 <section class="pt-150 pb-150">
     <div class="container">
@@ -10,20 +14,26 @@
                         <div class="dashboard-menu">
                             <ul class="nav flex-column" role="tablist">
                                 <li class="nav-item">
-                                    <a class="nav-link active" id="dashboard-tab" data-bs-toggle="tab" href="#dashboard" role="tab" aria-controls="dashboard" aria-selected="false"><i class="fi-rs-settings-sliders mr-10"></i>Dashboard</a>
+                                    <a class="nav-link active" id="dashboard-tab" data-bs-toggle="tab" href="#dashboard" role="tab"aria-controls="dashboard" aria-selected="false">
+                                        <i class="fi-rs-settings-sliders mr-10 ml-10"></i>@lang('myaccount.Overview')
+                                    </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" id="orders-tab" data-bs-toggle="tab" href="#orders" role="tab" aria-controls="orders" aria-selected="false"><i class="fi-rs-shopping-bag mr-10"></i>Orders</a>
-                                </li>
-
-                                <li class="nav-item">
-                                    <a class="nav-link" id="address-tab" data-bs-toggle="tab" href="#address" role="tab" aria-controls="address" aria-selected="true"><i class="fi-rs-marker mr-10"></i>My Address</a>
+                                    <a class="nav-link" id="orders-tab" data-bs-toggle="tab" href="#orders" role="tab" aria-controls="orders" aria-selected="false">
+                                        <i class="fi-rs-shopping-bag mr-10 ml-10"></i>@lang('myaccount.My Orders')
+                                    </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" id="account-detail-tab" data-bs-toggle="tab" href="#account-detail" role="tab" aria-controls="account-detail" aria-selected="true"><i class="fi-rs-user mr-10" id="edit-prfile-button"></i>Account details</a>
+                                    <a class="nav-link" id="account-detail-tab" data-bs-toggle="tab" href="#account-detail" role="tab" aria-controls="account-detail" aria-selected="true">
+                                        <i class="fi-rs-user mr-10 ml-10" id="edit-prfile-button"></i>
+                                         @lang('myaccount.Account Details')
+                                    </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('user.account.logout') }}"><i class="fi-rs-sign-out mr-10"></i>Logout</a>
+                                    <a class="nav-link" href="{{ route('user.account.logout') }}">
+                                        <i class="fi-rs-sign-out mr-10 ml-10"></i>
+                                         @lang('myaccount.Logout')
+                                    </a>
                                 </li>
                             </ul>
                         </div>
@@ -35,7 +45,7 @@
                         <div class="tab-pane fade active show" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
                             <div class="card">
                                 <div class="card-header">
-                                    <h5 class="mb-0">Hello {{ $user->name }}</h5>
+                                    <h5 class="mb-0">@lang('myaccount.Hello') {{ $user->name }}</h5>
                                 </div>
                                 <div class="card-body">
                                     <div class="z-depth-5 main">
@@ -45,9 +55,7 @@
                                             </div>
                                             <div class="col-sm-6 details my-5">
                                                 <center>
-                                                    <p class="name"> 
-                                                        <i class="fa fa-user"> {{ $user->name }}</i>
-                                                    </p>
+                                                    <p><i class="fa fa-user"></i> {{ $user->name }}</p>
                                                 </center>
                                                 <center>
                                                     <p><i class="fa fa-phone"></i> {{ $user->phone }}</p>
@@ -57,23 +65,28 @@
                                                 </center>
                                             </div>
                                         </div>
-                                        <table class="table">
+                                        <!-- <table class="table">
                                             <tr>
                                                 <td>
                                                     <p><b>1,236</b></p>
-                                                    <p>Order</p>
+                                                    <p>@lang('dashboard.orders')</p>
                                                 </td>
                                                 <td>
                                                     <p><b>767K</b></p>
-                                                    <p>product</p>
+                                                    <p>@lang('dashboard.products')</p>
                                                 </td>
                                                 <td>
                                                     <p><b>892</b></p>
                                                     <p>Following</p>
                                                 </td>
                                             </tr>
-                                        </table>
-                                        <center><a class="waves-effect waves-light btn edit col-12" onclick="document.getElementById('edit-prfile-button').click();">Edit Profile</a></center>
+                                        </table> -->
+                                        <div class="d-flex justify-content-end">
+                                            <a class="waves-effect waves-light btn edit col-4 p-2"
+                                                onclick="document.getElementById('edit-prfile-button').click();">
+                                                @lang('myaccount.Edit')
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -81,28 +94,27 @@
                         <div class="tab-pane fade" id="orders" role="tabpanel" aria-labelledby="orders-tab">
                             <div class="card">
                                 <div class="card-header">
-                                    <h5 class="mb-0">Your Orders</h5>
+                                    <h5 class="mb-0"> @lang('myaccount.My Orders')</h5>
                                 </div>
                                 <div class="card-body">
                                     <div class="table-responsive">
                                         <table class="table">
                                             <thead>
                                                 <tr>
-                                                    <th>Order</th>
-                                                    <th>notes</th>
-                                                    <th>Status</th>
-                                                    <th>created</th>
-                                                    {{-- <th>Actions</th> --}}
+                                                    <th>@lang('myaccount.Order ID')</th>
+                                                    <!-- <th>@lang('myaccount.Notes')</th> -->
+                                                    <th>@lang('myaccount.Status')</th>
+                                                    <th>@lang('myaccount.Date')</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 @foreach (App\Models\Order::where('user_id',auth()->guard('seller')->user()->id)->get() as $index=>$element)
                                                     <tr>
-                                                        <td>{{ $index }}</td>
-                                                        <td>{{ $element->notes }}</td>
-                                                        <td>{{ $element->order_status }}</td>
+                                                        <td>R{{ $element->id }}</td>
+                                                        <!-- <td>{{ $element->notes }}</td> -->
+                                                        <td>{{ $element->seen  == '0' ? 'جاري التحضير' : 'اكتمل' }}</td>
                                                         <td>{{ $element->created_at }}</td>
-                                                        {{-- <td><a href="#" class="btn-small d-block">View</a></td> --}}
+                                                      {{--  <td><a href="#" class="btn-small d-block">View</a></td> --}}
                                                     </tr>
                                                 @endforeach
                                             </tbody>
@@ -112,24 +124,12 @@
                             </div>
                         </div>
 
-                        <div class="tab-pane fade" id="address" role="tabpanel" aria-labelledby="address-tab">
+                        <!-- <div class="tab-pane fade" id="address" role="tabpanel" aria-labelledby="address-tab">
                             <div class="row">
-                                {{-- <div class="col-lg-6">
-                                    <div class="card mb-3 mb-lg-0">
-                                        <div class="card-header">
-                                            <h5 class="mb-0">Billing Address</h5>
-                                        </div>
-                                        <div class="card-body">
-                                            <address>3522 Interstate<br> 75 Business Spur,<br> Sault Ste. <br>Marie, MI 49783</address>
-                                            <p>New York</p>
-                                            <a href="#" class="btn-small">Edit</a>
-                                        </div>
-                                    </div>
-                                </div> --}}
                                 <div class="col-lg-6">
                                     <div class="card">
                                         <div class="card-header">
-                                            <h5 class="mb-0">Shipping Address</h5>
+                                            <h5 class="mb-0">@lang('myaccount.')Shipping Address</h5>
                                         </div>
                                         <div class="card-body">
                                             <address>4299 Express Lane<br>
@@ -140,11 +140,11 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                             <div class="tab-pane fade" id="account-detail" role="tabpanel" aria-labelledby="account-detail-tab">
                                 <div class="card">
                                     <div class="card-header">
-                                        <h5>Account Details</h5>
+                                        <h5>@lang('myaccount.Account Details')</h5>
                                     </div>
                                     <div class="card-body">
                                         <form id="profil-submit" method="post" action="{{ route('user.account.update') }}" enctype="multipart/form-data">
@@ -157,27 +157,29 @@
                                                     <input type="file" name="image" hidden="" id="edit-prfile-image">
                                                 </div>
                                                 <div class="form-group col-md-12">
-                                                    <label>Name<span class="required">*</span></label>
+                                                    <label>@lang('myaccount.Name')<span class="required">*</span></label>
                                                     <input class="form-control square" id="name-prfile" name="name" value="{{ $user->name }}" >
                                                     <span class="text-danger" id="name-prfile-error"></span>
                                                 </div>
                                                 <div class="form-group col-md-12">
-                                                    <label>phone number<span class="required">*</span></label>
+                                                    <label>@lang('myaccount.Phone')<span class="required">*</span></label>
                                                     <input class="form-control square" id="phone-prfile" name="phone" value="{{ $user->phone }}" type="text">
                                                     <span class="text-danger" id="phone-prfile-error"></span>
                                                 </div>
                                                 <div class="form-group col-md-12">
-                                                    <label>Email Address <span class="required">*</span></label>
+                                                    <label>@lang('myaccount.Email')<span class="required">*</span></label>
                                                     <input class="form-control square" id="email-prfile" name="email" value="{{ $user->email }}" type="email">
                                                     <span class="text-danger" id="email-prfile-error"></span>
                                                 </div>
                                                 <div class="form-group col-md-12">
-                                                    <label>Address<span class="required">*</span></label>
+                                                    <label>@lang('myaccount.Addrees')<span class="required">*</span></label>
                                                     <input class="form-control square" value="{{ $user->address }}" id="address-prfile" name="address" type="text">
                                                     <span class="text-danger" id="address-prfile-error"></span>
                                                 </div>
                                                 <div class="col-md-12">
-                                                    <button type="submit" class="btn btn-fill-out submit">Save</button>
+                                                    <div class="d-flex justify-content-end">
+                                                        <button type="submit" class="btn btn-fill-out submit">@lang('myaccount.Save')</button>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </form>
@@ -206,9 +208,9 @@
                 var data     = $(this).serialize();
                 var items    = $(this).serializeArray();
 
-                    
+
                 $.each(items, function(index,item) {
-                    
+
                     $('#' + item.name + '-prfile').removeClass('is-invalid');
                     $('#' + item.name + '-prfile-error').text('');
 
@@ -221,7 +223,7 @@
                     contentType: false,
                     processData: false,
                     success: function(data) {
-                       
+
                        if (data.success == true) {
 
                          swal('update success', {
@@ -231,7 +233,7 @@
                             timer: 3000,
                         });
 
-                       } 
+                       }
 
                     }, error: function(data) {
 
@@ -239,13 +241,13 @@
 
                             $('#' + name + '-prfile').addClass('is-invalid');
                             $('#' + name + '-prfile-error').text(message);
-                            
+
                         });//end of each
 
                     },//end of success
 
                 });//end of ajax
-                
+
             });
 
             $('#edit-prfile-image').on('change', function (e) {
@@ -261,7 +263,7 @@
 
                 reader.readAsDataURL(this.files[0]);
             }
-            
+
         });//end of change image
 
         });//end of  document

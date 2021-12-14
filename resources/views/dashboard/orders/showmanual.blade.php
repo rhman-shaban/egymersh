@@ -24,12 +24,12 @@ $lang = LaravelLocalization::getCurrentLocale();
                 <div class="col-lg-6 col-md-6 ms-auto text-md-end">
                 <form action="{{ route('update.orders' , $orders->id ) }}" method='POST'>
                         @csrf
-                        <select name='status' class="form-select d-inline-block mb-lg-0 mb-15 mw-200">   
+                        <select name='status' class="form-select d-inline-block mb-lg-0 mb-15 mw-200">
                             <option>Poccessing </option>
                             <option>Preparing </option>
-                            <option>shipped </option>
-                            <option>delivred </option>
-                            <option>cancelled </option>
+                            <option>Shipped </option>
+                            <option>Delivered </option>
+                            <option>Cancelled </option>
                         </select>
                         <button class="btn btn-primary" type='submit'>Save</button>
                     </form>
@@ -46,7 +46,7 @@ $lang = LaravelLocalization::getCurrentLocale();
                         <div class="text">
                             <h6 class="mb-1">Customer</h6>
                             <p class="mb-1">
-                                 {{$orders->name}}<br>{{$orders->phone}}  <br> 
+                                 {{$orders->name}}<br>{{$orders->phone}}  <br>
                             </p>
                         </div>
                     </article>
@@ -59,7 +59,7 @@ $lang = LaravelLocalization::getCurrentLocale();
                         <div class="text">
                             <h6 class="mb-1">Order info</h6>
                             <p class="mb-1">
-                            Notes : {{ $orders->notes }} 
+                            Notes : {{ $orders->notes }}
                             </p>
                         </div>
                     </article>
@@ -98,7 +98,7 @@ $lang = LaravelLocalization::getCurrentLocale();
                         @php
                             $total = 0;
                             @endphp
-                            
+
                             <tr>
                                 <th width="40%">Product</th>
                                 <th width="20%">Unit Price</th>
@@ -111,33 +111,33 @@ $lang = LaravelLocalization::getCurrentLocale();
                         </thead>
                         <tbody>
 
-                          
+
                             <tr>
                             @foreach ($orders->product_order as $item)
                                 <td>
                                     <a class="itemside" href="#">
                                         <div class="left">
-                                            <img src="{{ $item->SellerProduct->image }}" class="order-image-download" width="70" height="70" alt="Item">
+                                            <img src="{{ $item->SellerProduct->image_path }}" class="order-image-download" width="70" height="70" alt="Item">
                                         </div>
                                     </a>
                                 </td>
-                              
+
                                 <td>{{ $item->price }}</td>
-                                
-                                
+
+
                                 <td>{{ $item->quantity }}</td>
-                                
+
                                 <td>
-                                 <div class="col-lg-2 col-sm-2 col-4 col-status"> 
+                                 <div class="col-lg-2 col-sm-2 col-4 col-status">
                                             <span class="btn btn-sm p-3 color-front b-radius"
                                              data-id="" style="background-color: {{ $item->color }};"></span>
-                                         </div> 
-                                   
+                                         </div>
+
                                 </td>
                                 <td>
                                 {{ $item->size }}
                                 </td>
-                                <td class="text-end"> 
+                                <td class="text-end">
                                 {{ number_format($item->price * $item->quantity) }}
                                 </td>
                                 <td>
@@ -146,7 +146,7 @@ $lang = LaravelLocalization::getCurrentLocale();
                                 </td>
                             </tr>
                             @endforeach
-                            
+
 
 
                             <tr>
@@ -165,10 +165,10 @@ $lang = LaravelLocalization::getCurrentLocale();
                                             <dd> <b class="h5">{{number_format($orders->total_price+$orders->shipping)}}</b> </dd>
                                         </dl>
                                         <dl class="dlist">
-                                            
-                                            <dt>Shipping cost:</dt> 
+
+                                            <dt>Shipping cost:</dt>
                                                <dd> {{$orders->status}} </dd>
-                                                
+
                                             </dt>
                                         </dl>
                                     </article>
@@ -187,14 +187,14 @@ $lang = LaravelLocalization::getCurrentLocale();
                             @foreach ($orders->comments as $comment)
                             <li>
                                 <div>
-                                    <ul >   
+                                    <ul >
                                         <li style="display:inline" >  <a href=""> {{ optional($comment->admin)->name }} </a> </li>
                                         <li style="display:inline" > {{ $comment->created_at->diffForHumans() }}  </li>
-                                        <li style="display:inline" > 
+                                        <li style="display:inline" >
                                             <form style="display:inline;float: right;" action="{{ route('manual_comments.destroy' , $comment->id ) }}" method="POST">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button class="btn btn-danger btn-xs delete"> <i class='fas fa-trash-alt' ></i> </button>  
+                                                <button class="btn btn-danger btn-xs delete"> <i class='fas fa-trash-alt' ></i> </button>
                                             </form>
                                         </li>
                                     </ul>
@@ -221,7 +221,7 @@ $lang = LaravelLocalization::getCurrentLocale();
                         <button class="btn btn-primary">Add Comment</button>
                     </form>
                 </div>
-                
+
                 <div class="mb-0">
                     <form action="{{ route('store.message' , $orders->id ) }}" method='POST' >
                         @csrf
@@ -260,16 +260,16 @@ $lang = LaravelLocalization::getCurrentLocale();
 
             $(document).on('click','#all-download', function (e) {
                 e.preventDefault();
-                
+
                 $('.order-image-download').each(function(index) {
-            
+
                     $('#all-download').attr('download',$(this).attr('src'));
 
                     $('#all-download').click();
 
                 });//end of download all image
 
-            });//end of click download 
+            });//end of click download
 
         });//end fo document redy function
     </script>

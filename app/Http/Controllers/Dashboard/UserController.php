@@ -5,13 +5,18 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
     
     public function index()
     {
+        if (Auth::guard('admin')->user()->role == 0){
         return view('dashboard.users.index');
+    }else{
+        return view('error');
+    }
     }
 
     

@@ -20,7 +20,7 @@ class CheckoutController extends Controller
     {
         if (auth()->guard('seller')->check()) {
             
-            return view('site.order');
+            return view('site.checkout');
 
         } else {
 
@@ -44,30 +44,19 @@ class CheckoutController extends Controller
      */
     public function store(Request $request)
     {
-        // return $request;
+        
         $request->validate([
             'full_name'  => 'required',
-            'addres'     => 'required',
             'phone'      => 'required',
-            // 'additional' => 'required',
+            'address_id' => 'required',
+            'addres'     => 'required',
         ]);
 
         try {
 
-            $request['total_price'] = preg_replace('/,/', '', Cart::subtotal());
-            // $request_data                = $request->except(['total_price','image','payment_option']);
-            if (session()->has('price')) {
-                
-                $request['total_price'] +=  session()->get('price');
-            }
-
-            if (session()->has('coupon_value')) {
-
-                $request['total_price'] +=  session()->get('coupon_value');
-                
-            }
-
-            $request['user_id']   = auth()->guard('seller')->user()->id;
+            $request['user_id']        = auth()->guard('seller')->user()->id;
+            $request['order_number']   = '1';
+            $request['shipping']       =  session()->get('governorate_price');
 
             if (Cart::count() < 0) {
 
@@ -76,74 +65,58 @@ class CheckoutController extends Controller
             } else {
 
                 $orders = Order::create($request->all());
-                
-                foreach (Cart::content() as $products) {
+                $total_price = 0;
+                foreach (session()->get('cart_color') as $color) {
 
-                    OrderItem::create([
-                        'seller_products_id' => $products->id,
-                        'quantity'   => $products->qty,
-                        'price'      => number_format($products->model->price,2),
-                        'order_id'   => $orders->id,
-                    ]);
-                    
-                }//endo of foreach
+                    foreach (Cart::content() as $products) {
 
-                if (session()->has('cart_color')) {
-                    
-                    foreach (session()->get('cart_color') as $color) {
-                        
-                        OrderItemColor::create([
-                            'order_item_id' => $color['product_id'],
-                            'color_id'      => $color['color_id'],
-                            'color'         => $color['color'],
-                            'order_id'      => $orders->id,
-                        ]);
-
-                        $colo_quntty = ProductSize::where('product_color_id',$color['color_id'])->get();
-
-                        foreach ($colo_quntty as $colors) {
+                        if ($products->id == $color['product_id']) {
                             
-                            $colors->update([
-                                'quantity' => $colors->quantity - 1,
+                            OrderItem::create([
+                                'seller_products_id' => $products->id,
+                                'order_id'           => $orders->id,
+                                'quantity'           => $color['quantity'],
+                                'price'              => number_format($color['quantity'] * $products->price,2),
+                                'color_id'           => $color['color_id'],
+                                'color'              => $color['color'],
+                                'size_id'            => $color['size_id'],
+                                'size'               => $color['size'],
                             ]);
-                        }
+
+                            $total_price += $color['quantity'] * $products->price;
+
+                        }//end of if
                         
-                    }//endo of foreach
+                    }//endo of foreach cart
 
-                }//endof cart_color
+                }//endof foreach sesstion color
 
-                if (session()->has('cart_size')) {
-                    
-                    foreach (session()->get('cart_size') as $size) {
-                            
-                        OrderItemSize::create([
-                            'order_item_id' => $size['product_id'],
-                            'size_id'       => $size['size_id'],
-                            'size'          => $size['size'],
-                            'order_id'      => $orders->id,
-                        ]);
+                $total = 0;
 
-                        $size_quntty = ProductSize::where('size_id',$size['size_id'])->get();
+                if (session()->has('governorate_price')) {
 
-                        foreach ($size_quntty as $sizes) {
-                            
-                            $sizes->update([
-                                'quantity' => $sizes->quantity - 1,
-                            ]);
-                        }
-                        
-                    }//endo of foreach
+                    $total +=  session()->get('governorate_price');
+                }
 
-                }//end of cart_size
+                if (session()->has('coupon_value')) {
 
-                session()->forget(['cart_color','cart_size','price']);
+                    $total -= session()->get('coupon_value');
+                }
+
+
+                $orders->update([
+                    'total_price' => $orders->total_price + $total_price,
+                    'total'       => $orders->total =  $total_price + $total,
+                ]);
+
+                session()->forget(['cart_color','governorate_price','governorate_id']);
+                session()->forget(['coupon_value','coupon_name','end']);
 
                 Cart::destroy();
 
                 return redirect()->route('user.account');
 
             }//end fo if count cart
-
 
 
         } catch (\Exception $e) {
@@ -203,9 +176,34 @@ class CheckoutController extends Controller
     {
         $date = ShippingCompanyPrice::where('governorate_id',$id)->first();
 
-        session()->put('price', $date->price);
+        $total_price = 0;
 
-        return response()->json($date);
+        foreach (session()->get('cart_color') as $color) {
+
+            foreach (Cart::content() as $products) {
+
+                if ($products->id == $color['product_id']) {
+
+                    $total_price += $color['quantity'] * $products->price;
+
+                }//end of if
+                
+            }//endo of foreach cart
+
+        }//endof foreach sesstion color
+
+        if (session()->has('coupon_value')) {
+            
+            $total_price -= session()->get('coupon_value');
+        }
+
+        $total_price += $date->price;
+
+        $price = $date->price;
+        session()->put('governorate_price', $date->price);
+        session()->put('governorate_id', $id);
+
+        return response()->json(['price'=>$price,'total_price'=>$total_price]);
 
     }//end of shipping
 

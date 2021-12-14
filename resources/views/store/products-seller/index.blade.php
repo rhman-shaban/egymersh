@@ -1,12 +1,16 @@
 @extends('store.layouts.master')
 
+@section('page_title')
+@lang('title.My Products')
+@endsection
+
 @section('page_content')
 
  <section class="content-main">
     <div class="content-header">
         <div>
-            <h2 class="content-title card-title">Products grid</h2>
-            <p>Lorem ipsum dolor sit amet.</p>
+            <h2 class="content-title card-title">@lang('seller.All Products')</h2>
+            <p>@lang('seller.all products msg')</p>
         </div>
         <div>
             @php
@@ -14,9 +18,9 @@
             @endphp
 
             @if ($count_product >= 50)
-                <a href="" class="btn btn-primary btn-sm rounded">You have reached the limit Product : 50</a>
+                <a href="" class="btn btn-primary btn-sm rounded">@lang('seller.product limit msg')</a>
             @else
-                <a href="{{ url('/myStore/products/create') }}" class="btn btn-primary btn-sm rounded">Create new product</a>
+                <a href="{{ route('add-product-seller') }}" class="btn btn-primary btn-sm rounded">@lang('seller.Create new product')</a>
             @endif
         </div>
     </div>
@@ -24,45 +28,34 @@
         <header class="card-header">
             <div class="row gx-3">
                 <div class="col-lg-4 col-md-6 me-auto">
-                    <input type="text" placeholder="Search..." class="form-control">
-                </div>
-                <div class="col-lg-2 col-6 col-md-3">
-                    <select class="form-select">
-                        <option>All category</option>
-                        <option>Electronics</option>
-                        <option>Clothings</option>
-                        <option>Something else</option>
-                    </select>
-                </div>
-                <div class="col-lg-2 col-6 col-md-3">
-                    <select class="form-select">
-                        <option>Latest added</option>
-                        <option>Cheap first</option>
-                        <option>Most viewed</option>
-                    </select>
+                    <input type="text" placeholder="@lang('seller.products search msg')" class="form-control">
                 </div>
             </div>
-        </header> <!-- card-header end// -->
+        </header>
+        <!-- card-header end// -->
         <div class="card-body">
             <div class="row gx-3 row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 row-cols-xxl-5">
-                
+
                 @foreach ($seller_product as $product)
 
                     <div class="col">
                         <div class="card card-product-grid">
-                            <a href="#" class="img-wrap"> <img src="{{ $product->image_path }}" alt="Product"> </a>
+                            <a href="{{ route('product.details' ,$product->id) }}" target="_blank"  class="img-wrap"> <img src="{{ $product->image_path }}" alt="Product"> </a>
                             <div class="info-wrap">
-                                <a href="#" class="title text-truncate">{{ $product->title }}</a>
+                                <a href="{{ route('product.details' ,$product->id) }}" target="_blank"  class="title text-truncate">{{ $product->title }}</a>
                                 <div class="price mb-2">{{ $product->price }} {{ app()->getLocale() == 'ar' ? 'ج م' : 'LE'}}</div> <!-- price.// -->
+                                <a href="{{ route('product.details' ,$product->id) }}" target="_blank" class="btn btn-sm font-sm rounded btn-brand">
+                                  <i class="fas fa-eye mx-1"></i>@lang('seller.View')
+                                </a>
                                 <a href="{{ route('sellers.edit.product',$product->id) }}" class="btn btn-sm font-sm rounded btn-brand">
-                                    <i class="material-icons md-edit"></i> Edit
+                                    <i class="fas fa-pen"></i> @lang('seller.Edit')
                                 </a>
                                 <form action="{{ route('sellers.destroy.product', $product->id) }}" method="post" style="display: inline-block">
                                     {{ csrf_field() }}
                                     {{ method_field('delete') }}
-                                    <a href="#" class="btn btn-sm font-sm btn-light rounded delete"> 
-                                        <i class="material-icons md-delete_forever"></i> Delete
-                                    </a>                    
+                                    <a href="#" class="btn btn-sm font-sm btn-light rounded delete">
+                                        <i class="fa fa-trash mx-1"></i>
+                                    </a>
                                 </form><!-- end of form -->
                             </div>
                         </div> <!-- card-product  end// -->

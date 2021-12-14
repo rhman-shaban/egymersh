@@ -843,7 +843,7 @@ b {
 .btn-sm i {
   font-size: 13px;
   line-height: 0.7;
-  vertical-align: bottom;
+  /* vertical-align: bottom; */
 }
 
 .btn-brand {
@@ -2872,7 +2872,7 @@ ul.row, ul.row-sm {
 }
 
 /***************************
-    Page section margin 
+    Page section margin
 ****************************/
 .mtb-0 {
   margin: 0;

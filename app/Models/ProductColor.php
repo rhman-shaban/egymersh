@@ -12,6 +12,7 @@ class ProductColor extends Model
 
     protected $guarded = [];
 
+    protected $appends = ['image_path'];
 
     public function product()
     {
@@ -30,5 +31,11 @@ class ProductColor extends Model
     {
         return $this->belongsToMany(SellerProduct::class,'seller_product_colors');
     }//end of product_color
+
+    public function getImagePathAttribute()
+    {
+        return asset('storage/products/' . $this->front_image);
+
+    }//end of get front_image path
 
 }//end of model

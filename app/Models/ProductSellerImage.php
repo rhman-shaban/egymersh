@@ -11,9 +11,18 @@ class ProductSellerImage extends Model
 
     protected $guarded = [];
 
+    protected $appends = ['image_path'];
+
     public function products_seller()
     {
         return $this->belongsTo(SellerProduct::class,'seller_products_id');
-    }//endof product_image
+
+    }//end of belongsTo product_image
+
+    public function getImagePathAttribute()
+    {
+        return asset('storage/products_seller/' . $this->image);
+
+    }//end of get image path
     
 }//end of model

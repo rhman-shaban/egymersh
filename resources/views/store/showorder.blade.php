@@ -2,6 +2,11 @@
 @php
 $lang = LaravelLocalization::getCurrentLocale();
 @endphp
+
+@section('page_title')
+@lang('title.Order Details')
+@endsection
+
 @section('page_content')
         <section class="content-main">
             <div class="card">
@@ -15,7 +20,7 @@ $lang = LaravelLocalization::getCurrentLocale();
                                 <div class="text">
                                     <h6 class="mb-1">Customer</h6>
                                     <p class="mb-1">
-                                        {{$orders->name}}<br>{{$orders->phone}}  <br> 
+                                        {{$orders->name}}<br>{{$orders->phone}}  <br>
                                     </p>
                                 </div>
                             </article>
@@ -28,7 +33,7 @@ $lang = LaravelLocalization::getCurrentLocale();
                                 <div class="text">
                                     <h6 class="mb-1">Order info</h6>
                                     <p class="mb-1">
-                                    Notes : {{ $orders->notes }} 
+                                    Notes : {{ $orders->notes }}
                                     </p>
                                 </div>
                             </article>
@@ -48,16 +53,10 @@ $lang = LaravelLocalization::getCurrentLocale();
                             </article>
                         </div> <!-- col// -->
                     </div> <!-- row // -->
-                    <div class="row">
-                        <div class="col-lg-7">
+                    <div class="row ">
+                        <div class="col-lg-8">
                             <div class="table-responsive">
                                 <td>
-                                    <a class="btn btn-xs btn-print"> <i class="fa fa-print"></i></a>
-                                    {{-- <a class="btn btn-xs btn-print"> <i class="fa fa-file-image"></i></a> --}}
-                                    <button id="convert" class="btn btn-xs">
-                                        <i class="fa fa-file-image"></i>
-                                    </button>
-                                    <a class="btn btn-xs btn-print" id="all-download"> <i class="fa fa-download"></i></a>
                                         <div id="result">
                                             <!-- Result will appear be here -->
                                         </div>
@@ -67,7 +66,7 @@ $lang = LaravelLocalization::getCurrentLocale();
                                     @php
                                         $total = 0;
                                         @endphp
-                                        
+
                                         <tr>
                                             <th width="40%">Product</th>
                                             <th width="20%">Unit Price</th>
@@ -75,12 +74,9 @@ $lang = LaravelLocalization::getCurrentLocale();
                                             <th width="20%">color</th>
                                             <th width="20%">size</th>
                                             <th width="20%" class="text-end">Total</th>
-                                            <th width="20%" class="text-end">download</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-
-                                    
                                         <tr>
                                             @foreach ($orders->product_order as $item)
                                             <td>
@@ -90,65 +86,65 @@ $lang = LaravelLocalization::getCurrentLocale();
                                                     </div>
                                                 </a>
                                             </td>
-                                        
+
                                             <td>{{ $item->price }}</td>
-                                            
-                                            
+
+
                                             <td>{{ $item->quantity }}</td>
-                                            
+
                                             <td>
-                                            <div class="col-lg-2 col-sm-2 col-4 col-status"> 
+                                            <div class="col-lg-2 col-sm-2 col-4 col-status">
                                                         <span class="btn btn-sm p-3 color-front b-radius"
                                                         data-id="" style="background-color: {{ $item->color }};"></span>
-                                                    </div> 
-                                            
+                                                    </div>
+
                                             </td>
                                             <td>
                                             {{ $item->size }}
                                             </td>
-                                            <td class="text-end"> 
+                                            <td class="text-end">
                                             {{ number_format($item->price * $item->quantity) }}
                                             </td>
-                                            <td>
-                                                <a href="" download="" class="btn btn-xs"> <i class="fa fa-download"></i></a>
-                                                <a href="" download="" class="btn btn-xs"> <i class="fa fa-download"></i></a>
-                                            </td>
-                                        </tr>
+                                                                                    </tr>
                                         @endforeach
                                         <tr>
                                             <td colspan="4">
-                                                <article class="float-end">
-                                                    <dl class="dlist">
-                                                        <dt>Subtotal:</dt>
-                                                        <dd> {{$orders->total_price}}</dd>
-                                                    </dl>
-                                                    <dl class="dlist">
-                                                        <dt>Shipping cost:</dt>
-                                                        <dd>{{$orders->shipping}}</dd>
-                                                    </dl>
-                                                    <dl class="dlist">
-                                                        <dt>Grand total:</dt>
-                                                        <dd> <b class="h5">{{number_format($orders->total_price+$orders->shipping)}}</b> </dd>
-                                                    </dl>
-                                                    <dl class="dlist">
-                                                        <dt>your profit:</dt>
-                                                        <dd> <b class="h5">{{$orders->profit}}</b> </dd>
-                                                    </dl>
-                                                    <dl class="dlist">
-                                                        <dt>Status</dt>
-                                                        <dd>{{$orders->status}}</dd>
-                                                    </dl>
-                                                    <dl class="dlist">
-                                                        <dt>Message</dt>
-                                                        <dd>{{$orders->message}}</dd>
-                                                    </dl>
-                                                   
-                                                </article>
+
                                             </td>
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>
+                        </div>
+
+                        <div class="col-lg-4">
+                          <article >
+                              <dl class="dlist">
+                                  <dt>Subtotal:</dt>
+                                  <dd> {{$orders->total_price}}</dd>
+                              </dl>
+                              <dl class="dlist">
+                                  <dt>Shipping cost:</dt>
+                                  <dd>{{$orders->shipping}}</dd>
+                              </dl>
+                              <dl class="dlist">
+                                  <dt>Grand total:</dt>
+                                  <dd> <b class="h5">{{number_format($orders->total_price+$orders->shipping)}}</b> </dd>
+                              </dl>
+                              <dl class="dlist">
+                                  <dt>your profit:</dt>
+                                  <dd> <b class="h5">{{$orders->profit}}</b> </dd>
+                              </dl>
+                              <dl class="dlist">
+                                  <dt>Status</dt>
+                                  <dd>{{$orders->status}}</dd>
+                              </dl>
+                              <dl class="dlist">
+                                  <dt>Message</dt>
+                                  <dd>{{$orders->message}}</dd>
+                              </dl>
+
+                          </article>
                         </div>
                     </div>
                 </div>

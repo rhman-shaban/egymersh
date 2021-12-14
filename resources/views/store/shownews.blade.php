@@ -1,5 +1,9 @@
 @extends('store.layouts.master')
 
+@section('page_title')
+{{$id->title}}
+@endsection
+
 @section('page_content')
 
 <section class="content-main">

@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Evara Dashboard</title>
+    <title> @yield('page_title')</title>
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -14,10 +14,10 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Favicon -->
-    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('store_assets/assets/imgs/theme/favicon.svg') }}">
+    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('store_assets/assets/imgs/theme/favicon.png') }}">
     <!-- Template CSS -->
     @if (app()->getLocale() == 'ar')
-        
+
         <link href="{{ asset('store_assets/assets/css/main-rtl.css') }}" rel="stylesheet" type="text/css"/>
 
     @else
@@ -31,34 +31,45 @@
     <link rel="stylesheet" href="{{ asset('plugin/noty/noty.css') }}">
     <script src="{{ asset('plugin/noty/noty.min.js') }}"></script>
 
-    {{-- niceCountryInput --}}  
+    {{-- niceCountryInput --}}
     <link rel="stylesheet" href="{{ asset('plugin/country/niceCountryInput.css') }}">
 
-    {{-- imageMaker --}}  
-    <link rel="stylesheet" href="{{ asset('plugin/image-merge/imageMaker.css') }}">
-
-    {{-- jquery-ui --}}  
+    {{-- jquery-ui --}}
     <link rel="stylesheet" href="{{ asset('plugin/image-processing/jquery-ui.css') }}">
 
-    {{-- Tag --}}  
+    {{-- Tag --}}
     <link rel="stylesheet" href="{{ asset('plugin/tag/tagify.css') }}">
 
     <!-- vendor min  css -->
     <link rel="stylesheet" type="text/css" href="{{ asset('plugin/sweetalert/sweetalert2.min.css') }}">
 
     <style type="text/css">
+
+
         .containter {
           position: relative;
         }
 
-        .add-w {
-            max-width: 300px;
+        .logo-and-img{
+          position: relative;
+          height: 720px;
+          margin-bottom: 20px;
+          background-color: #eee;
         }
 
         .dragContainer {
-          /* the size of image_1  */
-          /*width: 200px;*/
-          /*height: 300px;*/
+          position: absolute;
+          top: 150px;
+          left: 200px;
+          width: 200px;
+          height: 300px;
+          overflow: hidden;
+
+          border: 2px red;
+          border-style: dotted;
+          border-radius: 2%;
+
+          z-index: 12
         }
 
         .logoContainer {
@@ -88,12 +99,6 @@
         }
         .containter {
           position: relative;
-        }
-
-        .dragContainer {
-          /* the size of image_1  */
-          width: 1000px;
-          height: 300px;
         }
 
         .logoContainer {
@@ -225,6 +230,7 @@
     <script src="{{ asset('store_assets/assets/js/main.js') }}" type="text/javascript" ></script>
     <script src="{{ asset('store_assets/assets/js/custom-chart.js') }}" type="text/javascript"></script>
     <script src="{{ asset('store_assets/assets/js/add-product.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('store_assets/assets/js/manual-order.js') }}" type="text/javascript"></script>
     <script src="{{ asset('plugin/interact.min.js') }}" type="text/javascript"></script>
 
     {{-- niceCountryInput js --}}
@@ -237,6 +243,7 @@
 
     <!-- min sweetalert -->
     <script src="{{ asset('plugin/sweetalert/sweetalert2.all.min.js') }}"></script>
+    <script src="{{ asset('plugin/jquery.number.min.js') }}"></script>
     {{--noty--}}
     {{-- <script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script> --}}
     @yield('scripts')
@@ -314,8 +321,6 @@
     </script>
     {{-- imageMaker js & jquery-ui.min.js --}}
     <script src="{{ asset('plugin/image-merge/jquery-ui.min.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('plugin/image-merge/imageMaker.js') }}" type="text/javascript"></script>
     <script src="{{ asset('store_assets/assets/js/seller/product.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('plugin/image-processing/html2canvas.js') }}" type="text/javascript"></script>
 </body>
 </html>

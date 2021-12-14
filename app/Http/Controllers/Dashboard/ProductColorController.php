@@ -55,13 +55,13 @@ class ProductColorController extends Controller
             $front_image = $request->file('front_images')[$i]->store( 'products' , 'public');
             $front_image = basename($front_image);
 
-            $back_image = $request->file('back_images')[$i]->store( 'products' , 'public');
-            $back_image = basename($back_image);
+            // $back_image = $request->file('back_images')[$i]->store( 'products' , 'public');
+            // $back_image = basename($back_image);
 
             $product_color = new ProductColor([
                 'product_id' => $product->id , 
                 'color' => $request->colors[$i] , 
-                'back_image' => $back_image , 
+                // 'back_image' => $back_image , 
                 'front_image' => $front_image , 
             ]);
             $product_color->save();
@@ -113,11 +113,11 @@ class ProductColorController extends Controller
             $product_color->front_image = $front_image;
         }
 
-        if($request->hasFile('back_image')) {
-            $back_image = $request->file('back_image')->store( 'products' , 'public');
-            $back_image = basename($back_image);
-            $product_color->back_image = $back_image;
-        }
+        // if($request->hasFile('back_image')) {
+        //     $back_image = $request->file('back_image')->store( 'products' , 'public');
+        //     $back_image = basename($back_image);
+        //     $product_color->back_image = $back_image;
+        // }
 
         $product_color->color = $request->color;
         $product_color->save();

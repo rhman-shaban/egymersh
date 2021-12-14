@@ -1,5 +1,9 @@
 @extends('site.layouts.master')
 
+@section('page_title')
+@lang('title.Seller Registeration')
+@endsection
+
 @section('page_content')
 <main class="main">
     {{-- <div class="page-header breadcrumb-wrap">
@@ -48,7 +52,7 @@
                             @csrf
                             <div class="row">
                                 <div class="form-group col-12 col-md-6">
-                                    <input type="email" class="form-control" name="email" placeholder="Enter email" 
+                                    <input type="email" class="form-control" name="email" placeholder="Enter email"
                                         value="{{ auth()->guard('seller')->user()->email }}">
                                      <span class="text-danger" id="email-error"></span>
                                 </div>
@@ -177,7 +181,7 @@
                                         <div class="col-4">
                                             <div class="form-check">
                                                 <input class="form-check-input" type="checkbox" name="make_designs_from_organically" id="exampleRadios223" value="Organically (site traffic)">
-                                                <label class="form-check-label" for="exampleRadios223">Organically (site traffic) 
+                                                <label class="form-check-label" for="exampleRadios223">Organically (site traffic)
                                                     <span class="text-danger" id="make_designs_use-error"></span>
                                                 </label>
                                             </div>
@@ -227,14 +231,14 @@
 
             $('#seller-image-country').val($('.niceCountryInputMenuCountryFlag').attr('src'));
             $('#seller-country').val($('.country-setting').text());
-            
+
             var url    = $(this).attr('action');
             var method = $(this).attr('method');
             var data   = $(this).serialize();
             var items  = $(this).serializeArray();
             var redircte  = "{{ route('store.index') }}";
-            
-            $("textarea[name='about_yourself']").removeClass('error');     
+
+            $("textarea[name='about_yourself']").removeClass('error');
 
             $.each(items, function(index,item) {
 
@@ -242,7 +246,7 @@
 
                     $('#make_designs_use-error').text('');
                 }
-                
+
                 $("input[name="+item.name+"]").removeClass('is-invalid');
                 $('#' + item.name + '-error').text('');
 
@@ -253,7 +257,7 @@
                 method: method,
                 data: data,
                 success: function(data) {
-                    
+
                     location.reload();
                     window.location.href = redircte;
 
@@ -262,18 +266,18 @@
                     $.each(data.responseJSON.errors, function(name,message) {
 
                         if (name == 'about_yourself') {
-                            $("textarea[name="+name+"]").addClass('error');                           
+                            $("textarea[name="+name+"]").addClass('error');
                         }
 
                         $("input[name="+name+"]").addClass('is-invalid');
                         $('#' + name + '-error').text(message);
-                        
+
                     });//end of each
                 },
             });//end of ajax
 
         });
-    
+
     });//end of document ready function
 </script>
 

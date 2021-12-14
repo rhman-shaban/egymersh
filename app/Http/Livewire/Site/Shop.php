@@ -13,7 +13,7 @@ class Shop extends Component
 
     protected $queryString = ['rows' , 'sort_by' , 'sizes'];
 
-    public $rows = 2;
+    public $rows = 10;
     public $sort_by = '';
     public $sizes = [];
     protected $paginationTheme = 'bootstrap';

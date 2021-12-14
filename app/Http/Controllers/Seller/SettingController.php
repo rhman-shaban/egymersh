@@ -50,11 +50,11 @@ class SettingController extends Controller
 
             if ($request->image) {
 
-                Storage::disk('public_uploads')->delete($request->image);
+                Storage::disk('local')->delete('public/' . $id->image);
                 
-                $request_data['image']  = $request->file('image')->store('seller_images',['disk' => 'public_uploads']);
+                $request_data['image']  = $request->file('image')->store('seller_images','public');
 
-            }       
+            }
 
             $id->update($request_data);
 
@@ -80,14 +80,13 @@ class SettingController extends Controller
     {
         $notification     = Notification::find($id);
 
-        $Notification_eye = NotificationEye::where('notification_id',$notification->id)->first();
+        $Notification_eye = NotificationEye::where('notification_id',$notification->id)->where('seller_id',auth()->guard('seller')->user()->id)->first();
 
         if ($Notification_eye) {
 
             return view('store.notifications.show',compact('notification'));
             
         } else {
-
             NotificationEye::create([
                 'notification_id' => $notification->id,
                 'seller_id'       => auth()->guard('seller')->user()->id,

@@ -63,6 +63,19 @@
           <article class="card-body ">
             <h3 class="card-title">Products</h3>
             <div class="card-stats">
+            <div class="d-flex align-items-center justify-content-between mb-2">
+                <div class="d-flex align-items-center">
+                  <div class="stat-name">
+                    <h4>Total Created</h4>
+                  </div>
+                </div>
+                <div class="d-flex align-items-center">
+                  <div class="stat-value-main">
+                    <span>{{$SellerProduct->count()}}</span>
+                  </div>
+                  <span>Product</span>
+                </div>
+              </div>
 
               <div class="d-flex align-items-center justify-content-between mb-2">
                 <div class="d-flex align-items-center">

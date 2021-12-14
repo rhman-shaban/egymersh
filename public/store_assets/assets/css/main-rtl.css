@@ -529,7 +529,7 @@ b {
 
 .menu-aside .menu-item .icon {
   color: #adb5bd;
-  margin-right: 10px;
+  margin-left: 10px;
   font-size: 24px;
 }
 
@@ -561,14 +561,14 @@ b {
 }
 
 .menu-aside .submenu {
-  margin-left: 44px;
+  margin-right:  44px;
   display: none;
   margin-top: 10px;
 }
 
 .menu-aside .submenu a {
   color: #6c757d;
-  padding: 5px 0 5px 15px;
+  padding: 5px 15px 5px 0px;
   -webkit-transition-duration: 0.3s;
           transition-duration: 0.3s;
   position: relative;
@@ -587,7 +587,7 @@ b {
   height: 5px;
   position: absolute;
   background-color: #adb5bd;
-  left: 0;
+  right: 0;
   top: 50%;
   -webkit-transform: translateY(-50%);
           transform: translateY(-50%);
@@ -601,7 +601,7 @@ b {
 .menu-aside .menu-item.has-submenu > .menu-link:after {
   display: inline-block;
   position: absolute;
-  right: 10px;
+  left: 10px;
   top: 10px;
   margin-top: .6em;
   vertical-align: middle;
@@ -843,7 +843,7 @@ b {
 .btn-sm i {
   font-size: 13px;
   line-height: 0.7;
-  vertical-align: bottom;
+  /* vertical-align: bottom; */
 }
 
 .btn-brand {
@@ -1111,7 +1111,7 @@ textarea.form-control {
   position: relative;
   -ms-flex-negative: 0;
       flex-shrink: 0;
-  margin-right: 15px;
+  margin-left:  15px;
 }
 
 .icontext .icon.border {
@@ -1267,7 +1267,7 @@ textarea.form-control {
   position: absolute;
   top: 50%;
   color: #adb5bd;
-}
+margin-right: 0.255em}
 
 .dropdown-menu {
   min-width: 10rem;
@@ -1283,6 +1283,7 @@ textarea.form-control {
   -webkit-box-shadow: 0 -3px 23px rgba(0, 0, 0, 0.06);
   box-shadow: 0 -3px 23px rgba(0, 0, 0, 0.06);
 }
+
 
 .dropdown-menu .dropdown-item {
   display: -webkit-box;
@@ -1308,7 +1309,7 @@ textarea.form-control {
 
 .dropdown-menu .dropdown-item img {
   max-width: 20px;
-  margin-right: 10px;
+  margin-left: 10px;
 }
 
 .progress-bar {
@@ -2872,7 +2873,7 @@ ul.row, ul.row-sm {
 }
 
 /***************************
-    Page section margin 
+    Page section margin
 ****************************/
 .mtb-0 {
   margin: 0;
@@ -3758,7 +3759,7 @@ body.offcanvas-active {
 }
 
 body.aside-mini .main-wrap {
-  margin-left: 80px;
+  margin-right: 80px;
 }
 
 body.aside-mini .navbar-aside {
@@ -4263,3 +4264,8 @@ body.dark .dropdown-menu .dropdown-item.text-danger {
   }
 }
 /*# sourceMappingURL=main.css.map */
+
+
+.mll-auto {
+    margin-left: auto !important;
+}

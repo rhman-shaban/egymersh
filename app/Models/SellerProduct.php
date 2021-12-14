@@ -11,13 +11,19 @@ class SellerProduct extends Model
 
     protected $guarded = [];
 
-    protected $appends = ['image_path'];
+    protected $appends = ['image_path','defult_logo'];
 
     public function getImagePathAttribute()
     {
-        return asset('uploads/seller_products_image/' . $this->image);
+        return asset('storage/products_seller/' . $this->defult_image);
 
     }//end of get image path
+
+    public function getDefultLogoAttribute()
+    {
+        return asset('storage/products_seller/' . $this->logo);
+
+    }//end of get front_image path
 
     public function product()
     {

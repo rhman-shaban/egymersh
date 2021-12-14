@@ -8,7 +8,7 @@ $lang = LaravelLocalization::getCurrentLocale();
     <div class="content-header">
         <div>
             <h2 class="content-title card-title">Order detail</h2>
-            <p>Details for Order ID: {{ $order->order_number }}</p>
+            <p>Details for Order ID: R{{ $order->order_number }}</p>
         </div>
     </div>
     <div class="card">
@@ -18,7 +18,7 @@ $lang = LaravelLocalization::getCurrentLocale();
                     <span>
                         <i class="material-icons md-calendar_today"></i> <b> {{ $order->created_at->diffForHumans() }} - {{ $order->created_at->toDayDateTimeString() }} </b>
                     </span> <br>
-                    <small class="text-muted">Order ID: {{ $order->order_number }}</small>
+                    <small class="text-muted">Order ID: R{{ $order->order_number }}</small>
                     <span class="badge badge-pill" style='background-color: {{ optional($order->status)->color }}' >{{ optional($order->status)->name_en }}</span>
                 </div>
                 <div class="col-lg-6 col-md-6 ms-auto text-md-end">
@@ -83,7 +83,7 @@ $lang = LaravelLocalization::getCurrentLocale();
              </div> <!-- col// -->
          </div> <!-- row // -->
          <div class="row">
-            <div class="col-lg-7">
+            <div class="col-lg-12">
                 <div class="table-responsive">
                     <td>
                         <a class="btn btn-xs btn-print"> <i class="fa fa-print"></i></a>
@@ -99,13 +99,14 @@ $lang = LaravelLocalization::getCurrentLocale();
                     <table class="table" id="print-order-list">
                         <thead>
                             <tr>
-                                <th width="40%">Product</th>
-                                <th width="20%">Unit Price</th>
-                                <th width="20%">Quantity</th>
-                                <th width="20%">color</th>
-                                <th width="20%">size</th>
-                                <th width="20%" class="text-end">Total</th>
-                                <th width="20%" class="text-end">download</th>
+                                <th width="20%">Product</th>
+                                <th width="25%">Title</th>
+                                <th width="5%">Quantity</th>
+                                <th width="10%">Unit Price</th>
+                                <th width="10%">Color</th>
+                                <th width="10%">Size</th>
+                                <th width="10%" class="text-end">Total</th>
+                                <!-- <th width="5%">download</th> -->
                             </tr>
                         </thead>
                         <tbody>
@@ -118,62 +119,78 @@ $lang = LaravelLocalization::getCurrentLocale();
                                 <td>
                                     <a class="itemside" href="#">
                                         <div class="left">
-                                            <img src="{{ $item->product->defult_image }}" class="order-image-download" width="70" height="70" alt="Item">
+                                            <img src="{{ $item->product->image_path }}" class="order-image-download" width="70" height="70" alt="Item">
                                         </div>
                                     </a>
                                 </td>
-                                <td>{{ $item->price }} {{ app()->getLocale() == 'ar' ? 'ج م' : 'LE'}}</td>
+                                <td>
+                                Product Name
+                                </td>
                                 <td>{{ $item->quantity }}</td>
+                                <td>{{ $item->price }} {{ app()->getLocale() == 'ar' ? 'ج م' : 'LE'}}</td>
                                 <td>
-                                    @foreach (App\Models\OrderItemColor::where('order_id',$order->id)->where('order_item_id', $item->seller_products_id)->get() as $data)
-                                        {{-- <div class="col-lg-2 col-sm-2 col-4 col-status"> --}}
-                                            <span class="btn btn-sm p-3 color-front b-radius"
-                                             data-id="" style="background-color: {{ $data->color }};"></span>
-                                        {{-- </div> --}}
-                                    @endforeach
+                                    <span class="btn btn-sm p-3 color-front b-radius"
+                                             data-id="" style="background-color: {{ $item->color }};"></span>
                                 </td>
                                 <td>
-                                    @foreach (App\Models\OrderItemSize::where('order_id',$order->id)->where('order_item_id', $item->seller_products_id)->get() as $data)
-                                        {{ $data->size }}
-                                    @endforeach
+                                    {{ $item->size }}
                                 </td>
-                                <td class="text-end"> 
-                                    {{ number_format($item->price * $item->quantity,2) }} {{ app()->getLocale() == 'ar' ? 'ج م' : 'LE'}} 
+                                <td class="text-end">
+                                    {{ number_format(preg_replace('/,/', '', $item->price) * $item->quantity,2) }}
+                                    {{ app()->getLocale() == 'ar' ? 'ج م' : 'LE'}}
                                 </td>
-                                <td>
-                                    <a href="{{ $item->product->title }}" download="{{ $item->product->defult_image }}" class="btn btn-xs"> <i class="fa fa-download"></i></a>
-                                    <a href="{{ $item->product->title }}" download="{{ $item->product->defult_image }}" class="btn btn-xs"> <i class="fa fa-download"></i></a>
-                                </td>
+                                <!-- <td>
+                                    <a href="{{ $item->product->image_path }}" download="{{ $item->product->image_path }}" class="btn btn-xs"> <i class="fa fa-download"></i></a>
+                                    <a href="{{ $item->product->defult_logo }}" download="{{ $item->product->defult_logo }}" class="btn btn-xs"> <i class="fa fa-download"></i></a>
+                                </td> -->
                             </tr>
                             @endforeach
-                                @php
-
-                                $total = number_format($item->total_price,2);
-                                // {{ number_format(preg_replace('/,/', '', $item->price) * $item->quantity,2) }}
-                                @endphp
-
 
                             <tr>
                                 <td colspan="4">
-                                    <article class="float-end">
+                                  <article>
+                                    <hr>
+                                      <dl class="dlist">
+                                          <dt>Client Name:</dt>
+                                          <dd> </dd>
+                                      </dl>
+                                      <dl class="dlist">
+                                          <dt>Phone:</dt>
+                                          <dd> </dd>
+                                      </dl>
+                                      <dl class="dlist">
+                                          <dt>Governorate</dt>
+                                          <dd> <b class="h6"></dd>
+                                      </dl>
+                                      <dl class="dlist">
+                                          <dt>Address:</dt>
+                                          <dd>   </dd>
+                                      </dl>
+                                  </article>
+
+                                </td>
+
+                                <td colspan="4">
+                                    <article>
+                                      <hr>
                                         <dl class="dlist">
                                             <dt>Subtotal:</dt>
-                                            <dd>{{ number_format($total,2) }} {{ app()->getLocale() == 'ar' ? 'ج م' : 'LE'}} </dd>
+                                            <dd>{{ number_format($order->total_price,2) }} {{ app()->getLocale() == 'ar' ? 'ج م' : 'LE'}} </dd>
                                         </dl>
                                         <dl class="dlist">
                                             <dt>Shipping cost:</dt>
-                                            <dd>00.00</dd>
+                                            <dd>{{ number_format($order->shipping,2) }} {{ app()->getLocale() == 'ar' ? 'ج م' : 'LE'}}</dd>
                                         </dl>
                                         <dl class="dlist">
-                                            <dt>Grand total:</dt>
-                                            <dd> <b class="h5">$983.00</b> </dd>
+                                            <dt>Total:</dt>
+                                            <dd> <b class="h6">{{ number_format($order->total,2) }} {{ app()->getLocale() == 'ar' ? 'ج م' : 'LE'}}</b> </dd>
                                         </dl>
                                         <dl class="dlist">
                                             <dt class="text-muted">Payment Status:</dt>
                                             <dd>
-                                                <span class="badge rounded-pill 
-                                                {{ $item->status == 0 ? 'alert-danger text-danger' : 'alert-success text-success'  }}"> 
-                                                {{ $item->status == 0 ? 'Cash on' : 'Cash on delivery' }} </span>
+                                                <span class="badge rounded-pill
+                                                {{ $item->status == 0 ? 'alert-danger text-danger' : 'alert-success text-success'  }}">
+                                                {{ $item->status == 0 ? 'Cash on delivery' : 'Cash on delivery' }} </span>
                                             </dd>
                                         </dl>
                                     </article>
@@ -183,23 +200,26 @@ $lang = LaravelLocalization::getCurrentLocale();
                     </table>
                 </div> <!-- table-responsive// -->
             </div> <!-- col// -->
+
+            <hr>
+
             <img src="" id="Ali" width="10">
             <div class="col-lg-12">
                 <div class="box shadow-sm bg-light">
-                    <h6 class="mb-15">Comments on Order</h6>
+                    <h6 class="mb-15">Admins Comments</h6>
                     <p>
                         <ul>
                             @foreach ($order->comments as $comment)
                             <li>
                                 <div>
-                                    <ul >   
+                                    <ul >
                                         <li style="display:inline" >  <a href=""> {{ optional($comment->admin)->name }} </a> </li>
                                         <li style="display:inline" > {{ $comment->created_at->diffForHumans() }}  </li>
-                                        <li style="display:inline" > 
+                                        <li style="display:inline" >
                                             <form style="display:inline;float: right;" action="{{ route('order_comments.destroy' , ['comment' => $comment->id ] ) }}" method="POST">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button class="btn btn-danger btn-xs delete"> <i class='fas fa-trash-alt' ></i> </button>  
+                                                <button class="btn btn-danger btn-xs delete"> <i class='fas fa-trash-alt' ></i> </button>
                                             </form>
                                         </li>
                                     </ul>
@@ -215,8 +235,8 @@ $lang = LaravelLocalization::getCurrentLocale();
                     <form action="{{ route('orders.comments.store' , ['order' => $order->id ]) }}" method='POST' >
                         @csrf
                         <div class="mb-3">
-                            <label>Notes</label>
-                            <textarea class="form-control @error('comment') is-invalid @enderror " name="comment" id="notes" placeholder="Type some note"></textarea>
+                            <label class="mb-2">Add New Comment</label>
+                            <textarea class="form-control @error('comment') is-invalid @enderror " name="comment" id="notes" placeholder="Be Informative!"></textarea>
                             @error('comment')
 
                             <span class='text-danger' > {{ $message }} </span>
@@ -239,7 +259,7 @@ $lang = LaravelLocalization::getCurrentLocale();
 
 
 @section('scripts')
-    
+
     <script type="text/javascript">
         $(document).ready(function() {
 
@@ -254,14 +274,14 @@ $lang = LaravelLocalization::getCurrentLocale();
                 e.preventDefault();
                 alert('aSome');
                 $('.order-image-download').each(function(index) {
-            
+
                     $('#all-download').attr('download',$(this).attr('src'));
 
                     $('#all-download').click();
 
                 });//end of download all image
 
-            });//end of click download 
+            });//end of click download
 
         });//end fo document redy function
     </script>
@@ -271,7 +291,7 @@ $lang = LaravelLocalization::getCurrentLocale();
          //click event
          var convertBtn = document.getElementById("convert");
          convertBtn.addEventListener('click', convertToImage);
-         //convert table to image            
+         //convert table to image
          function convertToImage() {
             var resultDiv = document.getElementById("result");
             html2canvas(document.getElementById("print-order-list"), {
@@ -281,7 +301,7 @@ $lang = LaravelLocalization::getCurrentLocale();
                     $('#Ali').attr('src',img);
                 }
             });
-         }        
+         }
       </script>
 
 @endsection

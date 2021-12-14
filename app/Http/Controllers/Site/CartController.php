@@ -7,6 +7,7 @@ use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Http\Request;
 use App\Models\SellerProduct;
 use App\Models\Coupon;
+use App\Helpers\Carted;
 
 class CartController extends Controller
 {
@@ -17,8 +18,8 @@ class CartController extends Controller
     }
 
     public function add_cart(Request $request,$product)
-    {
-        // dd($request->all());
+    { 
+
         try {
 
             if (request()->ajax()) {
@@ -27,29 +28,29 @@ class CartController extends Controller
 
                 $product = Cart::add($product_model->id, $product_model->product->name, 1 , $product_model->price,)
                     ->associate('App\Models\SellerProduct');
-                if ($request->size_id) {
+         
                     
-                    $rand             = mt_rand(3125, 7315);
-                    $cart_size        = session()->get('cart_size');
-                    $cart_size_data   = ['size_id' => $request->size_id,'size' => $request->size,'product_id' => $product_model->id,'rand'=>$rand];
-                    $cart_size[$rand] = $cart_size_data;
+                /////////sesstion color
 
-                    session()->put('cart_size',$cart_size);
+                $rand_color       = mt_rand(3125, 7315);
+                $cart_color       = session()->get('cart_color');
+                $cart_color_data  = ['color_id'   => $request->color_id,
+                                     'color'      => $request->color,
+                                     'size_id'    => $request->size_id,
+                                     'size'       => $request->size,
+                                     'product_id' => $product_model->id,
+                                     'quantity'   => '1',
+                                     'rand'       => $rand_color];
+                $cart_color[$rand_color] = $cart_color_data;
+                session()->put('cart_color',$cart_color);
                 
-                }
-
-                if ($request->color_id) {
-                    
-                    $rand             = mt_rand(3125, 7315);
-                    $cart_color       = session()->get('cart_color');
-                    $cart_color_data  = ['color_id' => $request->color_id,'color' => $request->color,'product_id' => $product_model->id,'rand'=>$rand];
-                    $cart_color[$rand]= $cart_color_data;
-                    session()->put('cart_color',$cart_color);                    
-                    
-                }
-// 
                 $total   = Cart::subtotal();
-                $count   = Cart::count();
+                // $count   = Cart::count();
+                $count = 0;
+                foreach (session()->get('cart_color') as  $date) {
+
+                    $count += $date['quantity'];
+                }
                 $local   = app()->getLocale();
 
                 return response()->json(['product' => $product, 'product_model' => $product_model, 'total' => $total, 'local' => $local, 'count' => $count]);
@@ -64,15 +65,35 @@ class CartController extends Controller
 
     }//end of function
 
-    public function update_cart(Request $request, $id)
+    public function update_cart(Request $request)
     {   
         try {
 
             if (request()->ajax()) {
 
                 $cart  = Cart::update($request->row_id, $request->quantity);
-                $count = Cart::count();
+                // $count = Cart::count();
                 $app   = app()->getLocale();
+
+                $colors_item = session()->get('cart_color');
+                $colors_item[$request->rand]['quantity']  = $request->quantity;
+                session()->put('cart_color',$colors_item);
+
+                $count = 0;
+                foreach (session()->get('cart_color') as  $date) {
+
+                    $count += $date['quantity'];
+                }
+
+                $countt = 0;
+                foreach (session()->get('cart_color') as  $date) {
+
+                    if ($request->id == $date['product_id']) {
+
+                        $countt += $date['quantity'];
+                        
+                    }
+                }
 
                 if ($coupon = session()->has('coupon_value') == '') {
 
@@ -84,7 +105,7 @@ class CartController extends Controller
 
                 }//end of if
 
-                return response()->json(['cart' => $cart, 'count' => $count, 'app' => $app, 'coupon' => $coupon]);
+                return response()->json(['cart' => $cart, 'count' => $count, 'app' => $app,'countt' => $countt, 'coupon' => $coupon,'colors_item' => $colors_item]);
 
             }//end of ajax
 
@@ -119,25 +140,17 @@ class CartController extends Controller
                     }//end of if 
 
                 }//end of foreachcart_color
-
-                foreach (session()->get('cart_size') as $date) {
-                    
-                    if ($cart->id == $date['product_id']) {
-
-                        $rand            = $date['rand'];
-                        $cart_size_item  = session()->get('cart_size');
-
-                        unset($cart_size_item[$rand]);
-
-                        session()->put('cart_size',$cart_size_item);
-
-                    }//end of if 
-
-                }//end of cart_size
-
-                $count = Cart::count();
+                
                 Cart::remove($id);
-                return response()->json(['count' => $count]);
+                // $count   = Cart::count();
+                $count = 0;
+                foreach (session()->get('cart_color') as  $date) {
+
+                    $count += $date['quantity'];
+                }
+                $total   = Cart::subtotal();
+
+                return response()->json(['count' => $count,'total' => $total]);
 
             }//end of ajax
 

@@ -15,15 +15,15 @@ class Store extends Model
 
     public function getlogoPathAttribute()
     {
-        return asset('uploads/' . $this->logo);
+        return asset('storage/' . $this->logo);
 
     }//end of get logo path
 
     public function getbannerPathAttribute()
     {
-        return asset('uploads/' . $this->banner);
+        return asset('storage/' . $this->banner);
 
-    }//end of get logo path
+    }//end of get banner path
 
     public function product()
     {

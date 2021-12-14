@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Governorate;
 use App\Http\Requests\Dashboard\Governorates\StoreGovernorateRequest;
 use App\Http\Requests\Dashboard\Governorates\UpdateGovernorateRequest;
@@ -16,7 +17,11 @@ class GovernorateController extends Controller
      */
     public function index()
     {
+        if (Auth::guard('admin')->user()->role == 0){
         return view('dashboard.governorates.index');
+    }else{
+        return view('error');
+    }
     }
 
     /**
@@ -26,7 +31,11 @@ class GovernorateController extends Controller
      */
     public function create()
     {
+        if (Auth::guard('admin')->user()->role == 0){
         return view('dashboard.governorates.create');
+    }else{
+        return view('error');
+    }
     }
 
     /**

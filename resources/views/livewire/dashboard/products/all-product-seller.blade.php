@@ -15,7 +15,7 @@
                 <div class="col-md-2 col-6">
                     <div class="custom_select">
                         <select wire:model="rows" class="form-select">
-                            <option value="10">10</option>
+                            <option value="20">20</option>
                             <option value="50">50</option>
                             <option selected value="100">100</option>
                             <option value="200">200</option>
@@ -41,20 +41,22 @@
 
                     <div class="col">
                         <div class="card card-product-grid">
-                            <a href="#" class="img-wrap"> <img src="{{ $product->image_path }}" alt="Product"> </a>
+                            <a href="{{ route('product.details' ,$product->id) }}" target="_blank" class="img-wrap"> <img src="{{ $product->image_path }}" alt="Product"> </a>
                             <div class="info-wrap">
-                                <a href="#" class="title text-truncate">{{ $product->title }}</a>
-                                <div class="price mb-2">{{ $product->price }}</div> <!-- price.// -->
-                                <a href="#" class="btn btn-sm font-sm rounded btn-brand">
-                                    <i class="material-icons md-edit"></i> Edit
-                                </a>
-                                <a href="#" class="btn btn-sm font-sm btn-light rounded">
-                                    <i class="material-icons md-delete_forever"></i> Delete
-                                </a>
+                              <form action="{{ route('sellers.destroy.product', $product->id) }}" method="post" style="display: inline-block; float:right">
+                                  {{ csrf_field() }}
+                                  {{ method_field('delete') }}
+                                  <a href="#" class="btn btn-sm font-sm btn-light rounded delete">
+                                      <i class="fas fa-trash"></i>
+                                  </a>
+                              </form>
+                                <a href="{{ route('product.details' ,$product->id) }}" target="_blank" class="title text-truncate">{{ $product->title }}</a>
+                                <div class="price mb-2">{{ $product->price }} {{ app()->getLocale() == 'ar' ? 'ج م' : 'LE'}} <span style="color:green">({{ $product->selling_price }}  {{ app()->getLocale() == 'ar' ? 'ج م' : 'LE'}})</span> </div> <!-- price.// -->
+
                             </div>
                         </div> <!-- card-product  end// -->
                     </div> <!-- col.// -->
-                    
+
                 @endforeach
 
             </div> <!-- row.// -->

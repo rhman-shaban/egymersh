@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Store;
+use Illuminate\Support\Facades\Auth;
 class StoreController extends Controller
 {
     /**
@@ -14,7 +15,12 @@ class StoreController extends Controller
      */
     public function index()
     {
+        if (Auth::guard('admin')->user()->role == 0){
         return view('dashboard.stores.index');
+        
+    }else{
+        return view('error');
+    }
     }
 
     /**

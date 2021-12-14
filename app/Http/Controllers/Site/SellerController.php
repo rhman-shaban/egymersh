@@ -41,7 +41,6 @@ class SellerController extends Controller
      */
     public function store(Request $request)
     {
-
         if (Auth::guard('seller')->check()) {
 
             return redirect()->back();
@@ -65,14 +64,10 @@ class SellerController extends Controller
             if (auth()->guard('seller')->attempt([
                 'email'    => $request->email, 
                 'password' => $request->password])) {
-                //return response(['success' => true]);
+
                 return redirect()->route('store.index');
 
-            } else {
-                
-                return redirect()->back();
-                
-            }//end of attempt
+            }//end of if attempt
             
         }//end of if auth
 

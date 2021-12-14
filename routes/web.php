@@ -53,16 +53,39 @@ use App\Http\Controllers\Site\User\ProfileController as UserProfileContoller;
 
 require __DIR__.'/auth.php';
 
-Route::get('/add_new_item' , [AjaxController::class , 'add_new_item']);
-Route::get('/add_new_size' , [AjaxController::class , 'add_new_size']);
-    
+Route::get('/aa' , function(){
+
+    return session()->get('governorate_price');
+
+    $aa = session()->get('cart_color');
+    $aa['5460']['color']  = 'aaaa';
+    session()->put('cart_color',$aa);
+    return $aa['5460']['color'];
+
+
+    foreach (session()->get('cart_color') as $item) {
+
+        if ($item['item']['productnummer'] == $productnummer){
+            $item['qty'] = $aantal;
+
+            break;
+        }
+    }
+
+});
+
 Route::get('/test' , function(){
-    return session()->forget(['cart_color','cart_size','price']);
     return Cart::destroy();
+    return session()->forget(['cart_color','cart_size','price']);
+    return session()->get('cart_color');
     $user = App\Models\Seller::find(1);
     Auth::guard('seller')->login($user);
 
 });
+
+Route::get('/add_new_item' , [AjaxController::class , 'add_new_item']);
+Route::get('/add_new_size' , [AjaxController::class , 'add_new_size']);
+    
 
 Route::group(
     [
@@ -92,6 +115,7 @@ Route::group(
         });
 
         Route::get('/'  , [DashboardController::class , 'index'])->name('Dashboard');
+        Route::get('/static/admins'  , [DashboardController::class , 'index'])->name('static.admins.index');
         Route::post('admin.logout'  , [AdminAuthController::class , 'logout'])->name('admin.logout');
         Route::get('/profile/edit'  , [ProfileController::class , 'profile_edit'])->name('profile.edit');
         Route::patch('/profile'  , [ProfileController::class , 'update_profile'])->name('profile.update');
@@ -177,6 +201,7 @@ Route::group(
 
 
     Route::resource('sellers', SellerController::class);
+    Route::post('sellers.store'  , [SellerController::class , 'store'])->name('sellers.store');
     Route::post('darkmode'  , [WelcomController::class , 'darkmode'])->name('darkmode');
 
     Route::group(['prefix' => 'myStore','middleware'=>'seller'], function() {
@@ -184,7 +209,7 @@ Route::group(
         Route::get('/', [WelcomController::class , 'index'])->name('store.index');
         Route::get('category_product/{id}'  , [SellerProductController::class , 'product'])->name('category.product');
         Route::post('show_product'  , [SellerProductController::class , 'show_product'])->name('show.product');
-        Route::get('product.index'  , [SellerProductController::class , 'products_index'])->name('product.index');
+        Route::get('product_index'  , [SellerProductController::class , 'products_index'])->name('product.index');
         Route::get('/products/create'  , [SellerProductController::class , 'products_create'])->name('product.create');
         Route::get('prod_index'  , [SellerProductController::class , 'index'])->name('prod.index');
         Route::post('sellers.store.product'  , [SellerProductController::class , 'store'])->name('sellers.store.product');
@@ -194,8 +219,8 @@ Route::group(
             //route orders;
         Route::get('order'  , [OrderSellerController::class, 'index'])->name('order.seller.index');
         Route::get('/store/productds/{id}'  , [OrderSellerController::class, 'store_product'])->name('order.seller.store');
-        Route::get('/store/productd/details'  , [OrderSellerController::class, 'product_details'])->name('order.seller.product');
-        Route::get('chouse.color'  , [OrderSellerController::class, 'chouse_color'])->name('chouse.color.size');
+        Route::post('store/productd/details'  , [OrderSellerController::class, 'product_details'])->name('order.seller.product');
+        Route::post('chouse/color'  , [OrderSellerController::class, 'chouse_color'])->name('chouse.color.size');
         Route::post('store_order'  , [OrderSellerController::class, 'store_order'])->name('store.order');
             //route stores
         Route::resource('stores', StoreController::class)->except(['index']);
@@ -223,6 +248,10 @@ Route::group(
             return view('store.settings');
         });
 
+        Route::get('/settings/verify' , function(){
+            return view('store.verify');
+        });
+
         Route::get('profile.password'  , [SettingController::class , 'password_index'])->name('profile.password');
         Route::post('profile.password'  , [SettingController::class , 'password_update'])->name('profile.password');
         Route::post('profile.store'  , [SettingController::class , 'profile_store'])->name('profile.store');
@@ -234,9 +263,11 @@ Route::group(
         route::post('get_price' ,[OrderSellerController::class,'get_shipping_price'])->name('get.price');
         Route::get('shownews/{id}', [WelcomController::class , 'show'])->name('show-news');
         Route::post('store_product', [OrderSellerController::class , 'add_product'])->name('store_product');
-        Route::delete('delete/product', [OrderSellerController::class , 'delete_product'])->name('delete_product');
+        Route::delete('delete_product', [OrderSellerController::class , 'delete_product'])->name('delete_product');
         Route::delete('delete/{id}', [staticssellerController::class , 'delete_order'])->name('delete.order');
         Route::get('showorder/{id}', [staticssellerController::class , 'show'])->name('show-order');
+
+        Route::post('governorate_shippingg/{id}', [OrderSellerController::class, 'get_shipping_price'])->name('shippingg');
 
     });//route guarp
 
@@ -299,7 +330,7 @@ Route::group(
         //rpute card
     Route::get('/cart', [CartController::class, 'cart_index'])->name('cart.index');
     Route::post('/cart.store/{id}', [CartController::class, 'add_cart'])->name('cart.store');
-    Route::post('/cart_update/{id}', [CartController::class, 'update_cart'])->name('cart.update');
+    Route::post('cart_update', [CartController::class, 'update_cart'])->name('cart.update');
     Route::delete('/destroy_cart/{id}', [CartController::class, 'destroy_cart'])->name('cart.destroy');
     Route::post('/coupon_cart', [CartController::class, 'add_coupon_cart'])->name('cart.coupon');
     Route::get('/destroy_cart', [CartController::class, 'destroy_coupon_cart'])->name('cart.destroy.coupon');

@@ -20,15 +20,13 @@ class Seller extends Authenticatable
 
     protected $guard = 'seller';
 
-    protected $hidden = [
-        'password', 'remember_token',
-    ];
+    protected $hidden = ['password', 'remember_token'];
 
     protected $appends = ['image_path'];
 
     public function getImagePathAttribute()
     {
-        return asset('uploads/' . $this->image);
+        return asset('storage/' . $this->image);
 
     }//end of get image path
 
@@ -48,19 +46,30 @@ class Seller extends Authenticatable
     public function store()
     {
         return $this->hasMany(Store::class, 'seller_id');
+
     }//end of store
 
     public function sellerProduct()
     {
         return $this->hasMany(SellerProduct::class, 'seller_id');
-    }
+    }//end of sellerProduct
+
     public function order_seller(){
+
         return $this->hasMany(sellers::class,'seller_id');
-    }//end of store
+
+    }//end of order_seller
 
     public function reply()
     {
         return $this->hasMany(Reply::class,'seller_id');
-    }//end of seller
+
+    }//end of reply
+
+    public function wishlist()
+    {
+        return $this->hasMany(WishList::class , 'user_id');
+
+    }//end of wishlist
     
 }//enf of mode

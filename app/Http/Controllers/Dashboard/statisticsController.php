@@ -21,13 +21,13 @@ use App\Models\product_order;
 class statisticsController extends Controller
 {
     public function index(){
-
+        
         $Products = Product::get();
         //$dd= SellerProduct::where('product_id',22)->with('product')->count('id');
         
         //dd($dd);
         //$items = SellerProduct::groupby('product_id')->get();
-        
+        $SellerProduct = SellerProduct::get();
 
         foreach($Products as $Product)
         $Products_id=Product::pluck('id')->toarray();
@@ -172,7 +172,7 @@ class statisticsController extends Controller
          $ordersManual = order_seller::count();
          $ordersOrganic = Order::where('Organic','!=','null')->count();
          $ordersDelivered = Order::where('Delivered','!=','null')->count();
-         $orderdeleverd    =order_seller::where('status','delivred')->count();
+         $orderdeleverd    =order_seller::where('status','Delivered')->count();
         $totalorder=$ordersDelivered +  $orderdeleverd ;
         $totalorder = Order::count();
         $allorder= $ordersManual  + $totalorder ;
@@ -188,7 +188,7 @@ class statisticsController extends Controller
             $details =($i->product->selling_price+  $details) *$i->quantity;
             $revenu =($i->product->price+  $revenu) *$i->quantity;
         }
-        $order_seller    =order_seller::where('status','delivred')->select('total_price','profit')->get();
+        $order_seller    =order_seller::where('status','Delivered')->select('total_price','profit')->get();
     
         $balnce=$details + $order_seller->sum('profit');
         
@@ -206,7 +206,11 @@ class statisticsController extends Controller
         'storesactive','storesInactive',
         'orders','ordersManual','ordersOrganic','ordersDelivered',
         'uc','storesChartr','ordersChat','sc','ordersChartManualr',
-        'ordersOrganicChartManualr','totalorder','allorder','balnce','base_revenue','total_revenue','balnce'
+        'ordersOrganicChartManualr','totalorder','allorder','balnce','base_revenue','total_revenue','balnce','SellerProduct'
     ));
+
     }
+}else{
+    return view('error');
+}
 }

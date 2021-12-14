@@ -36,11 +36,9 @@ $lang = LaravelLocalization::getCurrentLocale();
                                                         @foreach ($products as $product)
 
                                                         <tr>
-                                                            <td class="image product-thumbnail"><img src="{{ Storage::url('seller_products/'.optional($product->product)->image) }}" alt="#"></td>
+                                                            <td class="image product-thumbnail"><img src="{{ $product->defult_image }}" alt="#"></td>
                                                             <td class="product-des product-name">
-                                                                <h5 class="product-name"><a href="shop-product-right.html"> {{ optional($product->product)->title }} </a></h5>
-                                                                <p class="font-xs">Maboriosam in a tonto nesciung eget<br> distingy magndapibus.
-                                                                </p>
+                                                                <h5 class="product-name"><a href="shop-product-right.html"> {{ $product->title }} </a></h5>
                                                             </td>
                                                             <td class="price" data-title="Price"><span> {{ optional($product->product)->price }} LE</span></td>
 

@@ -1,6 +1,6 @@
 <header class="main-header navbar">
     <div class="col-search">
-        
+
     </div>
     <div class="col-nav">
         <button class="btn btn-icon btn-mobile me-auto" data-trigger="#offcanvas_aside"> <i class="material-icons md-apps"></i> </button>
@@ -22,14 +22,14 @@
                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownLanguage">
                     @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
                         <a class="dropdown-item text-brand" hreflang="{{ $localeCode }}" href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}">
-                            <img src="{{ asset('site_assets/assets/imgs/lang') }}/{{ $properties['native'] == 'English' ? 'en.jpeg' : 'ar.jpeg' }}" alt="English">
+                            <img src="{{ asset('site_assets/assets/imgs/lang') }}/{{ $properties['native'] == 'English' ? 'en.png' : 'egy.png' }}" alt="English">
                             {{ $properties['native'] }}
                         </a>
                     @endforeach
                 </div>
             </li>
             <li class="dropdown nav-item">
-               
+
                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownAccount">
                     <a class="dropdown-item" href="{{ route('profile.edit') }}"><i class="material-icons md-perm_identity"></i>Edit Profile</a>
                     <a class="dropdown-item" href="#"><i class="material-icons md-settings"></i>Account Settings</a>

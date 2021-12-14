@@ -136,9 +136,9 @@
                                         <p class="text-danger"> {{ $message }} </p>
                                         @enderror
                                     </div>
-                                    <img height="100" width="100" class="img-thumbnail img-responsive" src="{{ Storage::url('products/'.$color->front_image) }}" alt="">
+                                    <img height="100" width="100" class="img-thumbnail img-responsive" src="{{ asset('storage/products'.$color->front_image) }}" alt="">
                                 </div>
-                                <div class="col-md-3">
+                                {{-- <div class="col-md-3">
                                     <div class="mb-4">
                                         <label  class="form-label">  </label>
                                         <input type="file"  class="form-control" name="back_image" accept="image/*" accept="image/png, image/gif, image/jpeg, image/jpg" >
@@ -147,7 +147,7 @@
                                         @enderror
                                     </div>
                                     <img height="100" width="100" class="img-thumbnail img-responsive" src="{{ Storage::url('products/'.$color->back_image) }}" alt="">
-                                </div>
+                                </div> --}}
                                 <div class="col-md-3">
                                     <div class="mb-4">
                                         <label  class="form-label">  </label>
@@ -183,7 +183,6 @@
                                         <th>#</th>
                                         <th> Size </th>
                                         <th> quantity </th>
-                                        <th>  </th>
                                         <th> 
                                             <a href='{{ route('product_sizes.create'  , ['product_color' => $color->id , 'product_id' => $product->id  ] ) }}' class='add_more_sizes' class='btn btn-primary btn-sm' > 
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-circle-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">

@@ -8,7 +8,7 @@
             <h2 class="content-title card-title">Requests</h2>
         </div>
         @include('dashboard.layouts.messages')
-      
+
     </div>
     <div class="row">
     <div class="card mb-4">
@@ -17,7 +17,7 @@
           <div class="row align-items-center">
           </div>
         </header>
-     
+
         <div class="card-body">
           <div class="table-responsive">
             <div class="table-responsive">
@@ -43,7 +43,7 @@
                     {{ date('d-m-Y', strtotime($walet['created_at'])); }}
                     </td>
                     <td>
-                    {{$walet->payway}}        
+                    {{$walet->payway}}
                     </td>
                     <td>
                       <span class="badge badge-pill badge-soft-success">{{$walet->status_en}}</span>
@@ -53,12 +53,12 @@
                       request_id="{{$walet->id}}" class="change_request btn btn-primary"
                       data-bs-toggle="modal"
                       data-bs-target="#request_id">
-                                 Chnge
+                                 Change
                     </button>
                     </td>
                   </tr>
                 @endforeach
-         
+
                 </tbody>
                 </tbody>
               </table>
@@ -66,9 +66,9 @@
           </div> <!-- table-responsive end// -->
         </div>
       </div>
-    </div>  
+    </div>
 
-    
+
         <div class="modal fade" value="{{$walet->id}}" id="request_id" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -98,14 +98,14 @@
                             <button type="supmit" id="id" value="id" class="btn btn-primary">Save changes</button>
                         </div>
                     </form>
-                    </div> 
+                    </div>
             </div>
         </div>
-   
-                      
+
+
 
 </section>
-    
+
 
 @endsection
 
@@ -117,7 +117,7 @@
 
     $(document).ready(function() {
         $( ".change_request" ).click(function() {
-          
+
           var requestId =  $(this).attr( "request_id" );
           $("#inputID").val(requestId);
         });

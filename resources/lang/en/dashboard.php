@@ -35,6 +35,7 @@ return [
     'password_confirmation' => 'password_confirmation',
     'changpassword'         => 'password_confirmation',
     'permissions'           => 'Permissions',
+    'addres'                => 'addres',
     
     'create'           => 'Create',
     'read'             => 'Read',

@@ -5,21 +5,32 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use App\Models\Offer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class OfferController extends Controller
 {
 
     public function index()
     {
+        if (Auth::guard('admin')->user()->role == 0){
+          
         $offers = Offer::all();
 
         return view('dashboard.promotions.offers.index',compact('offers'));
+    }else{
+        return view('error');
+    }
     }//end of index
     
     
     public function create()
     {
+        if (Auth::guard('admin')->user()->role == 0){
+       
         return view('dashboard.promotions.offers.create');
+    }else{
+        return view('error');
+    }
     }//end of create
 
     

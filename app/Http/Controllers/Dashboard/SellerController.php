@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Seller;
 use App\Models\Store;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SellerController extends Controller
 {
@@ -32,9 +33,13 @@ class SellerController extends Controller
    
     public function index()
     {
+        if (Auth::guard('admin')->user()->role == 0){
         $sellers = Seller::whenSearch(request()->search)->latest()->paginate(10);
 
         return view('dashboard.sellers.index',compact('sellers'));
+    }else{
+        return view('error');
+    }
     }//end of index
 
   

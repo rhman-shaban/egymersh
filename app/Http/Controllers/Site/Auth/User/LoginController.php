@@ -56,11 +56,14 @@ class LoginController extends Controller
 
                 }//end of attempt
 
+
+            } else {
+                
                 return back()->withErrors([
-                    'username' => 'No username',
+                    'email' => 'No email',
                 ]);  
 
-            }//end of username
+            } //end of email
 
         } catch (\Exception $e) {
 
@@ -76,7 +79,7 @@ class LoginController extends Controller
     {
         \Auth::guard('seller')->logout();
 
-        return view('site.login');
+        return redirect()->route('user.login_form');
         
     }//end pf logout 
 
@@ -84,7 +87,7 @@ class LoginController extends Controller
     {
         \Auth::guard('seller')->logout();
 
-        return view('site.login');
+        return redirect()->route('user.login_form');
         
     }//end pf logout 
 

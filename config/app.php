@@ -235,6 +235,8 @@ return [
         'Cart' => Gloudemans\Shoppingcart\Facades\Cart::class,
         'Image' => Intervention\Image\Facades\Image::class , 
         'Mailchimp' => NZTim\Mailchimp\MailchimpFacade::class,
+
+        'Carted' => App\Helpers\Carted::class,
     ],
 
 ];

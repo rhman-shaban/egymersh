@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\ShippingCompany;
 use App\Models\ShippingCompanyPrice;
 use App\Models\Governorate;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\Dashboard\ShippingCompanies\StoreShippingCompanyRequest;
 use App\Http\Requests\Dashboard\ShippingCompanies\UpdateShippingCompanyRequest;
 class ShippingCompanyController extends Controller
@@ -17,8 +18,13 @@ class ShippingCompanyController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
+    
     {
+        if (Auth::guard('admin')->user()->role == 0){
         return view('dashboard.shipping_companies.index');
+    }else{
+        return view('error');
+    }
     }
 
     /**
@@ -28,8 +34,12 @@ class ShippingCompanyController extends Controller
      */
     public function create()
     {
+        if (Auth::guard('admin')->user()->role == 0){
         $governorates = Governorate::where('active' , 1)->get();
         return view('dashboard.shipping_companies.create' , compact('governorates'));
+    }else{
+        return view('error');
+    }
     }
 
     /**

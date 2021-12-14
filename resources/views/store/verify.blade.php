@@ -1,5 +1,9 @@
 @extends('store.layouts.master')
 
+@section('page_title')
+@lang('title.Store Verification')
+@endsection
+
 @section('page_content')
 <section class="content-main">
     <div class="content-header">
@@ -11,7 +15,6 @@
                 <aside class="col-lg-3 border-end">
                     <nav class="nav nav-pills flex-lg-column mb-4">
                         <a class="nav-link" aria-current="page" href="{{ url('myStore/settings') }}">General</a>
-                        <a class="nav-link " aria-current="page" href="{{ url('myStore/settings/payment') }}">payment</a>
                         <a class="nav-link active" aria-current="page" href="{{ url('myStore/settings/verify') }}"> Ask For Verification </a>
                     </nav>
                 </aside>
@@ -82,7 +85,7 @@
                                         <label class="form-label"> content </label>
                                         <textarea class="form-control"  ></textarea>
                                     </div>
-                                    
+
                                 </div> <!-- col.// -->
                             </div> <!-- row.// -->
 

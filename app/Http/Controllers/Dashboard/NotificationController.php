@@ -5,15 +5,20 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use App\Models\Notification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class NotificationController extends Controller
 {
 
     public function index()
     {
+        if (Auth::guard('admin')->user()->role == 0){
         $notifications = Notification::whenSearch(request()->search)->latest()->paginate(20);
 
         return view('dashboard.notifications.index',compact('notifications'));
+    }else{
+        return view('error');
+    }
 
     }//end of index
 
@@ -30,8 +35,8 @@ class NotificationController extends Controller
         $request->validate([
             'title_ar'    => ['required','max:40'],
             'title_en'    => ['required','max:40'],
-            'message_ar'  => ['required','max:100'],
-            'message_en'  => ['required','max:100'],
+            'message_ar'  => ['required'],
+            'message_en'  => ['required'],
         ]);
 
         $request['admin_id'] = auth()->guard('admin')->user()->id;
@@ -55,8 +60,8 @@ class NotificationController extends Controller
        $request->validate([
             'title_ar'    => ['required','max:40'],
             'title_en'    => ['required','max:40'],
-            'message_ar'  => ['required','max:100'],
-            'message_en'  => ['required','max:100'],
+            'message_ar'  => ['required'],
+            'message_en'  => ['required'],
         ]);
 
         $request['admin_id'] = auth()->guard('admin')->user()->id;

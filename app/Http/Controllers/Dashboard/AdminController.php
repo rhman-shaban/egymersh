@@ -9,21 +9,33 @@ use App\Http\Requests\Dashboard\Admins\StoreAdminRequest;
 use App\Http\Requests\Dashboard\Admins\UpdateAdminRequest;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
 {
     
     public function index()
     {
+        if (Auth::guard('admin')->user()->role == 0){
         $admins = Admin::whenSearch(request()->search)->latest()->paginate(10);
         
         return view('dashboard.admins.index',compact('admins'));
+    }else{
+        return view('error');
+    }
+    
+    
     }//end of index
 
     
     public function create()
     {
+        if (Auth::guard('admin')->user()->role == 0){
         return view('dashboard.admins.create');
+    }else{
+        return view('error');
+    }
+    
     }//end of create
 
     

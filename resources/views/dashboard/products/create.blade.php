@@ -44,7 +44,7 @@
 
                         <div class="items">
                             <div class="row item">
-                                <div class="mb-4 col-md-2">
+                                <div class="mb-4 col-md-4">
                                     <label  class="form-label"> Front Image </label>
                                     <input type="file" id="front_image"  class="form-control @error('image') is-invalid @enderror" name="front_images[]">
                                     @error('image')
@@ -52,10 +52,10 @@
                                     @enderror
                                 </div>
                                 {{-- <img src="" class="front_image" width="200"> --}}
-                                <div class="mb-4 col-md-2">
+                                {{-- <div class="mb-4 col-md-2">
                                     <label  class="form-label"> Back image  </label>
                                     <input type="file" id="back_image" class="form-control @error('images') is-invalid @enderror" name="back_images[]">
-                                </div>
+                                </div> --}}
                                 {{--       <img src="" class="back_image" width="200"> --}}
                                 <div class="col-md-2">
                                     <label  class="form-label"> Color </label>

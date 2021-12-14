@@ -1111,7 +1111,7 @@ textarea:focus {
   height: 26px;
   position: absolute;
   top: 12px;
-  right: 15px;
+  right: 0;
   width: 20px;
 }
 
@@ -6866,10 +6866,10 @@ span.fi-rs-apps {
 
 .main-menu > nav > ul > li ul.mega-menu {
   position: absolute;
-  left: 0;
+  left: 20%;
   top: 100%;
   background-color: #ffffff;
-  width: 100%;
+  width: 70%;
   padding: 35px 25px 35px 35px;
   -webkit-transition: all .25s ease 0s;
   transition: all .25s ease 0s;
@@ -7372,8 +7372,8 @@ span.fi-rs-apps {
 }
 
 .pagination-area .page-item:first-child .page-link {
-  border-top-left-radius: 4px;
-  border-bottom-left-radius: 4px;
+  border-top-left-radius: 50%;
+  border-bottom-left-radius: 50%;
 }
 
 .pagination-area .page-item:last-child .page-link {
@@ -8491,7 +8491,7 @@ span.fi-rs-apps {
 }
 
 /***************************
-    Page section margin 
+    Page section margin
 ****************************/
 .mtb-0 {
   margin: 0;

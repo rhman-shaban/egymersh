@@ -78,7 +78,7 @@
         <tr>
             <th>#</th>
             <th> Front image  </th>
-            <th> Back Image </th>
+            {{-- <th> Back Image </th> --}}
             <th> Color </th>
             <th> sizes </th>
         </tr>
@@ -92,8 +92,8 @@
         <tr>
             <td> {{ $i++ }}</td>
            
-            <td>  <img  height="100" width="100" src="{{ Storage::url('products/'.$color->front_image) }}" alt=""> </td>
-            <td>  <img height="100" width="100"  src="{{ Storage::url('products/'.$color->back_image) }}" alt=""> </td>
+            <td> <img  height="100" width="100" src="{{ asset('storage/products/'.$color->front_image) }}" alt=""> </td>
+            {{-- <td>  <img height="100" width="100"  src="{{ Storage::url('products/'.$color->back_image) }}" alt=""> </td> --}}
             <td><span class="badge" style="background-color: {{ $color->color }};"> {{ $color->color }} </span> </td>
             <td>
                 <ul>

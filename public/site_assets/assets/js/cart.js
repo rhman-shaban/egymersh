@@ -1,6 +1,26 @@
 $(document).ready(function() {
 
-     $(document).on('click','.add-cart-color',function(e) {
+    $(document).on('click', 'a.quickViewProduct', function(e) {
+        e.preventDefault();
+
+        var product_id = $(this).attr('data-product_id');
+        var modal_name = $(this).attr('data-modal_name');
+        
+        $.ajax({
+            url: '/product_quick_view',
+            type: 'GET',
+            dataType: 'html',
+            data: {product_id:product_id},
+        }).done(function(data) {
+
+            $(document).find('body').append(data);
+            $(document).find('body').find(modal_name).modal('show');
+
+        });//end of ajax
+
+    });//end of click
+
+    $(document).on('click','.add-cart-color',function(e) {
         e.preventDefault();
         var url     = $(this).data('url');
         var colorId = $(this).data('color-id');
@@ -24,14 +44,20 @@ $(document).ready(function() {
                      
                 });//end of each
 
-                $(this).parent().addClass('active');
+                $('.product-color').each(function(index) {
+            
+                    $(this).removeClass('active');
 
-            }//end fof success
-        });//endي dof ajax
+                });//end of each
 
-     });//end of on click
+                $('.active-'+colorId).addClass('active');
 
-     $(document).on('click','.add-cart-size-product',function(e) {
+            }//end of success
+        });//end of ajax
+
+    });//end of on click
+
+    $(document).on('click','.add-cart-size-product',function(e) {
         e.preventDefault();
         var sizeId  = $(this).data('size-id');
         var size    = $(this).data('size');
@@ -47,20 +73,68 @@ $(document).ready(function() {
 
         $(this).parent().addClass('active');
 
-     });//end of on click
+    });//end of on click
 
     $(document).on('click','.add-cart',function(e){
         e.preventDefault();
-        
+
         var url     = $(this).data('url');
         var method  = $(this).data('method');
         var id      = $(this).data('id');
+        var locale  = $(this).data('locale');
         var sizeId  = $('#size-product-id').val();
         var size    = $('#size-product').val();
         var colorId = $('#color-product-id').val();
         var color   = $('#color-product').val();
         
-        
+        if ($('#color-product').val() == '' ) {
+
+            if (locale == 'ar') {
+
+                title = 'يجب اختيار اللون';
+
+            } else {
+
+                title = 'Color must be chosen';
+
+            }//end of getLocale
+
+            swal(title, {
+                type: "error",
+                icon: "error",
+                buttons: false,
+                timer: 3000,
+                timer: 15000
+            });
+
+            return;
+
+        }//end of if has color value
+
+        if ($('#size-product').val() == '' ) {
+
+            if (locale == 'ar') {
+
+                title = 'يجب اختيار الحجم';
+
+            } else {
+                
+                title = 'Size must be chosen';
+
+            }//end of getLocale
+
+            swal(title, {
+                type: "error",
+                icon: "error",
+                buttons: false,
+                timer: 3000,
+                timer: 15000
+            });
+
+            return;
+
+        }//end of if has size value
+
         $.ajax({
             url: url,
             method: method,
@@ -82,7 +156,7 @@ $(document).ready(function() {
             		var currency = 'LE';
             		var title    = 'add success'
 
-            	}
+            	}//end of getLocale
 
 		        swal(title, {
 		            type: "success",
@@ -100,8 +174,8 @@ $(document).ready(function() {
 
                 $('#size-product-item').empty('');
 
-            	$('#cart-totle').html(data.total + ' ' + currency);
-            	$('#cart-count').html(data.count);
+            	$('.cart-totle').html(data.total + ' ' + currency);
+            	$('.cart-count').html(data.count);
 
                 $('.add-cart-color').each(function(index) {
             
@@ -111,21 +185,44 @@ $(document).ready(function() {
 
                 if (data.product.qty == 1) {
 
+                    if (data.local == 'ar') {
+
                 	var html =
-			            `<li>
-			            	<div class="shopping-cart-img">
-			            		<a href="#">
-                                    <img src="${data.product_model.defult_image}" alt="Product">
+			            `<li class="delete-product-${data.product.id}">
+			            	<div class="shopping-cart-img m-2">
+			            		<a href="product/${data.product.id}">
+                                    <img src="${data.product_model.image_path}" alt="Product" style="margin: -15px;">
 			            		</a>
                             </div>
                             <div class="shopping-cart-title">
-                                <h4><a href="${data.product.id}">${data.product_model.title}</a></h4>
-                                <h4><span class="product-qty-${data.product.id}"> 1 X ${data.product.price}  ${currency}</span></h4>
+                                <h4><a href="product/${data.product.id}">${data.product_model.title}</a></h4>
+                                <h4><span class="product-qty-${data.product.id}">${data.product.price}  ${currency}</span></h4>
                             </div>
-                            <div class="shopping-cart-delete">
+                            <div class="shopping-cart-delete removal-product" data-id="${data.product.id}" data-rowid="${data.product.rowid}">
                                 <a href="#"><i class="fi-rs-cross-small"></i></a>
                             </div>
                         </li>`;
+
+                    } else {
+
+                        var html =
+                        `<li class="delete-product-${data.product.id}">
+                            <div class="shopping-cart-img">
+                                <a href="product/${data.product.id}">
+                                    <img src="${data.product_model.image_path}" alt="Product">
+                                </a>
+                            </div>
+                            <div class="shopping-cart-title">
+                                <h4><a href="product/${data.product.id}">${data.product_model.title}</a></h4>
+                                <h4><span class="product-qty-${data.product.id}"> 1 X ${data.product.price}  ${currency}</span></h4>
+                            </div>
+                            <div class="shopping-cart-delete removal-product" data-id="${data.product.id}" data-rowid="${data.product.rowid}">
+                                <a href="#"><i class="fi-rs-cross-small"></i></a>
+                            </div>
+                        </li>`;
+
+                    }//end of if
+
 
                     $('#add-cart-product').append(html);
 
@@ -150,24 +247,25 @@ $(document).ready(function() {
     	e.preventDefault();
 
     	var id     = $(this).data('id');
-    	var qtyval = parseInt($('#product-quntty-'+ id).text());
-    	var method = 'post';
         var rowId  = $(this).data('rowid');
+        var rand   = $(this).data('rand-id');
+    	var qtyval = parseInt($('#product-quntty-'+ rand).text());
+    	var method = 'post';
+        var url    = 'cart_update/';
 
     	qtyvalup   = qtyval + 1;
-        $('#product-quntty-'+ id).text(qtyvalup);
+        $('#product-quntty-'+ rand).text(qtyvalup);
 
        $.ajax({
-			url: 'cart_update/'+id,
+			url: url,
 	       	method: method,
 	       	data:{
-	          quantity:qtyvalup,
-              row_id:rowId,
 	          id:id,
+              row_id:rowId,
+              quantity:qtyvalup,
+	          rand:rand,
 	       	},
 	       	success: function (data) {
-
-                calculateTotal();
 
                 if (data.app == 'ar') {
                     
@@ -178,15 +276,17 @@ $(document).ready(function() {
                     currency = 'LE';
                 }
 
-                calculateTotal(currency);
+                coupon = data.coupon;
 
-                subTotleProduct = $.number(data.cart.qty * data.cart.price - data.coupon,2);
+                subTotleProduct = $.number(qtyvalup * data.cart.price,2);
+                
+                $('.cart-count').html(data.count);
 
-                $('#cart-count').html(data.count.count);
+                $('.product-qty-'+id).text(data.countt + ' ' + 'X' + ' ' + subTotleProduct + ' ' + currency);
 
-                $('.product-qty-'+id).text(data.cart.qty + ' ' + 'X' + ' ' + subTotleProduct + ' ' + currency);
+                $('#subtotal-' + rand).text(subTotleProduct);
 
-                $('#subtotal-' + id).text(subTotleProduct);
+                calculateTotal(currency,coupon);
 
 	       	},//end of success
 
@@ -198,22 +298,25 @@ $(document).ready(function() {
     	e.preventDefault();
 
     	var id     = $(this).data('id');
-    	var qtyval = parseInt($('#product-quntty-' + id).text());
-    	var method = 'post';
         var rowId  = $(this).data('rowid');
+        var rand   = $(this).data('rand-id');
+    	var qtyval = parseInt($('#product-quntty-' + rand).text());
+    	var method = 'post';
+        var url    = 'cart_update/';
     	qtyvaldown = qtyval - 1;
 
         if (qtyval > 1) {
 
-            $('#product-quntty-'+ id).text(qtyvaldown);
+            $('#product-quntty-'+ rand).text(qtyvaldown);
 
             $.ajax({
-    			url: 'cart_update/'+id,
+    			url: url,
     	       	method: method,
     	       	data:{
-    	          quantity:qtyvaldown,
-                  row_id:rowId,
     	          id:id,
+                  row_id:rowId,
+                  rand:rand,
+    	          quantity:qtyvaldown,
     	       	},
     	       	success: function (data) {
 
@@ -227,15 +330,17 @@ $(document).ready(function() {
                         currency = 'LE';
                     }
 
-                    calculateTotal(currency);
+                    coupon = data.coupon;
 
-                    subTotleProduct = $.number(data.cart.qty * data.cart.price - data.coupon,2);
+                    subTotleProduct = $.number(qtyvaldown * data.cart.price,2);
 
-                    $('#cart-count').html(data.count.count);
+                    $('.cart-count').html(data.count);
 
-                    $('.product-qty-'+id).text(data.cart.qty + ' ' + 'X' + ' ' + subTotleProduct + ' ' + currency);
+                    $('.product-qty-'+id).text(data.countt + ' ' + 'X' + ' ' + subTotleProduct + ' ' + currency);
                     
-                    $('#subtotal-' + id).text(subTotleProduct);
+                    $('#subtotal-' + rand).text(subTotleProduct);
+
+                    calculateTotal(currency,coupon);
 
     	       	},//end of success
 
@@ -275,7 +380,7 @@ $(document).ready(function() {
 
                     $('.delete-product-'+id).remove();
 
-                    $('#cart-count').html(data.count.count);
+                    $('.cart-count').html(data.count);
 
                     if (data.app == 'ar') {
                         
@@ -286,7 +391,11 @@ $(document).ready(function() {
                         currency = 'LE';
                     }
 
-                    calculateTotal(currency);
+                    $('.cart-totle').html(data.total + ' ' + currency);
+
+                    coupon = '0';
+
+                    calculateTotal(currency,coupon);
 
                     swal({
                         title: "deleted successfully",
@@ -306,7 +415,7 @@ $(document).ready(function() {
     });//end of product-removal button
 
     //calculate the total
-    function calculateTotal(currency) {
+    function calculateTotal(currency,coupon) {
 
         var price = 0;
 
@@ -316,8 +425,9 @@ $(document).ready(function() {
 
         });//end of product price
 
-        $('#cart-subtotal').html($.number(price, 2) + ' ' + currency);
-        $('#cart-totle').html($.number(price, 2) + ' ' + currency);
+        $('.cart-subtotal').html($.number(price, 2) + ' ' + currency);
+        $('.cart-totle').html($.number(price, 2) + ' ' + currency);
+        $('.cart-coupon').html($.number(price - coupon, 2) + ' ' + currency);
 
     }//end of calculate total
 

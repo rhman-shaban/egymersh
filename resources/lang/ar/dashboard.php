@@ -2,28 +2,28 @@
 
 return [
 
-    'dashboard'             => 'الرئسيه',
+    'dashboard'             => 'لوحة التحكم',
     'sales_graph'           => 'الرسم البياني للمبيعات',
     'action'                => 'الاحداث',
-    'no_data_found'         => 'للاسف لايوجد اي بينات',
-    'added_successfully'    => 'تمت الاضافه بنجاح',
-    'updated_successfully'  => 'تمت التعيل بنجاح',
+    'no_data_found'         => 'لا يوجد بيانات',
+    'added_successfully'    => 'تم الاضافة بنجاح',
+    'updated_successfully'  => 'تم التعديل بنجاح',
     'deleted_successfully'  => 'تم الحذف بنجاح',
     'copy_successfully'     => 'تم النسخ بنجاح',
-    'confirm_delete'        => 'الاستمرار بلحذف',
+    'confirm_delete'        => 'الاستمرار بالحذف؟',
     'created_at'            => 'تاريخ الانشاء',
     'yes'                   => 'نعم',
     'no'                    => 'لا',
     'logout'                => 'تسجيل الخروج',
     'edit_admin'            => 'تعديل بينات الحساب',
 
-    'add'                   => 'اضافه',
+    'add'                   => 'اضافة',
     'edit'                  => 'تعديل',
     'show'                  => 'عرض',
     'search'                => 'بحث',
 
-    'admins'                => 'المستخدمين',
-    'users'                 => 'المشرفين',
+    'admins'                => 'الادمنز',
+    'users'                 => 'المستخدمين',
     'clients'               => 'العملاء',
     'provider'              => 'provider',
     'name'                  => 'الاسم',
@@ -36,18 +36,19 @@ return [
     'changpassword'         => 'تغير كلمة المرور',
     'permissions'           => 'الصلاحيات',
     'Laravel'               => 'لارافل',
+    'addres'                => 'العناون',
 
     'create'           => 'إضافة',
     'read'             => 'قراءة',
     'update'           => 'تعديل',
     'delete'           => 'حذف',
-    
+
     'categorey'        => 'الاقسام',
     'categoreys'       => 'الاقسام',
-    'name_ar'          => 'الاسم بلغه العربية',
-    'name_en'          => 'الاسم بلغه الانجلزية',
+    'name_ar'          => 'الاسم عربي',
+    'name_en'          => 'الاسم باللغة الانجلزية',
     'related_products' => 'المنتجات المرتبطة',
-    'count'            => 'عدد المنتاجت',
+    'count'            => 'عدد المنتجات',
 
     'products'          => 'المنتجات',
     'description'       => 'الوصف',
@@ -58,7 +59,7 @@ return [
     'price'             => 'السعر',
     'available'         => 'متوفر',
     'not_available'     => 'غير متوفر',
-    
+
     'cupons'            => 'الكوبون',
     'cupons_code'       => 'كود الكوبون',
     'value'             => 'قيمة الخصم',
@@ -70,7 +71,7 @@ return [
     'unactive'          => 'جاري التحضير الطلب',
     'orders_active'     => 'الطلبات المكتملة',
     'orders_inactive'   => 'الطلبات الغير المكتملة',
-    
+
     'settings'          => 'الاعدادات',
     'services'          => 'الخدمات',
     'delivery_ar'       => 'ادخل نص التوصيل بللغه العربيه',
@@ -79,13 +80,13 @@ return [
     'customer_order_en' => 'ادخل نص طلبات العملاء بلغه الانجلزيه',
     'occasions_ar'      => 'ادخل نص مناسبات بلغه العربيه',
     'occasions_en'      => 'ادخل نص مناسبات بلغه الانجلزيه',
-    
+
     'gallerys'         => 'معرضنا',
     'image'            => 'الصور',
     'title'            => 'العنوان',
     'title_ar'         => 'العوان بللغة العربية',
     'title_en'         => 'العنوان باللغة الانجليزية',
-    
+
     'supports'         => 'رسائل التواصل',
     'contact_us'       => 'اتصل بنا',
     'about_ar'         => 'عن ردلاين بلعربي',
@@ -98,10 +99,10 @@ return [
     'our_locations_ar' => 'مواقعنا بللغة العربية',
     'our_locations_en' => 'مواقعنا بللغة الانجازية',
     'bank_account'     => 'حساب بنك الخرطوم',
-    
+
     'social_links'     => 'روابط التواصل الاجتماعي',
     'facebook'         => 'فيس بوك',
     'youtube'          => 'بوتيوب',
     'twitter'          => 'تويتر',
-    'instagram'        => 'انستقرام',
+    'instagram'        => 'انستجرام',
 ];

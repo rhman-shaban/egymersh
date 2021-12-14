@@ -7,14 +7,19 @@ use Illuminate\Http\Request;
 use App\Models\Seller;
 use App\Models\Store;
 use App\Models\SellerProduct;
-
+use Illuminate\Support\Facades\Auth;
 class SellerDetlseController extends Controller
 {
     public function prfile()
     {
-        $sellers = Seller::whenSearch(request()->search)->latest()->paginate(10);
+        if (Auth::guard('admin')->user()->role == 0){
+        $sellers = Seller::where('seller','1')->whenSearch(request()->search)->latest()->paginate(10);
 
         return view('dashboard.sellers.profile',compact('sellers'));
+    }else{
+        return view('error');
+    }
+
     }//end of profile
 
     public function stores($id)
@@ -23,6 +28,7 @@ class SellerDetlseController extends Controller
         $seller = Seller::where('id',$id)->first();
 
         return view('dashboard.sellers.store',compact('stores','seller'));   
+
     }//end of stores
 
 
@@ -31,6 +37,7 @@ class SellerDetlseController extends Controller
         $products = SellerProduct::where('store_id',$id)->get();
 
         return view('dashboard.sellers.products',compact('products'));   
+        
     }//end of products
 
 }//end of controller

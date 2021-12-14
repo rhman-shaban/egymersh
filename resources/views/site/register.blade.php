@@ -1,74 +1,70 @@
 @extends('site.layouts.master')
 
+@section('page_title')
+@lang('title.Register')
+@endsection
+
 @section('page_content')
 <main class="main">
-    {{-- <div class="page-header breadcrumb-wrap">
-        <div class="container">
-            <div class="breadcrumb">
-                <a href="index.html" rel="nofollow">Home</a>
-                <span></span> Pages
-                <span></span>  Register
-            </div>
-        </div>
-    </div> --}}
     <section class="pt-150 pb-150">
         <div class="container">
             <div class="row">
-                <div class="col-lg-10 m-auto">
+
+              <!-- image -->
+              <div class="col-md-6 m-auto d-flex align-items-center mb-20">
+                <img class="img-responsive" src="{{ asset('site_assets/assets/imgs/register/register-user.png') }}" alt="register Egymerch">
+              </div>
+
+              <!-- register form -->
+                <div class="col-lg-6 m-auto">
                     <div class="row">
-                        <div style="border-right: 2px solid #088178;" class="col-lg-6">
                             <div class="login_wrap widget-taber-content p-30 background-white border-radius-5">
                                 <div class="padding_eight_all bg-white">
                                    <div class="heading_s1">
-                                    <h3 class="mb-30">Create an Account</h3>
+                                    <h3 class="mb-30">@lang('register.Create an Account')</h3>
                                 </div>
-                                <p class="mb-50 font-sm">
-                                    Your personal data will be used to support your experience throughout this website, to manage access to your account, and for other purposes described in our privacy policy
-                                </p>
+
                                 <form method="POST" action="{{ route('users.register') }}" >
                                     @csrf
                                     <div class="form-group">
-                                        <input type="text" required="" name="name" class="@error('name')   is-invalid  @enderror"  value="{{ old('name') }}"   placeholder="name">
+                                        <input type="text" required="" name="name" class="@error('name')   is-invalid  @enderror"  value="{{ old('name') }}"   placeholder="@lang('register.Name')">
                                         @error('name')
                                         <p class="text-danger" > {{ $message }} </p>
                                         @enderror
                                     </div>
                                     <div class="form-group">
-                                        <input type="text" required="" name="email" class="@error('email')   is-invalid  @enderror"  value="{{ old('email') }}"   placeholder="email">
+                                        <input type="text" required="" name="email" class="@error('email')   is-invalid  @enderror"  value="{{ old('email') }}"   placeholder="@lang('register.Email')">
                                         @error('email')
                                         <p class="text-danger" > {{ $message }} </p>
                                         @enderror
                                     </div>
                                     <div class="form-group">
-                                        <input type="text" required="" name="phone" class="@error('phone')   is-invalid  @enderror"  value="{{ old('phone') }}"   placeholder="phone">
+                                        <input type="text" required="" name="phone" class="@error('phone')   is-invalid  @enderror"  value="{{ old('phone') }}"   placeholder="@lang('register.Phone')">
                                         @error('phone')
                                         <p class="text-danger" > {{ $message }} </p>
                                         @enderror
                                     </div>
                                     <div class="form-group">
-                                        <input required="" type="password" name="password"  class="@error('password')   is-invalid  @enderror" placeholder="Password">
+                                        <input required="" type="password" name="password"  class="@error('password')   is-invalid  @enderror" placeholder="@lang('register.Password')">
                                         @error('password')
                                         <p class="text-danger" > {{ $message }} </p>
                                         @enderror
                                     </div>
                                     <div class="form-group">
-                                        <input required="" type="password" name="password_confirmation" placeholder="confirm password">
+                                        <input required="" type="password" name="password_confirmation" placeholder="@lang('register.Confirm Password')">
                                     </div>
                                     <div class="login_footer form-group">
                                     </div>
-                                    <div class="form-group">
-                                        <button type="submit" class="btn btn-fill-out btn-block hover-up">Register</button>
+                                    <div class="form-group d-flex justify-content-end">
+                                        <button type="submit" class="btn btn-fill-out btn-block hover-up">@lang('register.Register')</button>
                                     </div>
                                 </form>
-                                    {{-- <div class="divider-text-center mt-15 mb-15">
-                                        <span> or</span>
-                                    </div>
-                                    
-                                    <div class="text-muted text-center"> forget your password ? <a href="{{ url('/register') }}">reset password</a></div> --}}
+
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-lg-6">
+
+                            <!-- sign up with Facebook or Gmail -->
+                        {{-- <div class="col-lg-6">
                             <div class="login_wrap widget-taber-content p-30 background-white border-radius-5">
                                 <div class="padding_eight_all bg-white">
                                     <div class="divider-text-center mt-15 mb-15">
@@ -86,10 +82,11 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
 
                 </div>
             </div>
+
         </div>
     </div>
 </section>

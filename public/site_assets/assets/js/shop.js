@@ -36,22 +36,7 @@
         $('.product-image-slider').on('beforeChange', function (event, slick, currentSlide, nextSlide) {
             var img = $(slick.$slides[nextSlide]).find("img");
             $('.zoomWindowContainer,.zoomContainer').remove();
-            $(img).elevateZoom({
-                zoomType: "inner",
-                cursor: "crosshair",
-                zoomWindowFadeIn: 500,
-                zoomWindowFadeOut: 750
-            });
         });
-        //Elevate Zoom
-        if ( $(".product-image-slider").length ) {
-            $('.product-image-slider .slick-active img').elevateZoom({
-                zoomType: "inner",
-                cursor: "crosshair",
-                // zoomWindowFadeIn: 50zzz0,
-                zoomWindowFadeOut: 750
-            });
-        }
         //Filter color/Size
         $('.list-filter').each(function () {
             $(this).find('a').on('click', function (event) {
@@ -64,25 +49,6 @@
                 $('#size-product').val(size);
             });
         });
-        // //Qty Up-Down
-        // $('.detail-qty').each(function () {
-        //     var qtyval = parseInt($(this).find('.qty-val').text(), 10);
-        //     $('.qty-up').on('click', function (event) {
-        //         event.preventDefault();
-        //         qtyval = qtyval + 1;
-        //         $(this).prev().text(qtyval);
-        //     });
-        //     $('.qty-down').on('click', function (event) {
-        //         event.preventDefault();
-        //         qtyval = qtyval - 1;
-        //         if (qtyval > 1) {
-        //             $(this).next().text(qtyval);
-        //         } else {
-        //             qtyval = 1;
-        //             $(this).next().text(qtyval);
-        //         }
-        //     });
-        // });
 
         $('.dropdown-menu .cart_list').on('click', function (event) {
             event.stopPropagation();

@@ -120,25 +120,44 @@ class HomeController extends Controller
 
     public function product_details($id)
     {
-        $product       = SellerProduct::find($id);
-        $product_color = SellerProductColor::where('seller_product_id', $id)->get();
-        $product_id    = Product::where('id', $product->product_id)->first();
-        $product_size  = ProductSize::where('product_id', $product_id->id)->get();
-        $products      = SellerProduct::inRandomOrder()->limit('4')->get();
-        return view('site.product',compact('product','products','product_size','product_color'));
-    }
+        $product       = SellerProduct::Find($id);
+
+        if ($product == null) {
+
+            return 'not found';
+            return redirect()->back();
+            
+        } else {
+
+            $product_color = SellerProductColor::where('seller_product_id', $id)->get();
+            $product_id    = Product::where('id', $product->product_id)->first();
+            $product_size  = ProductSize::where('product_id', $product_id->id)->get();
+            $products      = SellerProduct::inRandomOrder()->limit('4')->get();
+
+            return view('site.product',compact('product','products','product_size','product_color'));
+        }
+
+
+    }//end of product_details
+
 
     public function chouse_color($id)
     {
         $product_color = ProductColor::find($id);
         $product_size  = ProductSize::where('product_color_id', $product_color->id)->with('size')->get();
         return response()->json($product_size);
-    }
+
+    }//end of chouse_color
+
     public function product_quick_view(Request $request)
     {
-       
         $product = SellerProduct::find($request->product_id);
-        return view('site.modal' , compact('product') );
+
+        $product_color = SellerProductColor::where('seller_product_id', $request->product_id)->get();
+        $product_id    = Product::where('id', $product->product_id)->first();
+        $product_size  = ProductSize::where('product_id', $product_id->id)->get();
+
+        return view('site.modal' , compact('product','product_size','product_color'));
     }
 
-}
+}//end of controller

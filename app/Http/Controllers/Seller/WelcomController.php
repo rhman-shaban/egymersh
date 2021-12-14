@@ -33,7 +33,7 @@ class WelcomController extends Controller
                 $details =($i->product->selling_price+  $details) *$i->quantity;
                 
             }}
-            $order_seller    =order_seller::where('status','delivred')->sum('profit');
+            $order_seller    =order_seller::where('status','Delivered')->sum('profit');
             $price=wallet::where('status_en','confirmed')->sum('price');
             $balnce=$details + $order_seller;
             $manual_order=order_seller::where('seller_id' ,$seller_id)->count('id');

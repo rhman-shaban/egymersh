@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\Dashboard\Slides\StoreSlideRequest;
 use App\Http\Requests\Dashboard\Slides\UpdateSlideRequest;
 use App\Models\Slide;
+use Illuminate\Support\Facades\Auth;
 class SlideController extends Controller
 {
     /**
@@ -16,7 +17,12 @@ class SlideController extends Controller
      */
     public function index()
     {
+        if (Auth::guard('admin')->user()->role == 0){
+       
         return view('dashboard.slides.index');
+    }else{
+        return view('error');
+    }
     }
 
     /**
@@ -26,7 +32,12 @@ class SlideController extends Controller
      */
     public function create()
     {
+        if (Auth::guard('admin')->user()->role == 0){
+       
         return view('dashboard.slides.create');
+    }else{
+        return view('error');
+    }
     }
 
     /**

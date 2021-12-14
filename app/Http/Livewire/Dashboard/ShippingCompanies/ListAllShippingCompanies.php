@@ -12,7 +12,7 @@ class ListAllShippingCompanies extends Component
 
     public $rows = 10;
     public $search = '';
- public function updatingSearch()
+    public function updatingSearch()
     {
         $this->resetPage();
     }

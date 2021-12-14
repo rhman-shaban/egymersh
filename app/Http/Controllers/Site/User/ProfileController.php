@@ -42,25 +42,24 @@ class ProfileController extends Controller
             'address' => ['required'],
         ]);
 
-        // try {
-
+        try {
 
             $request_data = $request->except(['image']);
             // return $request_data;
             if ($request->image) {
 
-                $request_data['image']  = $request->file('image')->store('seller_images',['public']);
+                $request_data['image']  = $request->file('image')->store('seller_images','public');
             }
 
             $id->update($request_data);
 
             return response()->json(['success'=> true]);
 
-        // } catch (\Exception $e) {
+        } catch (\Exception $e) {
 
-            // return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
 
-        // }//end try
+        }//end try
 
     }//end of update
 
@@ -104,7 +103,7 @@ class ProfileController extends Controller
     {
         \Auth::guard('seller')->logout();
 
-        return view('site.login');
+        return redirect()->route('user.login_form');
 
     }//end of logout
 

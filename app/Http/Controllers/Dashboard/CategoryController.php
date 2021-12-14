@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Category;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\Dashboard\Categories\StoreCategoryRequest;
 use App\Http\Requests\Dashboard\Categories\UpdateCategoryRequest;
 class CategoryController extends Controller
@@ -16,7 +17,13 @@ class CategoryController extends Controller
      */
     public function index()
     {
+        if (Auth::guard('admin')->user()->role == 0){
+            
+    
         return view('dashboard.categories.index');
+    }else{
+        return view('error');
+    }
     }
 
     /**
@@ -26,8 +33,13 @@ class CategoryController extends Controller
      */
     public function create()
     {   
+        if (Auth::guard('admin')->user()->role == 0){
         $categories = Category::where('parent_id'  , null )->get();
         return view('dashboard.categories.create' , compact('categories'));
+        
+    }else{
+        return view('error');
+    }
     }
 
     /**

@@ -1,5 +1,9 @@
 @extends('store.layouts.master')
 
+@section('page_title')
+@lang('title.Payment Settings')
+@endsection
+
 @section('page_content')
 <section class="content-main">
     <div class="content-header">
@@ -64,7 +68,7 @@
                                                     <option value="">Qnb alahli</option>
                                                     <option value="">Bank msr</option>
                                                     <option value="">  alhi bank  </option>
-                                         
+
                                                 </select>
                                             </div>
                                         </div> <!-- col.// -->
@@ -78,7 +82,7 @@
                                                 <label class="form-label">Email </label>
                                                 <input class="form-control" type="text" name="" placeholder="Type here">
                                             </div>
-                                            
+
                                         </div> <!-- col.// -->
                                     </div> <!-- row.// -->
                                     <div class="row border-bottom mb-4 pb-4">
@@ -90,7 +94,7 @@
                                                 <label class="form-label"> Phone Number  </label>
                                                 <input class="form-control" type="text" name="" placeholder="Type here">
                                             </div>
-                                            
+
                                         </div> <!-- col.// -->
                                     </div> <!-- row.// -->
 

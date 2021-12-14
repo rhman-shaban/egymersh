@@ -40,7 +40,8 @@ class StoreController extends Controller
 
     public function create()
     {
-        return view('store.stores.create');   
+        return view('store.stores.create');
+        
     }//end of create
 
 
@@ -60,20 +61,11 @@ class StoreController extends Controller
 
             $request_data           = $request->except(['logo','banner']);
 
-
-            // $logo_image             = $request->file('logo')->store('products_seller' , 's3');
-            // $request_data['logo']   = basename($logo_image);
-
-            // $banner_image           = $request->file('banner')->store('products_seller' , 's3');
-            // $request_data['banner'] = basename($banner_image);
-
-            $request_data['logo']   = $request->file('logo')->store('store_images',['disk' => 'public_uploads']);
-            $request_data['banner'] = $request->file('banner')->store('store_images',['disk' => 'public_uploads']);
-
-            // $request_data['logo']   = basename($request->file('logo')->store('stores' , 's3'));
-            // $request_data['banner'] = basename($request->file('banner')->store('stores' , 's3'));
+            $request_data['logo']   = $request->file('logo')->store('store_images','public');
+            $request_data['banner'] = $request->file('banner')->store('store_images','public');
 
             $request_data['seller_id'] = auth()->guard('seller')->user()->id;
+
             $store = Store::create($request_data);
 
             session()->flash('success', __('dashboard.added_successfully'));
@@ -86,7 +78,7 @@ class StoreController extends Controller
 
         }
 
-    }
+    }//end of store
 
 
     public function show(Store $store)
@@ -101,6 +93,7 @@ class StoreController extends Controller
     public function edit(Store $store)
     {
         return view('store.stores.edit',compact('store')); 
+        
     }//end fo edit
 
 
@@ -123,12 +116,16 @@ class StoreController extends Controller
 
             if ($request->logo) {
                 
-                $request_data['logo']   = basename($request->file('logo')->store('stores',['disk' => 's3']));
+                Storage::disk('local')->delete('public/' . $store->logo);
+
+                $request_data['logo']   = $request->file('logo')->store('store_images','public');
             }
 
             if ($request->banner) {
                 
-                $request_data['banner'] = basename($request->file('banner')->store('stores',['disk' => 's3']));
+                Storage::disk('local')->delete('public/' . $store->banner);
+
+                $request_data['banner']   = $request->file('banner')->store('store_images','public');
             }
 
             $request_data['seller_id'] = auth()->guard('seller')->user()->id;
@@ -153,8 +150,8 @@ class StoreController extends Controller
 
         try {
 
-            Storage::disk('public_uploads')->delete($store->logo);
-            Storage::disk('public_uploads')->delete($store->banner);
+            Storage::disk('local')->delete('public/' . $store->logo);
+            Storage::disk('local')->delete('public/' . $store->banner);
 
             $store->delete();
             session()->flash('success', __('dashboard.deleted_successfully'));
